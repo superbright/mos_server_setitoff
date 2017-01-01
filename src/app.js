@@ -50,8 +50,8 @@ var serialport = require('serialport'), // include the serialport library
      };
 
 // open the serial port:
-var myPort = new SerialPort(portName, portConfig);
-myPort.on('open', openPort); // called when the serial port opens
+//var myPort = new SerialPort(portName, portConfig);
+//myPort.on('open', openPort); // called when the serial port opens
 
 
 function openPort() {
@@ -201,6 +201,17 @@ function endGame() {
     console.log("call start game");
     io.broadcast( 'startGame');
   });
+
+  io.on( 'dildon', ( ctx, data ) => {
+    console.log("dildon");
+    io.broadcast( 'dildon',data);
+  });
+
+  io.on( 'dildoff', ( ctx, data ) => {
+      console.log("dildoff");
+    io.broadcast( 'dildoff',data);
+  });
+
 
   io.on( 'endgame', ( ctx, data ) => {
     io.broadcast( 'disconnectMotive',data);
