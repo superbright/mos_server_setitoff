@@ -1,16 +1,10 @@
 import KoaRouter from 'koa-router';
-import arangojs, {Database, aql} from 'arangojs';
 
 const api = KoaRouter();
 
 const config = {
   hosts: '54.210.52.93:3000'
 }
-
-var callback = function(result) {
- console.log('log:', result);
-}
-
 
 api.get('/',
   async (ctx, next) => {
@@ -20,7 +14,30 @@ api.get('/',
   }
 );
 
+api.post('/config', function (ctx, next) {
+    async (ctx, next) => {
+    await console.log(ctx);
+    //const res = await ctx.response;
+    ctx.status = 200;
+    ctx.body =  { res : 'ok' };
 
+    }
+});
 
+api.get('/config',
+  async (ctx, next) => {
+    ctx.body = ctx.config;
+  }
+);
+
+// api.get('/error/:message',
+//   async (ctx, next) => {
+//   //  console.log(ctx.app.io);
+//     ctx.app.io.broadcast( 'errormessage', {
+//       data : ctx.request.querystring
+//     });
+//      ctx.body = { foo: ctx.request.querystring }
+//   }
+// );
 
 export default api;
