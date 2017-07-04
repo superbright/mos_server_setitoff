@@ -1,45 +1,43 @@
 import Koa from 'koa';
-import api from './api';
+
 import views from 'koa-views';
 import IO from 'koa-socket';
 
 //import config from './config';
+//import bodyParser from 'koa-bodyparser';
+const app = new Koa();
+//import koaBody from 'koa-body';
 import bodyParser from 'koa-bodyparser';
+import api from './api';
+
 import cors from 'kcors';
 import websockify from 'koa-websocket';
-
 import axios from 'axios'
 import Timer from 'timer-machine'
-//var myTimer = new Timer()
-
-// -> time in ms
 
 import config from './config';
 console.log("HAPTIC FAN URL " + config.FAN_URL);
 
-const signS3 = require('koa-s3-sign-upload');
-
 const io = new IO();
-const app = new Koa();
+
+
+//app.use(koaBody())
+// .use(ctx => {
+//   ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
+// })
 
 app.use(cors({
       origin: '*',
 }))
-.use(views(__dirname + '/views', {
+app.use(views(__dirname + '/views', {
   map: {
     html: 'underscore'
   }
 }))
-.use(bodyParser())
-// .use(async ctx => {
-//   // the parsed body will store in ctx.request.body
-//   // if nothing was parsed, body will be an empty object {}
-//   ctx.body = ctx.request.body;
-// })
-.use(api.routes())
-.use(api.allowedMethods())
-.use(require('koa-static')("./static", {}));
-
+app.use(require('koa-static')("./static", {}));
+app.use(bodyParser())
+app.use(api.routes())
+app.use(api.allowedMethods());
 //inject config into context
 app.context.config = config;
 
@@ -47,7 +45,6 @@ app.context.config = config;
 var timerInterval;
 var timer = new Timer();
 var totaltime = 300;
-
 
 var fantimes=[
   {
@@ -59,6 +56,10 @@ var fantimes=[
     stop: 15
   }
 ]
+
+var FeetToMeters = require("feet-to-meters");
+var ftm = new FeetToMeters();
+console.log(ftm.get(0.2));
 
 function startFan() {
   console.log("start fan");
@@ -86,7 +87,7 @@ function checkFan() {
   let wastedtime = parseInt(timer.time()/1000);
 
   if(wastedtime < 180 && wastedtime > 75) {
-      console.log("what");
+
       if( (wastedtime % 10) == 0) {
           startFan();
       } else if( (wastedtime % 5) == 0) {
@@ -113,21 +114,12 @@ function checkFan() {
           stopFan();
   }
 
-
-  // if(wastedtime == element['start']) {
-  //   console.log("start fan");
-  //   startFan()
-  // }
-  // if(wastedtime == element['stop']) {
-  //   console.log("stop fan");
-  //   stopFan()
-  // }
 }
 
 function startGame() {
 
   timer.on('time', function (time) {
-  //  console.log('Current time: ' + time + 'ms')
+
     //calculate fine thingy
     let wastedtime = parseInt(time/1000);
 
@@ -202,23 +194,6 @@ function endGame() {
 
 io.attach( app )
 export default app;
-
-
-/*
-setTimeout(function() {
-  axios.get(config.FAN_URL + "turnon").then(function(response){
-    console.log(response.data); // ex.: { user: 'Your User'}
-    console.log(response.status); // ex.: 200
-  });
-}, 3000);
-
-setTimeout(function() {
-  axios.get(config.FAN_URL).then(function(response){
-    console.log(response.data); // ex.: { user: 'Your User'}
-    console.log(response.status); // ex.: 200
-  });
-}, 10000);
-*/
 
 
 

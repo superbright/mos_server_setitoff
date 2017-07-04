@@ -1,6 +1,7 @@
 import KoaRouter from 'koa-router';
 
 const api = KoaRouter();
+//const koaBody = require('koa-body')();
 
 const config = {
   hosts: '54.210.52.93:3000'
@@ -14,15 +15,19 @@ api.get('/',
   }
 );
 
-api.post('/config', function (ctx, next) {
-    async (ctx, next) => {
-    await console.log(ctx);
-    //const res = await ctx.response;
-    ctx.status = 200;
-    ctx.body =  { res : 'ok' };
-
+api.post('/config', async (ctx, next) => {
+      ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.ison;
+      ctx.body = JSON.stringify(ctx.request.body);
+      ctx.status = 200;
     }
-});
+);
+
+api.post('/setheight', async (ctx, next) => {
+      ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.height;
+      ctx.body = JSON.stringify(ctx.request.body);
+      ctx.status = 200;
+    }
+);
 
 api.get('/config',
   async (ctx, next) => {
@@ -30,14 +35,8 @@ api.get('/config',
   }
 );
 
-// api.get('/error/:message',
-//   async (ctx, next) => {
-//   //  console.log(ctx.app.io);
-//     ctx.app.io.broadcast( 'errormessage', {
-//       data : ctx.request.querystring
-//     });
-//      ctx.body = { foo: ctx.request.querystring }
-//   }
-// );
+var convertHeight = function(heightfeet) {
+
+}
 
 export default api;

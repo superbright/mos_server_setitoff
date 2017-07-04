@@ -34,8 +34,9 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "feet-to-meters": "^1.1.0",
     "kcors": "^2.0.0",
-    "koa-body": "^2.0.1",
+    "koa-body": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.0",
     "koa-s3-sign-upload": "^1.0.2",

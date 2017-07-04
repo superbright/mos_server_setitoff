@@ -4,22 +4,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.5">
-  <title>Document</title>
+  <title>SetitOff Control Panel</title>
 
   <link rel="stylesheet" href="./mdl/material.min.css">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/dialog-polyfill.css">
+  <!-- <link rel="stylesheet" href="./css/mdl-selectfield.min.css"> -->
+  <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
+
   <script src="./mdl/material.min.js"></script>
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
 
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/dialog-polyfill.js"></script>
+    <!-- <script src="./js/mdl-selectfield.min.js"></script> -->
 </head>
 <body>
   <script src="/socket.io/socket.io.js"></script>
 <script>
 
-  var socket = io('http://192.168.1.212:4000');
+ var heightmap = [
+    {
+      key: "5’0”",
+      value: 152.40
+    },
+    {
+    key: "5’1”",
+    value: 154.94
+    },
+    {
+    key: "5’2”",
+    value:  157.48
+  },
+  {
+    key: "5’3”",
+    value:  160.02
+  },
+  {
+    key: "5’4”",
+    value:  162.56
+  },
+  {
+    key: "5’5”",
+    value: 	165.10
+  },
+  {
+    key: "5’6”",
+    value: 167.74
+  },
+  {
+    key: "5’7”",
+    value: 	170.18
+  },
+  {
+    key: "5’8”",
+    value: 	172.72
+  },
+  {
+    key: "5’9”",
+    value: 175.26
+  },
+  {
+    key: "5’10”",
+    value: 177.80
+  },
+  {
+    key: "5’11”",
+    value: 180.34
+  },
+  {
+    key: "6’0”",
+    value: 182.88
+  },
+  {
+    key: "6’1”",
+    value: 185.45
+  },
+  {
+    key: "6’2”",
+    value: 187.96
+  },
+  {
+    key: "6’3”",
+    value: 190.50
+  },
+  {
+    key: "6’4”",
+    value: 193.04
+  },
+  {
+    key: "6’5”",
+    value: 195.58
+  },
+  {
+    key: "6’6”",
+    value: 198.12
+  },
+  {
+    key: "6’7”",
+    value: 200.66
+  },
+  {
+    key: "6’8”",
+    value: 	203.20
+  },
+  {
+    key: "6’9”",
+    value: 	205.74
+  },
+  {
+    key: "6’10”",
+    value: 208.28
+  }
+]
+//  var socket = io('http://192.168.1.212:4000');
+  var socket = io('localhost:4000');
   socket.on('hello', function (data) {
     console.log(data);
 
@@ -34,10 +133,124 @@
   socket.on('time', function (data) {
       $( "#timer" ).text(data['time']);
   });
+
+  function populate(selector,key,value) {
+    $(selector)
+      .append('<option value="'+ value +'">'+ key + '</option>')
+  }
+
+
   $(document).ready(function() {
 
+    //console.log(heightmap);
+    heightmap.forEach(function(item) {
+      populate('#player1',item.key,item.value);
+        populate('#player2',item.key,item.value);
+          populate('#player3',item.key,item.value);
+            populate('#player4',item.key,item.value);
+    });
+
+    $('#player1').on('change', function() {
+      alert( this.value );
+    })
     //reset everythingin load
     $( "#timer" ).text(0);
+    //toggle label
+    $('#switch-1').change(function(){
+        var isPlayeron = false;
+        if($(this).is(':checked')) {
+          isPlayeron = true;
+        }
+        $.ajax({
+          url: '/config',
+          type: 'POST',
+          dataType : "json",
+          contentType: "application/json; charset=utf-8",
+          //data : JSON.stringify(data),
+          data: JSON.stringify(
+            {
+              "player" : 0,
+              "ison" : isPlayeron
+            }
+          ), // data as js object
+          success: function(result) {
+              console.log("ok " + result)
+              // Do something with the result
+          }
+        });
+    });
+
+    $('#switch-2').change(function(){
+      var isPlayeron = false;
+      if($(this).is(':checked')) {
+        isPlayeron = true;
+      }
+      $.ajax({
+        url: '/config',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        //data : JSON.stringify(data),
+        data: JSON.stringify(
+          {
+            "player" : 1,
+            "ison" : isPlayeron
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+            // Do something with the result
+        }
+      });
+    });
+
+    $('#switch-3').change(function(){
+      var isPlayeron = false;
+      if($(this).is(':checked')) {
+        isPlayeron = true;
+      }
+      $.ajax({
+        url: '/config',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        //data : JSON.stringify(data),
+        data: JSON.stringify(
+          {
+            "player" : 2,
+            "ison" : isPlayeron
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+            // Do something with the result
+        }
+      });
+    });
+
+    $('#switch-4').change(function(){
+      var isPlayeron = false;
+      if($(this).is(':checked')) {
+        isPlayeron = true;
+      }
+      $.ajax({
+        url: '/config',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        //data : JSON.stringify(data),
+        data: JSON.stringify(
+          {
+            "player" : 3,
+            "ison" : isPlayeron
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+            // Do something with the result
+        }
+      });
+    });
 
     $( "#player1button" ).click(function() {
         console.log("doit)")
@@ -73,8 +286,8 @@
       $( "#timer" ).text(0);
       socket.emit('reset', { my: 'data' });
     });
-    $( "#lobby" ).click(function() {
-      console.log("lobby");
+    $( "#elevator" ).click(function() {
+      console.log("elevator");
       socket.emit('lobby', { my: 'data' });
     });
     $( "#start" ).click(function() {
@@ -90,11 +303,6 @@
 <!-- Accent-colored raised button with ripple -->
     <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
       RESET
-    </button>
-
-
-    <button id="lobby" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      LOBBY
     </button>
 
     <button id="elevator" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
@@ -133,10 +341,12 @@
 </label>
   </div>
   <div class="mdl-cell mdl-cell--2-col">
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="player1height">
-      <label class="mdl-textfield__label" for="sample4">Number...</label>
-    </div>
+    <div class="mdl-selectfield mdl-js-selectfield">
+       <select class="mdl-selectfield__select" id="player1" name="player1">
+         <option value=""></option>
+       </select>
+         <label class="mdl-selectfield__label" for="player1">choose height</label>
+     </div>
 </div>
 
 <div class="mdl-cell mdl-cell--2-col">
@@ -145,24 +355,74 @@
 </button></div> </div>
 <!-- END PLAYER -->
 
-<!-- PLAYER -->
+<!-- PLAYER 2 -->
 <div class="mdl-grid player">
   <div class="mdl-cell mdl-cell--1-col">
     <b>Player 2</b>
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-  <input type="checkbox" id="switch-1" class="mdl-switch__input" >
+    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
+  <input type="checkbox" id="switch-2" class="mdl-switch__input" >
   <span class="mdl-switch__label"></span>
 </label>
   </div>
   <div class="mdl-cell mdl-cell--2-col">
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="player2height">
-      <label class="mdl-textfield__label" for="sample4">Number...</label>
-    </div>
+    <div class="mdl-selectfield mdl-js-selectfield">
+       <select class="mdl-selectfield__select" id="player2" name="player2">
+         <option value=""></option>
+       </select>
+         <label class="mdl-selectfield__label" for="player2">choose height</label>
+     </div>
 </div>
 
 <div class="mdl-cell mdl-cell--2-col">
 <button id="player2button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+  SET PLAYER
+</button></div> </div>
+<!-- END PLAYER -->
+
+<!-- PLAYER 3-->
+<div class="mdl-grid player">
+  <div class="mdl-cell mdl-cell--1-col">
+    <b>Player 3</b>
+    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-3">
+  <input type="checkbox" id="switch-3" class="mdl-switch__input" >
+  <span class="mdl-switch__label"></span>
+</label>
+  </div>
+  <div class="mdl-cell mdl-cell--2-col">
+    <div class="mdl-selectfield mdl-js-selectfield">
+       <select class="mdl-selectfield__select" id="player3" name="player3">
+         <option value=""></option>
+       </select>
+         <label class="mdl-selectfield__label" for="player3">choose height</label>
+     </div>
+</div>
+
+<div class="mdl-cell mdl-cell--2-col">
+<button id="player3button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+  SET PLAYER
+</button></div> </div>
+<!-- END PLAYER -->
+
+<!-- PLAYER 3-->
+<div class="mdl-grid player">
+  <div class="mdl-cell mdl-cell--1-col">
+    <b>Player 4</b>
+    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-4">
+  <input type="checkbox" id="switch-4" class="mdl-switch__input" >
+  <span class="mdl-switch__label"></span>
+</label>
+  </div>
+  <div class="mdl-cell mdl-cell--2-col">
+    <div class="mdl-selectfield mdl-js-selectfield">
+       <select class="mdl-selectfield__select" id="player4" name="player4">
+         <option value=""></option>
+       </select>
+         <label class="mdl-selectfield__label" for="player4">choose height</label>
+     </div>
+</div>
+
+<div class="mdl-cell mdl-cell--2-col">
+<button id="player4button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
   SET PLAYER
 </button></div> </div>
 <!-- END PLAYER -->
