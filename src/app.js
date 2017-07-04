@@ -57,9 +57,9 @@ var fantimes=[
   }
 ]
 
-var FeetToMeters = require("feet-to-meters");
-var ftm = new FeetToMeters();
-console.log(ftm.get(0.2));
+// var FeetToMeters = require("feet-to-meters");
+// var ftm = new FeetToMeters();
+// console.log(ftm.get(0.2));
 
 function startFan() {
   console.log("start fan");
