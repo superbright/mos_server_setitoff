@@ -17,6 +17,10 @@ export default {
       {
         ison: false,
         height: 5.8
+      },
+      {
+        ison: false,
+        height: 5.8
       }
     ]
 };
