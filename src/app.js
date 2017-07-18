@@ -53,9 +53,9 @@ var serialport = require('serialport'), // include the serialport library
      };
 
 // open the serial port:
-//var myPort = new SerialPort(portName, portConfig);
+var myPort = new SerialPort(portName, portConfig);
 
-//myPort.on('open', openPort); // called when the serial port opens
+myPort.on('open', openPort); // called when the serial port opens
 
 function openPort() {
 
@@ -181,7 +181,7 @@ function endGame() {
 }
 
  io.on('rotate', (ctx, data) => {
-    var input = "3;0;0;0;";
+      var input = "3;0;0;0;";
       // convert the value to an ASCII string before sending it:
       console.log('Sending ' + input + ' out the serial port');
       myPort.write(input.toString());
