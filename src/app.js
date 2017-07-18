@@ -181,7 +181,7 @@ function endGame() {
 }
 
  io.on('rotate', (ctx, data) => {
-      var input = "3;0;0;0;";
+      var input = "3;3;3;3;";
       // convert the value to an ASCII string before sending it:
       console.log('Sending ' + input + ' out the serial port');
       myPort.write(input.toString());
