@@ -281,6 +281,11 @@
       dialog.close();
     });
 
+    $( "#rotate" ).click(function() {
+      console.log("rotate");
+
+      socket.emit('rotate', { my: 'data' });
+    });
     $( "#reset" ).click(function() {
       console.log("reset");
       $( "#timer" ).text(0);
@@ -300,6 +305,11 @@
 <div class="mdl-grid">
 
 <div class="mdl-cell mdl-cell--3-col">
+  <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent rotatebutton">
+    ROTATE
+  </button>
+  <hr>
+  <p>Scenes</p>
 <!-- Accent-colored raised button with ripple -->
     <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
       RESET

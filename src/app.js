@@ -41,6 +41,29 @@ app.use(api.allowedMethods());
 //inject config into context
 app.context.config = config;
 
+
+// serial port initialization:
+var serialport = require('serialport'), // include the serialport library
+     SerialPort = serialport.SerialPort, // make a local instance of serial
+     portName = "/dev/ttyACM0",
+     portConfig = {
+         baudRate: 9600,
+         // call myPort.on('data') when a newline is received:
+         parser: serialport.parsers.readline('\n')
+     };
+
+// open the serial port:
+//var myPort = new SerialPort(portName, portConfig);
+
+//myPort.on('open', openPort); // called when the serial port opens
+
+function openPort() {
+
+    console.log('port open');
+    console.log('baud rate: ' + myPort.options.baudRate);
+
+}
+
 //app time mode here
 var timerInterval;
 var timer = new Timer();
@@ -156,6 +179,14 @@ function endGame() {
   timer = new Timer();
   clearInterval(timerInterval);
 }
+
+ io.on('rotate', (ctx, data) => {
+    var input = "3;0;0;0;";
+      // convert the value to an ASCII string before sending it:
+      console.log('Sending ' + input + ' out the serial port');
+      myPort.write(input.toString());
+      console.log("DONE");
+ });
 
   io.on( 'connection', ( ctx, data ) => {
     console.log( 'join event fired', data )

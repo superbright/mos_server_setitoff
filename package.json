@@ -45,6 +45,7 @@
     "koa-views": "^5.2.0",
     "serialport": "^4.0.7",
     "timer-machine": "^1.1.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "serialport" : "4.0.7"
   }
 }
