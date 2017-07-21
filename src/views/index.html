@@ -281,9 +281,15 @@
       dialog.close();
     });
 
-    $( "#rotate" ).click(function() {
-      console.log("rotate");
+    $( "#startgame" ).click(function() {
+      socket.emit('startgame', { my: 'data' });
+    });
 
+    $( "#endgame" ).click(function() {
+      socket.emit('endgame', { my: 'data' });
+    });
+
+    $( "#rotate" ).click(function() {
       socket.emit('rotate', { my: 'data' });
     });
     $( "#reset" ).click(function() {
@@ -305,8 +311,14 @@
 <div class="mdl-grid">
 
 <div class="mdl-cell mdl-cell--3-col">
+  <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent startgame">
+    STARTGAME
+  </button>
   <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent rotatebutton">
     ROTATE
+  </button>
+  <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent endgame">
+    ENDGAME
   </button>
   <hr>
   <p>Scenes</p>
