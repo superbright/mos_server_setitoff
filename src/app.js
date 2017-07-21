@@ -15,16 +15,13 @@ import websockify from 'koa-websocket';
 import axios from 'axios'
 import Timer from 'timer-machine'
 
+var player = require('play-sound')({player: "afplay"});
+
 import config from './config';
 console.log("HAPTIC FAN URL " + config.FAN_URL);
 
 const io = new IO();
 
-
-//app.use(koaBody())
-// .use(ctx => {
-//   ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
-// })
 
 app.use(cors({
       origin: '*',
@@ -42,6 +39,7 @@ app.use(api.allowedMethods());
 app.context.config = config;
 
 
+/*
 // serial port initialization:
 var serialport = require('serialport'), // include the serialport library
      SerialPort = serialport.SerialPort, // make a local instance of serial
@@ -55,7 +53,9 @@ var serialport = require('serialport'), // include the serialport library
 // open the serial port:
 var myPort = new SerialPort(portName, portConfig);
 
+
 myPort.on('open', openPort); // called when the serial port opens
+*/
 
 function openPort() {
 
@@ -195,6 +195,15 @@ function endGame() {
     });
   });
 
+  io.on( 'startgame', ( ctx, data ) => {
+    console.log("call start game");
+    io.broadcast( 'startGame');
+  });
+
+  io.on( 'endgame', ( ctx, data ) => {
+    io.broadcast( 'endGame');
+  });
+
   io.on('reset', ( ctx, data ) => {
     console.log( 'reset' );
     endGame();
@@ -204,7 +213,15 @@ function endGame() {
 
   io.on('lobby', ( ctx, data ) => {
     console.log( 'lobby' );
+    setTimeout(() => {
+      player.play('audio/ELEVATOR.wav', { aplay: [ '-v', 10 ] }, function(err){
+        if (err) throw err
+      });
+    }
+    , 5000);
+
     io.broadcast( 'enterlobby', 'lobby');
+
   });
 
   io.on('start', ( ctx, data ) => {
