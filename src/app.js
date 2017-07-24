@@ -39,7 +39,7 @@ app.use(api.allowedMethods());
 app.context.config = config;
 
 
-/*
+
 // serial port initialization:
 var serialport = require('serialport'), // include the serialport library
      SerialPort = serialport.SerialPort, // make a local instance of serial
@@ -55,7 +55,7 @@ var myPort = new SerialPort(portName, portConfig);
 
 
 myPort.on('open', openPort); // called when the serial port opens
-*/
+
 
 function openPort() {
 
@@ -214,11 +214,12 @@ function endGame() {
   io.on('lobby', ( ctx, data ) => {
     console.log( 'lobby' );
     setTimeout(() => {
+      console.log("play");
       player.play('audio/ELEVATOR.wav', { aplay: [ '-v', 10 ] }, function(err){
         if (err) throw err
       });
     }
-    , 5000);
+    , 1000);
 
     io.broadcast( 'enterlobby', 'lobby');
 
