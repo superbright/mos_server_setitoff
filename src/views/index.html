@@ -134,20 +134,59 @@
       $( "#timer" ).text(data['time']);
   });
 
+  //players connecting to optitrack
+  socket.on('connectionState', function(data) {
+      var dataarr = data.split(':');
+      console.log(dataarr);
+      var enabledColor = '#8ec252';
+      var disabledColor = '#ff0000';
+      if(dataarr[0] == 'player1') {
+        if(dataarr[1] == "True") {
+            $('#player1tracking').css('background',enabledColor)
+        } else {
+          $('#player1tracking').css('background',disabledColor)
+        }
+      }
+      if(dataarr[0] == 'player2') {
+        if(dataarr[1] == "True") {
+            $('#player2tracking').css('background',enabledColor)
+        } else {
+          $('#player2 tracking').css('background',disabledColor)
+        }
+      }
+
+      if(dataarr[0] == 'player3') {
+        if(dataarr[1] == "True") {
+            $('#player3tracking').css('background',enabledColor)
+        } else {
+          $('#player3tracking').css('background',disabledColor)
+        }
+      }
+      if(dataarr[0] == 'player4') {
+        if(dataarr[1] == "True") {
+            $('#player4tracking').css('background',enabledColor)
+        } else {
+          $('#player4tracking').css('background',disabledColor)
+        }
+      }
+
+  });
+
+
+
   function populate(selector,key,value) {
     $(selector)
       .append('<option value="'+ value +'">'+ key + '</option>')
   }
 
-
   $(document).ready(function() {
 
     //console.log(heightmap);
     heightmap.forEach(function(item) {
-      populate('#player1',item.key,item.value);
+        populate('#player1',item.key,item.value);
         populate('#player2',item.key,item.value);
-          populate('#player3',item.key,item.value);
-            populate('#player4',item.key,item.value);
+        populate('#player3',item.key,item.value);
+        populate('#player4',item.key,item.value);
     });
 
     $('#player1').on('change', function() {
@@ -268,6 +307,8 @@
         });
     });
 
+
+    //global warning message dialogue
     function showMessage(value){
         $( "#player1" ).text(value);
     }
@@ -280,6 +321,26 @@
     dialog.querySelector('.close').addEventListener('click', function() {
       dialog.close();
     });
+
+    // end warning message dialogue
+
+    $( "#player1tracking" ).click(function() {
+
+      socket.emit('recon', { data: 'player1' });
+    });
+
+    $( "#player2tracking" ).click(function() {
+      socket.emit('recon', { data: 'player2' });
+    });
+
+    $( "#player3tracking" ).click(function() {
+      socket.emit('recon', { data: 'player3' });
+    });
+
+    $( "#player4tracking" ).click(function() {
+      socket.emit('recon', { data: 'player4' });
+    });
+
 
     $( "#startgame" ).click(function() {
       socket.emit('startgame', { my: 'data' });
@@ -362,6 +423,9 @@
   <span class="mdl-switch__label"></span>
 </label>
   </div>
+  <div class="mdl-cell mdl-cell--1-col" id="player1tracking">
+    Tracking
+  </div>
   <div class="mdl-cell mdl-cell--2-col">
     <div class="mdl-selectfield mdl-js-selectfield">
        <select class="mdl-selectfield__select" id="player1" name="player1">
@@ -386,6 +450,9 @@
   <span class="mdl-switch__label"></span>
 </label>
   </div>
+  <div class="mdl-cell mdl-cell--1-col" id="player2tracking">
+    Tracking
+  </div>
   <div class="mdl-cell mdl-cell--2-col">
     <div class="mdl-selectfield mdl-js-selectfield">
        <select class="mdl-selectfield__select" id="player2" name="player2">
@@ -398,7 +465,8 @@
 <div class="mdl-cell mdl-cell--2-col">
 <button id="player2button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
   SET PLAYER
-</button></div> </div>
+</button></div>
+</div>
 <!-- END PLAYER -->
 
 <!-- PLAYER 3-->
@@ -409,6 +477,9 @@
   <input type="checkbox" id="switch-3" class="mdl-switch__input" >
   <span class="mdl-switch__label"></span>
 </label>
+  </div>
+  <div class="mdl-cell mdl-cell--1-col" id="player3tracking">
+    Tracking
   </div>
   <div class="mdl-cell mdl-cell--2-col">
     <div class="mdl-selectfield mdl-js-selectfield">
@@ -433,6 +504,9 @@
   <input type="checkbox" id="switch-4" class="mdl-switch__input" >
   <span class="mdl-switch__label"></span>
 </label>
+  </div>
+  <div class="mdl-cell mdl-cell--1-col" id="player4tracking">
+    Tracking
   </div>
   <div class="mdl-cell mdl-cell--2-col">
     <div class="mdl-selectfield mdl-js-selectfield">

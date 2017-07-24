@@ -162,8 +162,6 @@ function startGame() {
       time: minutes + ":" + seconds
     });
 
-
-
   })
   timer.on('stop', function () {
     console.log('The timer stopped')
@@ -190,9 +188,18 @@ function endGame() {
 
   io.on( 'connection', ( ctx, data ) => {
     console.log( 'join event fired', data )
+
     io.broadcast( 'hello', {
       numConnections: io.connections.size
     });
+  });
+  io.on( 'updateConnectionState', ( ctx, data ) => {
+    console.log(data);
+    io.broadcast( 'connectionState',data);
+  });
+
+  io.on( 'recon', ( ctx, data ) => {
+    io.broadcast( 'reconnectMotive',data);
   });
 
   io.on( 'startgame', ( ctx, data ) => {
@@ -201,7 +208,11 @@ function endGame() {
   });
 
   io.on( 'endgame', ( ctx, data ) => {
-    io.broadcast( 'endGame');
+    io.broadcast( 'disconnectMotive',data);
+
+    setTimeout(function() {
+      io.broadcast( 'endGame');
+    }, 3000);
   });
 
   io.on('reset', ( ctx, data ) => {
