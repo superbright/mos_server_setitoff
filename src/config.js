@@ -4,23 +4,23 @@ export default {
     PLAYERS: [
       {
         ison: false,
-        height: 1.90
+        height: 171.0
       },
       {
         ison: false,
-        height: 1.80
+        height: 171.0
       },
       {
         ison: false,
-        height: 5.8
+        height: 171.0
       },
       {
         ison: false,
-        height: 5.8
+        height: 171.0
       },
       {
         ison: false,
-        height: 5.8
+        height: 171.0
       }
     ]
 };
