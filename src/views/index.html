@@ -190,7 +190,95 @@
     });
 
     $('#player1').on('change', function() {
-      alert( this.value );
+    //  alert( this.value );
+      var height = this.value;
+      $.ajax({
+        url: '/setheight',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(
+          {
+            "player" : 0,
+            "height" : height
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+        }
+      });
+    });
+    $('#player2').on('change', function() {
+      var height = this.value;
+      $.ajax({
+        url: '/setheight',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(
+          {
+            "player" : 1,
+            "height" : height
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+        }
+      });
+    })
+    $('#player3').on('change', function() {
+      var height = this.value;
+      $.ajax({
+        url: '/setheight',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(
+          {
+            "player" : 2,
+            "height" : height
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+        }
+      });
+    })
+    $('#player4').on('change', function() {
+      var height = this.value;
+      $.ajax({
+        url: '/setheight',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(
+          {
+            "player" : 3,
+            "height" : height
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+        }
+      });
+    })
+    $('#player5').on('change', function() {
+      var height = this.value;
+      $.ajax({
+        url: '/setheight',
+        type: 'POST',
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(
+          {
+            "player" : 4,
+            "height" : height
+          }
+        ), // data as js object
+        success: function(result) {
+            console.log("ok " + result)
+        }
+      });
     })
     //reset everythingin load
     $( "#timer" ).text(0);
@@ -435,10 +523,7 @@
      </div>
 </div>
 
-<div class="mdl-cell mdl-cell--2-col">
-<button id="player1button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-  SET PLAYER
-</button></div> </div>
+</div>
 <!-- END PLAYER -->
 
 <!-- PLAYER 2 -->
@@ -462,10 +547,7 @@
      </div>
 </div>
 
-<div class="mdl-cell mdl-cell--2-col">
-<button id="player2button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-  SET PLAYER
-</button></div>
+
 </div>
 <!-- END PLAYER -->
 
@@ -490,10 +572,8 @@
      </div>
 </div>
 
-<div class="mdl-cell mdl-cell--2-col">
-<button id="player3button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-  SET PLAYER
-</button></div> </div>
+
+ </div>
 <!-- END PLAYER -->
 
 <!-- PLAYER 3-->
@@ -517,10 +597,9 @@
      </div>
 </div>
 
-<div class="mdl-cell mdl-cell--2-col">
-<button id="player4button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-  SET PLAYER
-</button></div> </div>
+
+
+</div>
 <!-- END PLAYER -->
 </body>
 </html>

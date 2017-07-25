@@ -23,7 +23,7 @@ api.post('/config', async (ctx, next) => {
 );
 
 api.post('/setheight', async (ctx, next) => {
-      ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.height;
+      ctx.config.PLAYERS[ctx.request.body.player].height = ctx.request.body.height;
       ctx.body = JSON.stringify(ctx.request.body);
       ctx.status = 200;
     }

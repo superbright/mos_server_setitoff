@@ -39,7 +39,6 @@ app.use(api.allowedMethods());
 app.context.config = config;
 
 
-
 // serial port initialization:
 var serialport = require('serialport'), // include the serialport library
      SerialPort = serialport.SerialPort, // make a local instance of serial
@@ -52,16 +51,12 @@ var serialport = require('serialport'), // include the serialport library
 
 // open the serial port:
 var myPort = new SerialPort(portName, portConfig);
-
-
 myPort.on('open', openPort); // called when the serial port opens
 
 
 function openPort() {
-
     console.log('port open');
     console.log('baud rate: ' + myPort.options.baudRate);
-
 }
 
 //app time mode here
