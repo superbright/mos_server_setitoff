@@ -516,11 +516,11 @@
     });
 
     $( "#dildon" ).click(function() {
-      socket.emit('dildon', { my: 'data' });
+      socket.emit('dildon', { set: 'dildon', player: 'player1' });
     });
 
     $( "#dildoff" ).click(function() {
-      socket.emit('dildoff', { my: 'data' });
+      socket.emit('dildoff', { set: 'dildoff', player: 'player1' });
     });
     $( "#reset" ).click(function() {
       console.log("reset");
