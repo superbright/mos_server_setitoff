@@ -182,12 +182,90 @@
   $(document).ready(function() {
 
     //console.log(heightmap);
+    //populate drop downs with heaight values
     heightmap.forEach(function(item) {
         populate('#player1',item.key,item.value);
         populate('#player2',item.key,item.value);
         populate('#player3',item.key,item.value);
         populate('#player4',item.key,item.value);
+        populate('#player5',item.key,item.value);
     });
+
+    //gender selection
+    $('input[type=radio][name=options1]').change(function() {
+       var gender = this.value;
+       $.ajax({
+         url: '/setgender',
+         type: 'POST',
+         dataType : "json",
+         contentType: "application/json; charset=utf-8",
+         data: JSON.stringify(
+           {
+             "player" : 0,
+             "gender" : parseInt(gender)
+           }
+         ), // data as js object
+         success: function(result) {
+             console.log("ok " + result)
+         }
+       });
+     });
+    $('input[type=radio][name=options2]').change(function() {
+        var gender = this.value;
+        $.ajax({
+          url: '/setgender',
+          type: 'POST',
+          dataType : "json",
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(
+            {
+              "player" : 1,
+              "gender" : parseInt(gender)
+            }
+          ), // data as js object
+          success: function(result) {
+              console.log("ok " + result)
+          }
+        });
+      });
+    $('input[type=radio][name=options3]').change(function() {
+         var gender = this.value;
+         $.ajax({
+           url: '/setgender',
+           type: 'POST',
+           dataType : "json",
+           contentType: "application/json; charset=utf-8",
+           data: JSON.stringify(
+             {
+               "player" : 2,
+               "gender" : parseInt(gender)
+             }
+           ), // data as js object
+           success: function(result) {
+               console.log("ok " + result)
+           }
+         });
+       });
+    $('input[type=radio][name=options4]').change(function() {
+          var gender = this.value;
+          $.ajax({
+            url: '/setgender',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 3,
+                "gender" : parseInt(gender)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+        });
+
+
 
     $('#player1').on('change', function() {
     //  alert( this.value );
@@ -429,7 +507,6 @@
       socket.emit('recon', { data: 'player4' });
     });
 
-
     $( "#startgame" ).click(function() {
       socket.emit('startgame', { my: 'data' });
     });
@@ -531,9 +608,19 @@
          <option value=""></option>
        </select>
          <label class="mdl-selectfield__label" for="player1">choose height</label>
-     </div>
+    </div>
 </div>
+<div class="mdl-cell mdl-cell--2-col">
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-1">
+    <input type="radio" id="player1-option-1" class="mdl-radio__button" name="options1" value="1" checked>
+    <span class="mdl-radio__label">Male</span>
+  </label>
 
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-2">
+    <input type="radio" id="player1-option-2" class="mdl-radio__button" name="options1" value="2">
+    <span class="mdl-radio__label">Female</span>
+  </label>
+ </div>
 </div>
 <!-- END PLAYER -->
 
@@ -557,6 +644,18 @@
          <label class="mdl-selectfield__label" for="player2">choose height</label>
      </div>
 </div>
+
+<div class="mdl-cell mdl-cell--2-col">
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-1">
+    <input type="radio" id="player2-option-1" class="mdl-radio__button" name="options2" value="1" checked>
+    <span class="mdl-radio__label">Male</span>
+  </label>
+
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-2">
+    <input type="radio" id="player2-option-2" class="mdl-radio__button" name="options2" value="2">
+    <span class="mdl-radio__label">Female</span>
+  </label>
+ </div>
 
 
 </div>
@@ -583,11 +682,22 @@
      </div>
 </div>
 
+<div class="mdl-cell mdl-cell--2-col">
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-1">
+    <input type="radio" id="player3-option-1" class="mdl-radio__button" name="options3" value="1" checked>
+    <span class="mdl-radio__label">Male</span>
+  </label>
+
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-2">
+    <input type="radio" id="player3-option-2" class="mdl-radio__button" name="options3" value="2">
+    <span class="mdl-radio__label">Female</span>
+  </label>
+ </div>
 
  </div>
 <!-- END PLAYER -->
 
-<!-- PLAYER 3-->
+<!-- PLAYER 4-->
 <div class="mdl-grid player">
   <div class="mdl-cell mdl-cell--1-col">
     <b>Player 4</b>
@@ -608,9 +718,42 @@
      </div>
 </div>
 
+<div class="mdl-cell mdl-cell--2-col">
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-1">
+    <input type="radio" id="player4-option-1" class="mdl-radio__button" name="options4" value="1" checked>
+    <span class="mdl-radio__label">Male</span>
+  </label>
 
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-2">
+    <input type="radio" id="player4-option-2" class="mdl-radio__button" name="options4" value="2">
+    <span class="mdl-radio__label">Female</span>
+  </label>
+ </div>
 
 </div>
+
+<!-- PERFORMER-->
+<div class="mdl-grid player">
+  <div class="mdl-cell mdl-cell--1-col">
+    <b>Performer</b>
+    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-5">
+  <input type="checkbox" id="switch-5" class="mdl-switch__input" >
+  <span class="mdl-switch__label"></span>
+</label>
+  </div>
+  <div class="mdl-cell mdl-cell--1-col" id="player5tracking">
+    Tracking
+  </div>
+  <div class="mdl-cell mdl-cell--2-col">
+    <div class="mdl-selectfield mdl-js-selectfield">
+       <select class="mdl-selectfield__select" id="player5" name="player5">
+         <option value=""></option>
+       </select>
+         <label class="mdl-selectfield__label" for="player5">choose height</label>
+     </div>
+</div>
+
+
 <!-- END PLAYER -->
 </body>
 </html>

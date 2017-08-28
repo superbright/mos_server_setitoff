@@ -29,6 +29,14 @@ api.post('/setheight', async (ctx, next) => {
     }
 );
 
+api.post('/setgender', async (ctx, next) => {
+      console.log( ctx.request.body.gender);
+      ctx.config.PLAYERS[ctx.request.body.player].gender = ctx.request.body.gender;
+      ctx.body = JSON.stringify(ctx.request.body);
+      ctx.status = 200;
+    }
+);
+
 api.get('/config',
   async (ctx, next) => {
     ctx.body = ctx.config;
