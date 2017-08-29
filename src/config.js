@@ -4,23 +4,28 @@ export default {
     PLAYERS: [
       {
         ison: false,
-        height: 171.0
+        height: 171.0,
+        gender : 1
       },
       {
         ison: false,
-        height: 171.0
+        height: 171.0,
+        gender : 1
       },
       {
         ison: false,
-        height: 171.0
+        height: 171.0,
+        gender : 1,
       },
       {
         ison: false,
-        height: 171.0
+        height: 171.0,
+        gender : 1,
       },
       {
         ison: false,
-        height: 171.0
+        height: 171.0,
+        gender : 1,
       }
     ]
 };
