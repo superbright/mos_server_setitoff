@@ -411,9 +411,7 @@
     });
 
     // end warning message dialogue
-
     $( "#player1tracking" ).click(function() {
-
       socket.emit('recon', { data: 'player1' });
     });
 
@@ -429,7 +427,6 @@
       socket.emit('recon', { data: 'player4' });
     });
 
-
     $( "#startgame" ).click(function() {
       socket.emit('startgame', { my: 'data' });
     });
@@ -439,12 +436,42 @@
     });
 
     $( "#dildon" ).click(function() {
-      socket.emit('dildon', { set: 'dildon', player: 'player1' });
+      var player = $('input[type=radio][name=options]:checked').attr('id');
+      console.log(player);
+      socket.emit('dildon', { set: 'dildon', player: player });
+    });
+
+    $( "#surf" ).click(function() {
+      var player = $('input[type=radio][name=options]:checked').attr('id');
+      console.log(player);
+      socket.emit('dildon', { set: 'surf', player: player });
+    });
+
+    $( "#pingpong" ).click(function() {
+      var player = $('input[type=radio][name=options]:checked').attr('id');
+      console.log(player);
+      socket.emit('dildon', { set: 'pingpong', player: player });
+    });
+
+    $( "#tide" ).click(function() {
+      var player = $('input[type=radio][name=options]:checked').attr('id');
+      console.log(player);
+      socket.emit('dildon', { set: 'tide', player: player });
+    });
+
+    $( "#wave" ).click(function() {
+      var player = $('input[type=radio][name=options]:checked').attr('id');
+      console.log(player);
+      socket.emit('dildon', { set: 'wave', player: player });
     });
 
     $( "#dildoff" ).click(function() {
-      socket.emit('dildoff', { set: 'dildoff', player: 'player1' });
+      var player = $('input[type=radio][name=options]:checked').attr('id');
+      console.log(player);
+      socket.emit('dildoff', { set: 'dildoff', player: player });
     });
+
+
     $( "#reset" ).click(function() {
       console.log("reset");
       $( "#timer" ).text(0);
@@ -464,6 +491,10 @@
 <div class="mdl-grid">
 
 <div class="mdl-cell mdl-cell--3-col">
+
+
+   
+
   <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent startgame">
     STARTGAME
   </button>
@@ -474,9 +505,58 @@
     ENDGAME
   </button>
   <hr>
+
+
+
+  <div class="radio-buttons"> 
+   <!-- Radio Button 1 -->
+   <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1">
+    <input type="radio" id="player1" class="mdl-radio__button" name="options" checked />
+                                <!-- intitial state checked using attribute checked  -->
+    <span class="mdl-radio__label">player1</span>
+  </label>
+   
+   <!-- Radio Button 2 -->
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2">
+    <input type="radio" id="player2" class="mdl-radio__button" name="options" />
+    <span class="mdl-radio__label">player2</span>
+  </label>
+
+  <!-- Radio Button 3 -->
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3">
+    <input type="radio" id="player3" class="mdl-radio__button" name="options" />
+    <span class="mdl-radio__label">player3</span>
+  </label>
+
+  <!-- Radio Button 4 -->
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4">
+    <input type="radio" id="player4" class="mdl-radio__button" name="options" />
+    <span class="mdl-radio__label">player4</span>
+  </label>
+
+  <br>
+  <br>
+
   <button id="dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
     DILDON
   </button>
+
+  <button id="wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    WAVE
+  </button>
+
+  <button id="surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    SURF
+  </button>
+
+  <button id="tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    TIDE
+  </button>
+
+  <button id="pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    PING PONG
+  </button>
+
   <button id="dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
     DILDOFF
   </button>
