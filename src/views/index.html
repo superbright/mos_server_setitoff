@@ -514,37 +514,37 @@
     });
 
     $( "#dildon" ).click(function() {
-      var player = $('input[type=radio][name=options]:checked').attr('id');
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
       console.log(player);
       socket.emit('dildon', { set: 'dildon', player: player });
     });
 
     $( "#surf" ).click(function() {
-      var player = $('input[type=radio][name=options]:checked').attr('id');
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
       console.log(player);
       socket.emit('dildon', { set: 'surf', player: player });
     });
 
     $( "#pingpong" ).click(function() {
-      var player = $('input[type=radio][name=options]:checked').attr('id');
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
       console.log(player);
       socket.emit('dildon', { set: 'pingpong', player: player });
     });
 
     $( "#tide" ).click(function() {
-      var player = $('input[type=radio][name=options]:checked').attr('id');
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
       console.log(player);
       socket.emit('dildon', { set: 'tide', player: player });
     });
 
     $( "#wave" ).click(function() {
-      var player = $('input[type=radio][name=options]:checked').attr('id');
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
       console.log(player);
       socket.emit('dildon', { set: 'wave', player: player });
     });
 
     $( "#dildoff" ).click(function() {
-      var player = $('input[type=radio][name=options]:checked').attr('id');
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
       console.log(player);
       socket.emit('dildoff', { set: 'dildoff', player: player });
     });
@@ -570,9 +570,6 @@
 
 <div class="mdl-cell mdl-cell--3-col">
 
-
-   
-
   <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent startgame">
     STARTGAME
   </button>
@@ -584,62 +581,7 @@
   </button>
   <hr>
 
-
-
-  <div class="radio-buttons"> 
-   <!-- Radio Button 1 -->
-   <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1">
-    <input type="radio" id="player1" class="mdl-radio__button" name="options" checked />
-                                <!-- intitial state checked using attribute checked  -->
-    <span class="mdl-radio__label">player1</span>
-  </label>
-   
-   <!-- Radio Button 2 -->
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2">
-    <input type="radio" id="player2" class="mdl-radio__button" name="options" />
-    <span class="mdl-radio__label">player2</span>
-  </label>
-
-  <!-- Radio Button 3 -->
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3">
-    <input type="radio" id="player3" class="mdl-radio__button" name="options" />
-    <span class="mdl-radio__label">player3</span>
-  </label>
-
-  <!-- Radio Button 4 -->
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4">
-    <input type="radio" id="player4" class="mdl-radio__button" name="options" />
-    <span class="mdl-radio__label">player4</span>
-  </label>
-
-  <br>
-  <br>
-
-  <button id="dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDON
-  </button>
-
-  <button id="wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    WAVE
-  </button>
-
-  <button id="surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    SURF
-  </button>
-
-  <button id="tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    TIDE
-  </button>
-
-  <button id="pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    PING PONG
-  </button>
-
-  <button id="dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDOFF
-  </button>
-  <hr>
-  <p>Scenes</p>
+<p>Scenes</p>
 <!-- Accent-colored raised button with ripple -->
     <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
       RESET
@@ -652,7 +594,8 @@
     <button id="start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
       VOID
     </button>
-    </div>
+</div>
+
 <div class="mdl-cell mdl-cell--1-col timer" id="timer">
 
 </div>
@@ -780,6 +723,7 @@
 
 <!-- PLAYER 4-->
 <div class="mdl-grid player">
+
   <div class="mdl-cell mdl-cell--1-col">
     <b>Player 4</b>
     <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-4">
@@ -832,6 +776,63 @@
        </select>
          <label class="mdl-selectfield__label" for="player5">choose height</label>
      </div>
+</div>
+</div>
+<br>
+
+<div class="mdl-grid">
+   <!-- Radio Button 1 -->
+  <div class="mdl-cell mdl-cell--8-col radio-buttons">
+   <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1vib">
+    <input type="radio" id="player1vib" class="mdl-radio__button" name="viboptions" checked />
+  <!-- intitial state checked using attribute checked  -->
+    <span class="mdl-radio__label">player1</span>
+  </label>
+
+   <!-- Radio Button 2 -->
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2vib">
+    <input type="radio" id="player2vib" class="mdl-radio__button" name="viboptions" />
+    <span class="mdl-radio__label">player2</span>
+  </label>
+
+  <!-- Radio Button 3 -->
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3vib">
+    <input type="radio" id="player3vib" class="mdl-radio__button" name="viboptions" />
+    <span class="mdl-radio__label">player3</span>
+  </label>
+
+  <!-- Radio Button 4 -->
+  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4vib">
+    <input type="radio" id="player4vib" class="mdl-radio__button" name="viboptions" />
+    <span class="mdl-radio__label">player4</span>
+  </label>
+
+  <button id="dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    DILDON
+  </button>
+
+  <button id="wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    WAVE
+  </button>
+
+  <button id="surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    SURF
+  </button>
+
+  <button id="tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    TIDE
+  </button>
+
+  <button id="pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    PING PONG
+  </button>
+
+  <button id="dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    DILDOFF
+  </button>
+
+  <!-- end radio buttons -->
+</div>
 </div>
 
 

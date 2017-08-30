@@ -203,12 +203,12 @@ function endGame() {
   });
 
   io.on( 'dildon', ( ctx, data ) => {
-    console.log("dildon");
+    console.log("dildon ",data);
     io.broadcast( 'dildon',data);
   });
 
   io.on( 'dildoff', ( ctx, data ) => {
-      console.log("dildoff");
+      console.log("dildoff ", data);
     io.broadcast( 'dildoff',data);
   });
 
