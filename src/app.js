@@ -50,8 +50,8 @@ var serialport = require('serialport'), // include the serialport library
      };
 
 // open the serial port:
-//var myPort = new SerialPort(portName, portConfig);
-//myPort.on('open', openPort); // called when the serial port opens
+var myPort = new SerialPort(portName, portConfig);
+myPort.on('open', openPort); // called when the serial port opens
 
 
 function openPort() {
@@ -188,9 +188,28 @@ function endGame() {
       numConnections: io.connections.size
     });
   });
+
   io.on( 'updateConnectionState', ( ctx, data ) => {
     console.log(data);
     io.broadcast( 'connectionState',data);
+  });
+
+  io.on( 'vibon', ( ctx, data ) => {
+    console.log(data);
+    var dataarr = data.split(':');
+    console.log({ set: dataarr[1], player: dataarr[0] });
+    io.broadcast( 'dildon',{ set: dataarr[1], player: dataarr[0] });
+  });
+  io.on( 'viboff', ( ctx, data ) => {
+    console.log(data);
+    var dataarr = data.split(':');
+    console.log({ set: dataarr[1], player: dataarr[0] });
+    io.broadcast( 'dildoff',{ set: dataarr[1], player: dataarr[0] });
+  });
+
+  io.on( 'viboff', ( ctx, data ) => {
+    console.log(data);
+    io.broadcast( 'dildoff',data);
   });
 
   io.on( 'recon', ( ctx, data ) => {
@@ -208,8 +227,23 @@ function endGame() {
   });
 
   io.on( 'dildoff', ( ctx, data ) => {
-      console.log("dildoff ", data);
+    console.log("dildoff ", data);
     io.broadcast( 'dildoff',data);
+  });
+
+  io.on( 'enablePerformer', ( ctx, data ) => {
+    console.log("enablePerformer ", data);
+    io.broadcast( 'enablePerformer',data);
+  });
+
+  io.on( 'disablePerformer', ( ctx, data ) => {
+    console.log("disablePerformer ", data);
+    io.broadcast( 'disablePerformer',data);
+  });
+
+  io.on( 'exitScene', ( ctx, data ) => {
+    console.log("exitScene ", data);
+    io.broadcast( 'exitScene',data);
   });
 
 
