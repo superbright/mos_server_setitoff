@@ -549,6 +549,12 @@
       socket.emit('dildoff', { set: 'dildoff', player: player });
     });
 
+    $( "#connectvib" ).click(function() {
+      var player = $('input[type=radio][name=viboptions]:checked').attr('id');
+      console.log("OK connect");
+      socket.emit('connectvib', { set: 'connect', player: player });
+    });
+
 
     $( "#reset" ).click(function() {
       console.log("reset");
@@ -829,6 +835,10 @@
 
   <button id="dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
     DILDOFF
+  </button>
+
+  <button id="connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    CONNECT
   </button>
 
   <!-- end radio buttons -->

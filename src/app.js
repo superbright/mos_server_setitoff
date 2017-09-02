@@ -212,6 +212,23 @@ function endGame() {
     io.broadcast( 'dildoff',data);
   });
 
+  //'pairing' and 'connected'
+  io.on('pairing', ( ctx, data ) => {
+      console.log("pairing vib ", data);
+    //io.broadcast( 'pairing',data);
+  });
+
+  io.on('connected', ( ctx, data ) => {
+      console.log("vib is connected ", data);
+    //io.broadcast( 'pairing',data);
+  });
+
+  io.on('connectvib', ( ctx, data ) => {
+      console.log("connect vib ", data);
+     io.broadcast( 'connect',data);
+  });
+
+
 
   io.on( 'endgame', ( ctx, data ) => {
     io.broadcast( 'disconnectMotive',data);
