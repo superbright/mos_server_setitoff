@@ -231,6 +231,7 @@ function endGame() {
     io.broadcast( 'dildoff',data);
   });
 
+<<<<<<< HEAD
   io.on( 'enablePerformer', ( ctx, data ) => {
     console.log("enablePerformer ", data);
     io.broadcast( 'enablePerformer',data);
@@ -246,6 +247,25 @@ function endGame() {
     io.broadcast( 'exitScene',data);
   });
 
+=======
+  //'pairing' and 'connected'
+  io.on('pairing', ( ctx, data ) => {
+      console.log("pairing vib ", data);
+    //io.broadcast( 'pairing',data);
+  });
+
+  io.on('connected', ( ctx, data ) => {
+      console.log("vib is connected ", data);
+    //io.broadcast( 'pairing',data);
+  });
+
+  io.on('connectvib', ( ctx, data ) => {
+      console.log("connect vib ", data);
+     io.broadcast( 'connect',data);
+  });
+
+
+>>>>>>> a7b20dbd17e8256b99c405a535e6f3b7e93e7fe1
 
   io.on( 'endgame', ( ctx, data ) => {
     io.broadcast( 'disconnectMotive',data);
