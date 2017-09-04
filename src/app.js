@@ -104,14 +104,22 @@ function checkFan() {
 
   let wastedtime = parseInt(timer.time()/1000);
 
-  if(wastedtime < 180 && wastedtime > 75) {
+  if(wastedtime < 30 && wastedtime > 15) {
 
       if( (wastedtime % 10) == 0) {
           startFan();
       } else if( (wastedtime % 5) == 0) {
           stopFan();
       }
-  } else if(wastedtime > 180 && wastedtime < 210) {
+  }  if(wastedtime < 58  && wastedtime > 40) {
+
+        if( (wastedtime % 10) == 0) {
+            startFan();
+        } else if( (wastedtime % 5) == 0) {
+            stopFan();
+        }
+    }
+    else if(wastedtime > 508 && wastedtime < 105) {
 
       if( wastedtime  == 181) {
           startFan();
@@ -119,15 +127,7 @@ function checkFan() {
           stopFan();
       }
 
-  } else if(wastedtime > 210 && wastedtime < 280) {
-
-      if( (wastedtime % 10) == 0) {
-          startFan();
-      } else if( (wastedtime % 5) == 0) {
-          stopFan();
-      }
   }
-
   else if(wastedtime == 300) {
           stopFan();
   }
@@ -225,9 +225,8 @@ function endGame() {
 
   io.on('connectvib', ( ctx, data ) => {
       console.log("connect vib ", data);
-     io.broadcast( 'connect',data);
+     io.broadcast( 'connectvib',data);
   });
-
 
 
   io.on( 'endgame', ( ctx, data ) => {
