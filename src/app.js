@@ -106,16 +106,16 @@ function checkFan() {
 
   if(wastedtime < 30 && wastedtime > 15) {
 
-      if( (wastedtime % 5) == 0) {
+      if( (wastedtime % 3) == 0) {
           startFan();
-      } else if( (wastedtime % 9) == 0) {
+      } else if( (wastedtime % 5) == 0) {
           stopFan();
       }
   }  if(wastedtime < 60  && wastedtime > 40) {
 
-        if( (wastedtime % 4) == 0) {
+        if( (wastedtime % 3) == 0) {
             startFan();
-        } else if( (wastedtime % 9) == 0) {
+        } else if( (wastedtime % 7) == 0) {
             stopFan();
         }
     }
@@ -123,7 +123,7 @@ function checkFan() {
 
       if( wastedtime  == 60) {
           startFan();
-      } else if( wastedtime == 105) {
+      } else if( wastedtime == 104) {
           stopFan();
       }
 
