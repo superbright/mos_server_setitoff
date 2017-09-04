@@ -104,33 +104,70 @@ function checkFan() {
 
   let wastedtime = parseInt(timer.time()/1000);
 
-  if(wastedtime < 30 && wastedtime > 15) {
+  switch (wastedtime) {
+    case 15:
+      startFan();
+      break;
+    case 19:
+      stopFan();
+    break;
+    case 22:
+      startFan();
+      break;
+    case 29:
+      stopFan();
+    break;
+    case 40:
+      startFan();
+      break;
+    case 48:
+      stopFan();
+    break;
+    case 52:
+      startFan();
+      break;
+    case 60:
+      stopFan();
+    break;
+    case 66:
+      startFan();
+      break;
+    case 100:
+      stopFan();
+    break;
 
-      if( (wastedtime % 3) == 0) {
-          startFan();
-      } else if( (wastedtime % 5) == 0) {
-          stopFan();
-      }
-  }  if(wastedtime < 60  && wastedtime > 40) {
 
-        if( (wastedtime % 3) == 0) {
-            startFan();
-        } else if( (wastedtime % 7) == 0) {
-            stopFan();
-        }
-    }
-    else if(wastedtime > 60 && wastedtime < 105) {
-
-      if( wastedtime  == 60) {
-          startFan();
-      } else if( wastedtime == 104) {
-          stopFan();
-      }
+    default:
 
   }
-  else if(wastedtime == 300) {
-          stopFan();
-  }
+  //
+  // if(wastedtime < 30 && wastedtime > 15) {
+  //
+  //     if( (wastedtime % 3) == 0) {
+  //         startFan();
+  //     } else if( (wastedtime % 5) == 0) {
+  //         stopFan();
+  //     }
+  // }  if(wastedtime < 60  && wastedtime > 40) {
+  //
+  //       if( (wastedtime % 3) == 0) {
+  //           startFan();
+  //       } else if( (wastedtime % 7) == 0) {
+  //           stopFan();
+  //       }
+  //   }
+  //   else if(wastedtime > 60 && wastedtime < 105) {
+  //
+  //     if( wastedtime  == 60) {
+  //         startFan();
+  //     } else if( wastedtime == 104) {
+  //         stopFan();
+  //     }
+  //
+  // }
+  // else if(wastedtime == 300) {
+  //         stopFan();
+  // }
 
 }
 
