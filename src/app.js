@@ -174,6 +174,15 @@ function endGame() {
 }
 
  io.on('rotate', (ctx, data) => {
+   
+     setTimeout(() => {
+       console.log("play elevator");
+       player.play('audio/ELEVATOR.wav', { aplay: [ '-v', 10 ] }, function(err){
+         if (err) throw err
+       });
+     }
+     , 1000);
+
       var input = "3;3;3;3;";
       // convert the value to an ASCII string before sending it:
       console.log('Sending ' + input + ' out the serial port');
@@ -280,7 +289,7 @@ function endGame() {
   io.on('lobby', ( ctx, data ) => {
     console.log( 'lobby' );
     setTimeout(() => {
-      console.log("play");
+      console.log("play elevator");
       player.play('audio/ELEVATOR.wav', { aplay: [ '-v', 10 ] }, function(err){
         if (err) throw err
       });
