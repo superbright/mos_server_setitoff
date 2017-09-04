@@ -172,16 +172,12 @@
 
   });
 
-
-
   function populate(selector,key,value) {
     $(selector)
       .append('<option value="'+ value +'">'+ key + '</option>')
   }
 
   $(document).ready(function() {
-
-    //console.log(heightmap);
     //populate drop downs with heaight values
     heightmap.forEach(function(item) {
         populate('#player1',item.key,item.value);
@@ -509,6 +505,12 @@
       socket.emit('startgame', { my: 'data' });
     });
 
+    $( "#rotate" ).click(function() {
+      console.log(rotate);
+      socket.emit('rotate', { my: 'data' });
+    });
+
+
     $( "#endgame" ).click(function() {
       socket.emit('endgame', { my: 'data' });
     });
@@ -569,6 +571,18 @@
       console.log("start");
       socket.emit('start', { my: 'data' });
     });
+    $( "#enablePerformer" ).click(function() {
+      console.log("enablePerformer");
+      socket.emit('enablePerformer', { my: 'data' });
+    });
+    $( "#disablePerformer" ).click(function() {
+      console.log("disablePerformer");
+      socket.emit('disablePerformer', { my: 'data' });
+    });
+    $( "#exitScene" ).click(function() {
+      console.log("exitScene");
+      socket.emit('exitScene', { my: 'data' });
+    });
   });
 </script>
 
@@ -599,6 +613,18 @@
 
     <button id="start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
       VOID
+    </button>
+
+    <button id="enablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+      ENABLE PERFORMER
+    </button>
+
+    <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+      DISABLE PERFORMER
+    </button>
+
+    <button id="exitScene" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+      EXIT
     </button>
 </div>
 
