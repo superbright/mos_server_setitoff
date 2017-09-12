@@ -62,7 +62,7 @@ function openPort() {
 //app time mode here
 var timerInterval;
 var timer = new Timer();
-var totaltime = 300;
+var totaltime = 420;
 
 var fantimes=[
   {
@@ -211,14 +211,6 @@ function endGame() {
 }
 
  io.on('rotate', (ctx, data) => {
-
-     setTimeout(() => {
-       console.log("play elevator");
-       player.play('audio/ELEVATOR.wav', { aplay: [ '-v', 10 ] }, function(err){
-         if (err) throw err
-       });
-     }
-     , 1000);
 
      setTimeout(() => {
        console.log("rotate elevator");
