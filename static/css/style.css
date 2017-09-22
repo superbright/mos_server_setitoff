@@ -12,3 +12,8 @@
   padding:40px;
   font-size: 10em;
 }
+
+.start-end-button {
+  background-color: rgb(96, 125, 139);
+  color: #fff;
+}
