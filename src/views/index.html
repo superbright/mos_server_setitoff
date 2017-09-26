@@ -508,7 +508,7 @@
     $( "#rotate" ).click(function() {
       console.log(rotate);
       socket.emit('rotate', { my: 'data' });
-      $("#rotate").removeClass("mdl-button--accent").addClass("mdl-button--colored");
+      $("#rotate").removeClass("mdl-button--accent").addClass("disabled-button");
     });
 
 
@@ -565,283 +565,76 @@
       socket.emit('reset', { my: 'data' });
 
       // Reset button states
-      $("#rotate").addClass("mdl-button--accent").removeClass("mdl-button--colored");
-      $("#elevator").addClass("mdl-button--accent").removeClass("mdl-button--colored");
-      $("#start").addClass("mdl-button--accent").removeClass("mdl-button--colored");
-      $("#exitScene").addClass("mdl-button--accent").removeClass("mdl-button--colored");
-      $("#enablePerformer").addClass("mdl-button--accent").removeClass("mdl-button--colored");
-      $("#disablePerformer").addClass("mdl-button--colored").removeClass("mdl-button--accent");
+      $("#rotate").addClass("mdl-button--accent").removeClass("disabled-button");
+      $("#elevator").addClass("mdl-button--accent").removeClass("disabled-button");
+      $("#start").addClass("mdl-button--accent").removeClass("disabled-button");
+      $("#exitScene").addClass("mdl-button--accent").removeClass("disabled-button");
+      $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
+      $("#disablePerformer").addClass("disabled-button").removeClass("mdl-button--accent");
 
-      // Reset player values (JSON)
-      // PLAYER 1
-      /*$.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 0,
-            "ison" : false
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 1 ison reset")
-            // Do something with the result
-        }
-      });
-      $.ajax({
-        url: '/setgender',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 0,
-            "gender" : 1
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 1 gender reset")
-        }
-      });
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 0,
-            "height" : parseFloat(152.40)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 1 height reset")
-        }
-      });
-
-      // PLAYER 2
-      $.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 1,
-            "ison" : false
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 2 ison reset")
-            // Do something with the result
-        }
-      });
-      $.ajax({
-        url: '/setgender',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 1,
-            "gender" : 1
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 2 gender reset")
-        }
-      });
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 1,
-            "height" : parseFloat(152.40)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 2 height reset")
-        }
-      });
-
-      // PLAYER 3
-      $.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 2,
-            "ison" : false
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 3 ison reset")
-            // Do something with the result
-        }
-      });
-      $.ajax({
-        url: '/setgender',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 2,
-            "gender" : 1
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 3 gender reset")
-        }
-      });
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 2,
-            "height" : parseFloat(152.40)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 3 height reset")
-        }
-      });
-
-      // PLAYER 4
-      $.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 3,
-            "ison" : false
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 4 ison reset")
-            // Do something with the result
-        }
-      });
-      $.ajax({
-        url: '/setgender',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 3,
-            "gender" : 1
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 4 gender reset")
-        }
-      });
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 3,
-            "height" : parseFloat(152.40)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " player 4 height reset")
-        }
-      });
-
-      // Player 5/performer/queen
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 4,
-            "height" : parseFloat(152.40)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result + " performer height reset")
-        }
-      });
-
-      // Reset player values (form)
-      // Switch
-      $('.mdl-js-switch')[0].MaterialSwitch.off();
-      $('.mdl-js-switch')[1].MaterialSwitch.off();
-      $('.mdl-js-switch')[2].MaterialSwitch.off();
-      $('.mdl-js-switch')[3].MaterialSwitch.off();
-      $('.mdl-js-switch')[4].MaterialSwitch.off();
-
-      //Select
+      // Reset player heights
       $('#player1').get(0).selectedIndex = 0;
       $('#player2').get(0).selectedIndex = 0;
       $('#player3').get(0).selectedIndex = 0;
       $('#player4').get(0).selectedIndex = 0;
       $('#player5').get(0).selectedIndex = 0;
-
-      // Radio
-      $('.mdl-js-radio')[0].MaterialRadio.check();
-      $('.mdl-js-radio')[2].MaterialRadio.check();
-      $('.mdl-js-radio')[4].MaterialRadio.check();
-      $('.mdl-js-radio')[6].MaterialRadio.check();*/
     });
     $( "#elevator" ).click(function() {
       console.log("elevator");
       socket.emit('lobby', { my: 'data' });
-      $("#elevator").removeClass("mdl-button--accent").addClass("mdl-button--colored");
+      $("#elevator").removeClass("mdl-button--accent").addClass("disabled-button");
     });
     $( "#start" ).click(function() {
       console.log("start");
       socket.emit('start', { my: 'data' });
-      $("#start").removeClass("mdl-button--accent").addClass("mdl-button--colored");
+      $("#start").removeClass("mdl-button--accent").addClass("disabled-button");
     });
     $( "#enablePerformer" ).click(function() {
       console.log("enablePerformer");
       socket.emit('enablePerformer', { my: 'data' });
-      $("#enablePerformer").removeClass("mdl-button--accent").addClass("mdl-button--colored");
-      $("#disablePerformer").addClass("mdl-button--accent").removeClass("mdl-button--colored");
+      $("#enablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
+      $("#disablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
     });
     $( "#disablePerformer" ).click(function() {
       console.log("disablePerformer");
       socket.emit('disablePerformer', { my: 'data' });
-      $("#disablePerformer").removeClass("mdl-button--accent").addClass("mdl-button--colored");
-      $("#enablePerformer").addClass("mdl-button--accent").removeClass("mdl-button--colored");
+      $("#disablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
+      $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
     });
     $( "#exitScene" ).click(function() {
       console.log("exitScene");
       socket.emit('exitScene', { my: 'data' });
-      $("#exitScene").removeClass("mdl-button--accent").addClass("mdl-button--colored");
+      $("#exitScene").removeClass("mdl-button--accent").addClass("disabled-button");
     });
   });
+
+  $( document ).ready(function() {
+    $.getJSON( "http://192.168.1.212:4000/config", function( data ) {
+      var playerData = data["PLAYERS"];
+
+      // Reflect stores values to form
+      // ison
+      if(playerData[0].ison == true) $('.mdl-js-switch')[0].MaterialSwitch.on();
+      if(playerData[1].ison == true) $('.mdl-js-switch')[1].MaterialSwitch.on();
+      if(playerData[2].ison == true) $('.mdl-js-switch')[2].MaterialSwitch.on();
+      if(playerData[3].ison == true) $('.mdl-js-switch')[3].MaterialSwitch.on();
+
+      // gender
+      if(playerData[0].gender == 2) $('.mdl-js-radio')[1].MaterialRadio.check();
+      if(playerData[1].gender == 2) $('.mdl-js-radio')[3].MaterialRadio.check();
+      if(playerData[2].gender == 2) $('.mdl-js-radio')[5].MaterialRadio.check();
+      if(playerData[3].gender == 2) $('.mdl-js-radio')[7].MaterialRadio.check();
+    });
+  }
+
+  );
 </script>
 
 <div class="mdl-grid">
 
 <div class="mdl-cell mdl-cell--3-col">
 <!-- Accent-colored raised button with ripple -->
-    <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect start-end-button startgame scenebutton">
+    <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
       STARTGAME
     </button>
 
@@ -869,7 +662,7 @@
       QUEEN ON
     </button>
 
-    <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+    <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect disabled-button scenebutton">
       QUEEN OFF
     </button>
 
@@ -879,7 +672,7 @@
 
     <hr>
 
-    <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect start-end-button endgame scenebutton">
+    <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored endgame scenebutton">
       ENDGAME
     </button>
 </div>

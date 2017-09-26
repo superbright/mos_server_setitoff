@@ -13,7 +13,7 @@
   font-size: 10em;
 }
 
-.start-end-button {
-  background-color: rgb(96, 125, 139);
+.disabled-button {
+  background-color: rgb(110, 150, 170)!important;
   color: #fff;
 }
