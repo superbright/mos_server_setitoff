@@ -42,7 +42,7 @@ app.context.config = config;
 // serial port initialization:
 var serialport = require('serialport'), // include the serialport library
      SerialPort = serialport.SerialPort, // make a local instance of serial
-     portName = "/dev/tty.usbmodem1411",
+     portName = "/dev/tty.usbmodem1461",
      portConfig = {
          baudRate: 9600,
          // call myPort.on('data') when a newline is received:
