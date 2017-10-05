@@ -1,0 +1,357 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+    <title>Museum of Sex - VR - Guest</title>
+
+    <link rel="stylesheet" href="./mdl/material.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dialog-polyfill.css">
+    <!-- <link rel="stylesheet" href="./css/mdl-selectfield.min.css"> -->
+    <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
+
+    <script src="./mdl/material.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+
+      <script src="./js/jquery-3.2.1.min.js"></script>
+      <script src="./js/dialog-polyfill.js"></script>
+      <!-- <script src="./js/mdl-selectfield.min.js"></script> -->
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+      var heightmap = [
+        {
+          key: "5’0”",
+          value: 152.40
+        },
+        {
+          key: "5’1”",
+          value: 154.94
+        },
+        {
+          key: "5’2”",
+          value:  157.48
+        },
+        {
+          key: "5’3”",
+          value:  160.02
+        },
+        {
+          key: "5’4”",
+          value:  162.56
+        },
+        {
+          key: "5’5”",
+          value: 	165.10
+        },
+        {
+          key: "5’6”",
+          value: 167.74
+        },
+        {
+          key: "5’7”",
+          value: 	170.18
+        },
+        {
+          key: "5’8”",
+          value: 	172.72
+        },
+        {
+          key: "5’9”",
+          value: 175.26
+        },
+        {
+          key: "5’10”",
+          value: 177.80
+        },
+        {
+          key: "5’11”",
+          value: 180.34
+        },
+        {
+          key: "6’0”",
+          value: 182.88
+        },
+        {
+          key: "6’1”",
+          value: 185.45
+        },
+        {
+          key: "6’2”",
+          value: 187.96
+        },
+        {
+          key: "6’3”",
+          value: 190.50
+        },
+        {
+          key: "6’4”",
+          value: 193.04
+        },
+        {
+          key: "6’5”",
+          value: 195.58
+        },
+        {
+          key: "6’6”",
+          value: 198.12
+        },
+        {
+          key: "6’7”",
+          value: 200.66
+        },
+        {
+          key: "6’8”",
+          value: 	203.20
+        },
+        {
+          key: "6’9”",
+          value: 	205.74
+        },
+        {
+          key: "6’10”",
+          value: 208.28
+        }
+      ];
+
+      //var socket = io('http://192.168.1.212:4000');
+      var socket = io('localhost:4000');
+      socket.on('hello', function (data) {
+        console.log(data);
+      });
+
+      socket.on('errormessage', function (data) {
+        console.log(data["data"]);
+        var dialog = document.querySelector('dialog');
+        dialog.showModal();
+          $( "#errormessage" ).text(data["data"]);
+      });
+     
+      function populate(selector,key,value) {
+        $(selector)
+          .append('<option value="'+ value +'">'+ key + '</option>');
+      }
+
+      $(document).ready(function() {
+        //populate drop downs with heaight values
+        heightmap.forEach(function(item) {
+          populate('#player1',item.key,item.value);
+          populate('#player2',item.key,item.value);
+          populate('#player3',item.key,item.value);
+          populate('#player4',item.key,item.value);
+          populate('#player5',item.key,item.value);
+        });
+
+        $('#player1').on('change', function() {
+        //  alert( this.value );
+          var height = this.value;
+          $.ajax({
+            url: '/setheight',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 0,
+                "height" : parseFloat(height)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+        });
+
+        $('#player2').on('change', function() {
+          var height = this.value;
+          $.ajax({
+            url: '/setheight',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 1,
+                "height" : parseFloat(height)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+        });
+
+        $('#player3').on('change', function() {
+          var height = this.value;
+          $.ajax({
+            url: '/setheight',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 2,
+                "height" : parseFloat(height)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+        });
+
+        $('#player4').on('change', function() {
+          var height = this.value;
+          $.ajax({
+            url: '/setheight',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 3,
+                "height" : parseFloat(height)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+        });
+
+        $('#player5').on('change', function() {
+          var height = this.value;
+          $.ajax({
+            url: '/setheight',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 4,
+                "height" : parseFloat(height)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+        });
+
+        $( "#refresh" ).click(function() {
+          console.log("refresh");
+          location.reload();
+        });
+
+        $.getJSON( "http://192.168.1.212:4000/config", function( data ) {
+          var playerData = data["PLAYERS"];
+          var player1h, player2h, player3h, player4h;
+
+          // get player heights
+          heightmap.forEach(function(item) {
+            if(item.value == playerData[0].height) {
+              player1h = item.key;
+            }
+            if(item.value == playerData[1].height) {
+              player2h = item.key;
+            }
+            if(item.value == playerData[2].height) {
+              player3h = item.key;
+            }
+            if(item.value == playerData[3].height) {
+              player4h = item.key;
+            }            
+          });
+
+          $( '#player1-height' ).append(player1h);
+          $( '#player2-height' ).append(player2h);
+          $( '#player3-height' ).append(player3h);
+          $( '#player4-height' ).append(player4h);
+        });
+      });
+    </script>
+
+    <!-- PLAYER -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Player 1</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <div class="mdl-selectfield mdl-js-selectfield">
+          <select class="mdl-selectfield__select" id="player1" name="player1">
+            <option value=""></option>
+          </select>
+          <label class="mdl-selectfield__label" for="player1">choose height</label>
+        </div>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-height">
+      </div>
+    </div>
+    <!-- END PLAYER -->
+
+    <!-- PLAYER 2 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Player 2</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <div class="mdl-selectfield mdl-js-selectfield">
+           <select class="mdl-selectfield__select" id="player2" name="player2">
+             <option value=""></option>
+           </select>
+             <label class="mdl-selectfield__label" for="player2">choose height</label>
+         </div>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-height">
+      </div>
+    </div>
+    <!-- END PLAYER -->
+
+    <!-- PLAYER 3-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Player 3</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <div class="mdl-selectfield mdl-js-selectfield">
+           <select class="mdl-selectfield__select" id="player3" name="player3">
+             <option value=""></option>
+           </select>
+             <label class="mdl-selectfield__label" for="player3">choose height</label>
+        </div>
+      </div>      
+      <div class="mdl-cell mdl-cell--1-col" id="player3-height">
+      </div>
+    </div>
+    <!-- END PLAYER -->
+
+    <!-- PLAYER 4-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Player 4</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <div class="mdl-selectfield mdl-js-selectfield">
+           <select class="mdl-selectfield__select" id="player4" name="player4">
+             <option value=""></option>
+           </select>
+             <label class="mdl-selectfield__label" for="player4">choose height</label>
+        </div>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-height">
+      </div>
+    </div>
+
+    <br>
+
+    <button id="refresh" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+      Refresh
+    </button>
+
+  <!-- END PLAYER -->
+  </body>
+</html>
