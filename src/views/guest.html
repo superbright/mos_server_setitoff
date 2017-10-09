@@ -147,9 +147,8 @@
 
 
 
-        $('#player1-name-input').on('submit', function() {
-          console.log($("#player1-name-input"));
-          var name = this.value;
+        $('#player1-name-submit').on('click', function() {
+          var name = $("#player1-name-text").val();
           $.ajax({
             url: '/setname',
             type: 'POST',
@@ -370,10 +369,10 @@
         1
       </div>
       <div class="mdl-cell mdl-cell--3-col">
-        <form id="player1-name-input">
-            <input type="text" name="name" />
-            <input type="submit" value="Enter">
-        </form>
+        <input type="text" name="name" id="player1-name-text">
+        <button id="player1-name-submit">
+          Enter
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--3-col">
         <select class="mdl-selectfield__select" id="player1" name="player1">
