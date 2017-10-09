@@ -1,5 +1,6 @@
 .player {
   background-color: #fff;
+  align-items: center;
 }
 
 .scenebutton {
@@ -19,7 +20,7 @@
 }
 
 .content-grid {
-	max-width: 768px;
+  max-width: 768px;
 }
 
 .mdl-grid {
@@ -27,19 +28,40 @@
 }
 
 .header {
-	background-color: #ff4081;
-	color: #fff;
+  background-color: #ff4081;
+  color: #fff;
 }
 
-.guest-player {
-	text-align: center;
+.mdl-center {
+  text-align: center;
 }
 
 .player-data {
-	background-color: #e8e8e8;
+  background-color: #e8e8e8;
 }
 
 .mdl-radio {
-	font-size: 14px;
-	padding-right: 15px;
+  font-size: 14px;
+  padding-right: 15px;
+}
+
+.ready {
+  background: rgb(139,195,74);
+}
+
+.ready h4 {
+  color: rgb(66,66,66);
+}
+
+.mdl-table-cell {
+  display: table-cell;
+  text-align: center;	
+}
+
+.mdl-table {
+  display: table;
+}
+
+.mdl-switch-custom {
+	margin-left: 25px;
 }

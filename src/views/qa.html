@@ -684,6 +684,31 @@
       socket.emit('lobby', { my: 'data' });
       $("#elevator").removeClass("mdl-button--accent").addClass("disabled-button");
     });
+
+
+
+
+
+
+
+    $( "#player3-state-get" ).click(function() {
+      console.log("player 3 state GET");
+      socket.emit('respondPlayerHandshake', {data: 'player3'});
+    });
+
+   $( "#player3-state-send" ).click(function() {
+      console.log("player 3 state SEND");
+      socket.emit('sendHandshakeToPlayer', {data: 'player3'});
+
+    });
+
+
+
+
+
+
+
+
     $( "#start" ).click(function() {
       console.log("start");
       socket.emit('start', { my: 'data' });
@@ -1091,6 +1116,14 @@
     CONNECT
   </button>
 </div>
+
+  <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    SEND STATE
+  </button>
+
+  <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+    GET STATE
+  </button>
 <!-- END PLAYER -->
 
 <!-- PLAYER 4-->
