@@ -307,7 +307,6 @@
             // display player heights from JSON file
             $( '#player1-name' ).text(playerData[0].name);
           });
-          return false;
         });
         $('#player2-name-submit').on('click', function() {
           var name = $("#player2-name-text").val();
@@ -334,7 +333,6 @@
             // display player heights from JSON file
             $( '#player2-name' ).text(playerData[1].name);
           });
-          return false;
         });
         $('#player3-name-submit').on('click', function() {
           var name = $("#player3-name-text").val();
@@ -361,7 +359,6 @@
             // display player heights from JSON file
             $( '#player3-name' ).text(playerData[2].name);
           });
-          return false;
         });
         $('#player4-name-submit').on('click', function() {
           var name = $("#player4-name-text").val();
@@ -388,7 +385,6 @@
             // display player heights from JSON file
             $( '#player4-name' ).text(playerData[3].name);
           });
-          return false;
         });
 
         /* Update player ison */
@@ -425,7 +421,6 @@
               $( '#player1-ison' ).text("OFF");
             }
           });
-          return false;
         });
         $('#switch-2').change(function(){
           var isPlayeron = false;
@@ -460,7 +455,6 @@
               $( '#player2-ison' ).text("OFF");
             }
           });
-          return false;
         });
         $('#switch-3').change(function(){
           var isPlayeron = false;
@@ -495,7 +489,6 @@
               $( '#player3-ison' ).text("OFF");
             }
           });
-          return false;
         });
         $('#switch-4').change(function(){
           var isPlayeron = false;
@@ -530,7 +523,124 @@
               $( '#player4-ison' ).text("OFF");
             }
           });
-          return false;
+        });
+
+        /* Update player gender */
+        $('input[type=radio][name=options1]').change(function() {
+          var gender = this.value;
+          $.ajax({
+            url: '/setgender',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 0,
+                "gender" : parseInt(gender)
+              }
+            ), // data as js object
+            success: function(result) {
+              console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[0].gender == 1) {
+              $( '#player1-gender' ).text("Male");
+            } else {
+              $( '#player1-gender' ).text("Female");
+            }
+          });
+        });
+        $('input[type=radio][name=options2]').change(function() {
+          var gender = this.value;
+          $.ajax({
+            url: '/setgender',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 1,
+                "gender" : parseInt(gender)
+              }
+            ), // data as js object
+            success: function(result) {
+              console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[1].gender == 1) {
+              $( '#player2-gender' ).text("Male");
+            } else {
+              $( '#player2-gender' ).text("Female");
+            }
+          });
+        });
+        $('input[type=radio][name=options3]').change(function() {
+          var gender = this.value;
+          $.ajax({
+            url: '/setgender',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 2,
+                "gender" : parseInt(gender)
+              }
+            ), // data as js object
+            success: function(result) {
+              console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[2].gender == 1) {
+              $( '#player3-gender' ).text("Male");
+            } else {
+              $( '#player3-gender' ).text("Female");
+            }
+          });
+        });
+        $('input[type=radio][name=options4]').change(function() {
+          var gender = this.value;
+          $.ajax({
+            url: '/setgender',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 3,
+                "gender" : parseInt(gender)
+              }
+            ), // data as js object
+            success: function(result) {
+              console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[3].gender == 1) {
+              $( '#player4-gender' ).text("Male");
+            } else {
+              $( '#player4-gender' ).text("Female");
+            }
+          });
         });
 
         /* Display server data on page load */
@@ -587,6 +697,28 @@
           } else {
             $( '#player4-ison' ).append("OFF");
           }
+
+          // display player gender from JSON file
+          if(playerData[0].gender == 1) {
+            $( '#player1-gender' ).append("Male");        
+          } else {
+            $( '#player1-gender' ).append("Female");
+          }
+          if(playerData[1].gender == 1) {
+            $( '#player2-gender' ).append("Male");        
+          } else {
+            $( '#player2-gender' ).append("Female");
+          }
+          if(playerData[2].gender == 1) {
+            $( '#player3-gender' ).append("Male");        
+          } else {
+            $( '#player3-gender' ).append("Female");
+          }
+          if(playerData[3].gender == 1) {
+            $( '#player4-gender' ).append("Male");        
+          } else {
+            $( '#player4-gender' ).append("Female");
+          }
         });
       });
     </script>
@@ -602,8 +734,11 @@
       <div class="mdl-cell mdl-cell--3-col">
         <b>Name</b>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--2-col">
         <b>Height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <b>Gender</b>
       </div>
     </div>
     <!-- END HEADER -->
@@ -625,10 +760,20 @@
           Enter
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--2-col">
         <select class="mdl-selectfield__select" id="player1" name="player1">
           <option value=""></option>
         </select>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-1">
+          <input type="radio" id="player1-option-1" class="mdl-radio__button" name="options1" value="1" checked>
+          <span class="mdl-radio__label">Male</span>
+        </label>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-2">
+          <input type="radio" id="player1-option-2" class="mdl-radio__button" name="options1" value="2">
+          <span class="mdl-radio__label">Female</span>
+        </label>
       </div>
     </div>
     <div class="mdl-grid player player-data">
@@ -638,7 +783,9 @@
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player1-name">
       </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player1-height">
+      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player1-gender">
       </div>
     </div>
     <!-- END PLAYER -->
@@ -660,10 +807,20 @@
           Enter
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--2-col">
         <select class="mdl-selectfield__select" id="player2" name="player2">
           <option value=""></option>
         </select>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-1">
+          <input type="radio" id="player2-option-1" class="mdl-radio__button" name="options2" value="1" checked>
+          <span class="mdl-radio__label">Male</span>
+        </label>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-2">
+          <input type="radio" id="player2-option-2" class="mdl-radio__button" name="options2" value="2">
+          <span class="mdl-radio__label">Female</span>
+        </label>
       </div>
     </div>
     <div class="mdl-grid player player-data">
@@ -673,7 +830,9 @@
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player2-name">
       </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player2-height">
+      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player2-gender">
       </div>
     </div>
     <!-- END PLAYER -->
@@ -695,10 +854,20 @@
           Enter
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--2-col">
         <select class="mdl-selectfield__select" id="player3" name="player3">
           <option value=""></option>
         </select>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-1">
+          <input type="radio" id="player3-option-1" class="mdl-radio__button" name="options3" value="1" checked>
+          <span class="mdl-radio__label">Male</span>
+        </label>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-2">
+          <input type="radio" id="player3-option-2" class="mdl-radio__button" name="options3" value="2">
+          <span class="mdl-radio__label">Female</span>
+        </label>
       </div>
     </div>
     <div class="mdl-grid player player-data">
@@ -708,7 +877,9 @@
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player3-name">
       </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player3-height">
+      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player3-gender">
       </div>
     </div>
     <!-- END PLAYER -->
@@ -730,10 +901,20 @@
           Enter
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--2-col">
         <select class="mdl-selectfield__select" id="player4" name="player4">
           <option value=""></option>
         </select>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-1">
+          <input type="radio" id="player4-option-1" class="mdl-radio__button" name="options4" value="1" checked>
+          <span class="mdl-radio__label">Male</span>
+        </label>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-2">
+          <input type="radio" id="player4-option-2" class="mdl-radio__button" name="options4" value="2">
+          <span class="mdl-radio__label">Female</span>
+        </label>
       </div>
     </div>
     <div class="mdl-grid player player-data">
@@ -743,7 +924,9 @@
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player4-name">
       </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player4-height">
+      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player4-gender">
       </div>
     </div>
     <!-- END PLAYER -->

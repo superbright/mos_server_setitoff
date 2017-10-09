@@ -38,3 +38,8 @@
 .player-data {
 	background-color: #e8e8e8;
 }
+
+.mdl-radio {
+	font-size: 14px;
+	padding-right: 15px;
+}
