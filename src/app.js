@@ -50,8 +50,8 @@ var serialport = require('serialport'), // include the serialport library
      };
 
 // open the serial port:
-var myPort = new SerialPort(portName, portConfig);
-myPort.on('open', openPort); // called when the serial port opens
+//var myPort = new SerialPort(portName, portConfig);
+//myPort.on('open', openPort); // called when the serial port opens
 
 
 function openPort() {

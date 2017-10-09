@@ -53,6 +53,14 @@ api.post('/setgender', async (ctx, next) => {
     }
 );
 
+api.post('/setname', async (ctx, next) => {
+      console.log( ctx.request.body.name);
+      ctx.config.PLAYERS[ctx.request.body.player].name = ctx.request.body.name;
+      ctx.body = JSON.stringify(ctx.request.body);
+      ctx.status = 200;
+    }
+);
+
 api.get('/config',
   async (ctx, next) => {
     ctx.body = ctx.config;

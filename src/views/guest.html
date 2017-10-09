@@ -9,127 +9,119 @@
     <link rel="stylesheet" href="./mdl/material.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/dialog-polyfill.css">
-    <!-- <link rel="stylesheet" href="./css/mdl-selectfield.min.css"> -->
     <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
 
     <script src="./mdl/material.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-
-      <script src="./js/jquery-3.2.1.min.js"></script>
-      <script src="./js/dialog-polyfill.js"></script>
-      <!-- <script src="./js/mdl-selectfield.min.js"></script> -->
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/dialog-polyfill.js"></script>
   </head>
   <body>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
-      var heightmap = [
-        {
-          key: "5’0”",
-          value: 152.40
-        },
-        {
-          key: "5’1”",
-          value: 154.94
-        },
-        {
-          key: "5’2”",
-          value:  157.48
-        },
-        {
-          key: "5’3”",
-          value:  160.02
-        },
-        {
-          key: "5’4”",
-          value:  162.56
-        },
-        {
-          key: "5’5”",
-          value: 	165.10
-        },
-        {
-          key: "5’6”",
-          value: 167.74
-        },
-        {
-          key: "5’7”",
-          value: 	170.18
-        },
-        {
-          key: "5’8”",
-          value: 	172.72
-        },
-        {
-          key: "5’9”",
-          value: 175.26
-        },
-        {
-          key: "5’10”",
-          value: 177.80
-        },
-        {
-          key: "5’11”",
-          value: 180.34
-        },
-        {
-          key: "6’0”",
-          value: 182.88
-        },
-        {
-          key: "6’1”",
-          value: 185.45
-        },
-        {
-          key: "6’2”",
-          value: 187.96
-        },
-        {
-          key: "6’3”",
-          value: 190.50
-        },
-        {
-          key: "6’4”",
-          value: 193.04
-        },
-        {
-          key: "6’5”",
-          value: 195.58
-        },
-        {
-          key: "6’6”",
-          value: 198.12
-        },
-        {
-          key: "6’7”",
-          value: 200.66
-        },
-        {
-          key: "6’8”",
-          value: 	203.20
-        },
-        {
-          key: "6’9”",
-          value: 	205.74
-        },
-        {
-          key: "6’10”",
-          value: 208.28
-        }
-      ];
-
+      // Connect to socket
       //var socket = io('http://192.168.1.212:4000');
+      //var ip = 'http://192.168.1.212:4000';
       var socket = io('localhost:4000');
+      var ip = 'http://localhost:4000';
       socket.on('hello', function (data) {
         console.log(data);
       });
 
-      socket.on('errormessage', function (data) {
-        console.log(data["data"]);
-        var dialog = document.querySelector('dialog');
-        dialog.showModal();
-          $( "#errormessage" ).text(data["data"]);
-      });
+      // Player heights
+      var heightmap = [
+        {
+          key: "5’0” (152 cm)",
+          value: 152.40
+        },
+        {
+          key: "5’1” (156 cm)",
+          value: 154.94
+        },
+        {
+          key: "5’2” (157 cm)",
+          value:  157.48
+        },
+        {
+          key: "5’3” (160 cm)",
+          value:  160.02
+        },
+        {
+          key: "5’4” (162 cm)",
+          value:  162.56
+        },
+        {
+          key: "5’5” (165 cm)",
+          value: 	165.10
+        },
+        {
+          key: "5’6” (168 cm)",
+          value: 167.74
+        },
+        {
+          key: "5’7” (170 cm)",
+          value: 	170.18
+        },
+        {
+          key: "5’8” (173 cm)",
+          value: 	172.72
+        },
+        {
+          key: "5’9” (175 cm)",
+          value: 175.26
+        },
+        {
+          key: "5’10” (178 cm)",
+          value: 177.80
+        },
+        {
+          key: "5’11” (180 cm)",
+          value: 180.34
+        },
+        {
+          key: "6’0” (183 cm)",
+          value: 182.88
+        },
+        {
+          key: "6’1” (185 cm)",
+          value: 185.45
+        },
+        {
+          key: "6’2” (188 cm)",
+          value: 187.96
+        },
+        {
+          key: "6’3” (190 cm)",
+          value: 190.50
+        },
+        {
+          key: "6’4” (193 cm)",
+          value: 193.04
+        },
+        {
+          key: "6’5” (195 cm)",
+          value: 195.58
+        },
+        {
+          key: "6’6” (198 cm)",
+          value: 198.12
+        },
+        {
+          key: "6’7” (200 cm)",
+          value: 200.66
+        },
+        {
+          key: "6’8” (203 cm)",
+          value: 	203.20
+        },
+        {
+          key: "6’9” (206 cm)",
+          value: 	205.74
+        },
+        {
+          key: "6’10” (208 cm)",
+          value: 208.28
+        }
+      ];
      
       function populate(selector,key,value) {
         $(selector)
@@ -137,7 +129,7 @@
       }
 
       $(document).ready(function() {
-        //populate drop downs with heaight values
+        // populate drop downs with height values
         heightmap.forEach(function(item) {
           populate('#player1',item.key,item.value);
           populate('#player2',item.key,item.value);
@@ -146,8 +138,46 @@
           populate('#player5',item.key,item.value);
         });
 
+        /* Update player names */
+        $("#id_of_textbox").keyup(function(event){
+          if(event.keyCode == 13){
+              $("#id_of_button").click();
+          }
+        });
+
+
+
+        $('#player1-name-input').on('submit', function() {
+          console.log($("#player1-name-input"));
+          var name = this.value;
+          $.ajax({
+            url: '/setname',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 0,
+                "name" : name
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            // display player heights from JSON file
+            $( '#player1-name' ).text(playerData[0].name);
+          });
+          return false;
+        });
+
+        // update player heights
         $('#player1').on('change', function() {
-        //  alert( this.value );
           var height = this.value;
           $.ajax({
             url: '/setheight',
@@ -164,8 +194,23 @@
                 console.log("ok " + result)
             }
           });
-        });
 
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+            var player1h
+
+            // get player heights in feet and inches
+            heightmap.forEach(function(item) {
+              if(item.value == playerData[0].height) {
+                player1h = item.key;
+              }            
+            });
+
+            // display player heights from JSON file
+            $( '#player1-height' ).text(player1h);
+          });
+        });
         $('#player2').on('change', function() {
           var height = this.value;
           $.ajax({
@@ -183,8 +228,23 @@
                 console.log("ok " + result)
             }
           });
-        });
 
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+            var player2h
+
+            // get player heights in feet and inches
+            heightmap.forEach(function(item) {
+              if(item.value == playerData[1].height) {
+                player2h = item.key;
+              }            
+            });
+
+            // display player heights from JSON file
+            $( '#player2-height' ).text(player2h);
+          });
+        });
         $('#player3').on('change', function() {
           var height = this.value;
           $.ajax({
@@ -202,8 +262,23 @@
                 console.log("ok " + result)
             }
           });
-        });
 
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+            var player3h
+
+            // get player heights in feet and inches
+            heightmap.forEach(function(item) {
+              if(item.value == playerData[2].height) {
+                player3h = item.key;
+              }            
+            });
+
+            // display player heights from JSON file
+            $( '#player3-height' ).text(player3h);
+          });
+        });
         $('#player4').on('change', function() {
           var height = this.value;
           $.ajax({
@@ -221,37 +296,36 @@
                 console.log("ok " + result)
             }
           });
-        });
 
-        $('#player5').on('change', function() {
-          var height = this.value;
-          $.ajax({
-            url: '/setheight',
-            type: 'POST',
-            dataType : "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(
-              {
-                "player" : 4,
-                "height" : parseFloat(height)
-              }
-            ), // data as js object
-            success: function(result) {
-                console.log("ok " + result)
-            }
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+            var player4h
+
+            // get player heights in feet and inches
+            heightmap.forEach(function(item) {
+              if(item.value == playerData[3].height) {
+                player4h = item.key;
+              }            
+            });
+
+            // display player heights from JSON file
+            $( '#player4-height' ).text(player4h);
           });
         });
 
+        // refresh page
         $( "#refresh" ).click(function() {
           console.log("refresh");
           location.reload();
         });
 
-        $.getJSON( "http://192.168.1.212:4000/config", function( data ) {
+        // snoop in on JSON data
+        $.getJSON( "http://localhost:4000/config", function( data ) {
           var playerData = data["PLAYERS"];
           var player1h, player2h, player3h, player4h;
 
-          // get player heights
+          // get player heights in feet and inches
           heightmap.forEach(function(item) {
             if(item.value == playerData[0].height) {
               player1h = item.key;
@@ -267,6 +341,7 @@
             }            
           });
 
+          // display player heights from JSON file
           $( '#player1-height' ).append(player1h);
           $( '#player2-height' ).append(player2h);
           $( '#player3-height' ).append(player3h);
@@ -275,83 +350,123 @@
       });
     </script>
 
-    <!-- PLAYER -->
+    <!-- HEADER -->
+    <div class="mdl-grid header">
+      <div class="mdl-cell mdl-cell--1-col guest-player">
+        <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Name</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Height</b>
+      </div>
+    </div>
+    <!-- END HEADER -->
+
+    <!-- PLAYER 1 -->
     <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col guest-player">
+        1
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <form id="player1-name-input">
+            <input type="text" name="name" />
+            <input type="submit" value="Enter">
+        </form>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <select class="mdl-selectfield__select" id="player1" name="player1">
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="mdl-grid player player-data">
       <div class="mdl-cell mdl-cell--1-col">
-        <b>Player 1</b>
       </div>
-      <div class="mdl-cell mdl-cell--2-col">
-        <div class="mdl-selectfield mdl-js-selectfield">
-          <select class="mdl-selectfield__select" id="player1" name="player1">
-            <option value=""></option>
-          </select>
-          <label class="mdl-selectfield__label" for="player1">choose height</label>
-        </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
       </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player1-height">
+      <div class="mdl-cell mdl-cell--3-col" id="player1-height">
       </div>
     </div>
     <!-- END PLAYER -->
 
     <!-- PLAYER 2 -->
     <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col guest-player">
+        2
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <input type="text" name="player2-name">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <select class="mdl-selectfield__select" id="player2" name="player2">
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="mdl-grid player player-data">
       <div class="mdl-cell mdl-cell--1-col">
-        <b>Player 2</b>
       </div>
-      <div class="mdl-cell mdl-cell--2-col">
-        <div class="mdl-selectfield mdl-js-selectfield">
-           <select class="mdl-selectfield__select" id="player2" name="player2">
-             <option value=""></option>
-           </select>
-             <label class="mdl-selectfield__label" for="player2">choose height</label>
-         </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
       </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player2-height">
+      <div class="mdl-cell mdl-cell--3-col" id="player2-height">
       </div>
     </div>
     <!-- END PLAYER -->
 
     <!-- PLAYER 3-->
     <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col">
-        <b>Player 3</b>
+      <div class="mdl-cell mdl-cell--1-col guest-player">
+        3
+      </div>  
+      <div class="mdl-cell mdl-cell--3-col">
+        <input type="text" name="player3-name">
       </div>
-      <div class="mdl-cell mdl-cell--2-col">
-        <div class="mdl-selectfield mdl-js-selectfield">
-           <select class="mdl-selectfield__select" id="player3" name="player3">
-             <option value=""></option>
-           </select>
-             <label class="mdl-selectfield__label" for="player3">choose height</label>
-        </div>
-      </div>      
-      <div class="mdl-cell mdl-cell--1-col" id="player3-height">
+      <div class="mdl-cell mdl-cell--3-col">
+        <select class="mdl-selectfield__select" id="player3" name="player3">
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="mdl-grid player player-data">
+      <div class="mdl-cell mdl-cell--1-col">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-height">
       </div>
     </div>
     <!-- END PLAYER -->
 
     <!-- PLAYER 4-->
     <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col">
-        <b>Player 4</b>
+      <div class="mdl-cell mdl-cell--1-col guest-player">
+        4
       </div>
-      <div class="mdl-cell mdl-cell--2-col">
-        <div class="mdl-selectfield mdl-js-selectfield">
-           <select class="mdl-selectfield__select" id="player4" name="player4">
-             <option value=""></option>
-           </select>
-             <label class="mdl-selectfield__label" for="player4">choose height</label>
-        </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <input type="text" name="player4-name">
       </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player4-height">
+      <div class="mdl-cell mdl-cell--3-col">
+        <select class="mdl-selectfield__select" id="player4" name="player4">
+          <option value=""></option>
+        </select>
       </div>
     </div>
+    <div class="mdl-grid player player-data">
+      <div class="mdl-cell mdl-cell--1-col">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-height">
+      </div>
+    </div>
+    <!-- END PLAYER -->
 
     <br>
 
     <button id="refresh" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      Refresh
+      Submit
     </button>
-
-  <!-- END PLAYER -->
   </body>
 </html>
