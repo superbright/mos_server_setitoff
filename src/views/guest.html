@@ -27,7 +27,12 @@
         console.log(data);
       });
 
-      // Player heights
+      // refresh page
+      $( "#refresh" ).click(function() {
+        console.log("refresh");
+        location.reload();
+      });
+
       var heightmap = [
         {
           key: "5’0” (152 cm)",
@@ -129,123 +134,13 @@
       }
 
       $(document).ready(function() {
-        // populate drop downs with height values
+        /* Player heights */
         heightmap.forEach(function(item) {
           populate('#player1',item.key,item.value);
           populate('#player2',item.key,item.value);
           populate('#player3',item.key,item.value);
           populate('#player4',item.key,item.value);
           populate('#player5',item.key,item.value);
-        });
-
-        /* Update player names */
-        $('#player1-name-submit').on('click', function() {
-          var name = $("#player1-name-text").val();
-          $.ajax({
-            url: '/setname',
-            type: 'POST',
-            dataType : "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(
-              {
-                "player" : 0,
-                "name" : name
-              }
-            ), // data as js object
-            success: function(result) {
-                console.log("ok " + result)
-            }
-          });
-
-          // update data view value
-          $.getJSON( ip + '/config' , function( data ) {
-            var playerData = data["PLAYERS"];
-
-            // display player heights from JSON file
-            $( '#player1-name' ).text(playerData[0].name);
-          });
-          return false;
-        });
-        $('#player2-name-submit').on('click', function() {
-          var name = $("#player2-name-text").val();
-          $.ajax({
-            url: '/setname',
-            type: 'POST',
-            dataType : "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(
-              {
-                "player" : 1,
-                "name" : name
-              }
-            ), // data as js object
-            success: function(result) {
-                console.log("ok " + result)
-            }
-          });
-
-          // update data view value
-          $.getJSON( ip + '/config' , function( data ) {
-            var playerData = data["PLAYERS"];
-
-            // display player heights from JSON file
-            $( '#player2-name' ).text(playerData[1].name);
-          });
-          return false;
-        });
-        $('#player3-name-submit').on('click', function() {
-          var name = $("#player3-name-text").val();
-          $.ajax({
-            url: '/setname',
-            type: 'POST',
-            dataType : "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(
-              {
-                "player" : 2,
-                "name" : name
-              }
-            ), // data as js object
-            success: function(result) {
-                console.log("ok " + result)
-            }
-          });
-
-          // update data view value
-          $.getJSON( ip + '/config' , function( data ) {
-            var playerData = data["PLAYERS"];
-
-            // display player heights from JSON file
-            $( '#player3-name' ).text(playerData[2].name);
-          });
-          return false;
-        });
-        $('#player4-name-submit').on('click', function() {
-          var name = $("#player4-name-text").val();
-          $.ajax({
-            url: '/setname',
-            type: 'POST',
-            dataType : "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(
-              {
-                "player" : 3,
-                "name" : name
-              }
-            ), // data as js object
-            success: function(result) {
-                console.log("ok " + result)
-            }
-          });
-
-          // update data view value
-          $.getJSON( ip + '/config' , function( data ) {
-            var playerData = data["PLAYERS"];
-
-            // display player heights from JSON file
-            $( '#player4-name' ).text(playerData[3].name);
-          });
-          return false;
         });
 
         /* Update player heights */
@@ -386,13 +281,259 @@
           });
         });
 
-        // refresh page
-        $( "#refresh" ).click(function() {
-          console.log("refresh");
-          location.reload();
+        /* Update player names */
+        $('#player1-name-submit').on('click', function() {
+          var name = $("#player1-name-text").val();
+          $.ajax({
+            url: '/setname',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 0,
+                "name" : name
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            // display player heights from JSON file
+            $( '#player1-name' ).text(playerData[0].name);
+          });
+          return false;
+        });
+        $('#player2-name-submit').on('click', function() {
+          var name = $("#player2-name-text").val();
+          $.ajax({
+            url: '/setname',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 1,
+                "name" : name
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            // display player heights from JSON file
+            $( '#player2-name' ).text(playerData[1].name);
+          });
+          return false;
+        });
+        $('#player3-name-submit').on('click', function() {
+          var name = $("#player3-name-text").val();
+          $.ajax({
+            url: '/setname',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 2,
+                "name" : name
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            // display player heights from JSON file
+            $( '#player3-name' ).text(playerData[2].name);
+          });
+          return false;
+        });
+        $('#player4-name-submit').on('click', function() {
+          var name = $("#player4-name-text").val();
+          $.ajax({
+            url: '/setname',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 3,
+                "name" : name
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            // display player heights from JSON file
+            $( '#player4-name' ).text(playerData[3].name);
+          });
+          return false;
         });
 
-        // snoop in on JSON data
+        /* Update player ison */
+        $('#switch-1').change(function(){
+          var isPlayeron = false;
+          if($(this).is(':checked')) {
+            isPlayeron = true;
+          }
+          $.ajax({
+            url: '/config',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            //data : JSON.stringify(data),
+            data: JSON.stringify(
+              {
+                "player" : 0,
+                "ison" : isPlayeron
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+                // Do something with the result
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[0].ison == true) {
+              $( '#player1-ison' ).text("ON");
+            } else {
+              $( '#player1-ison' ).text("OFF");
+            }
+          });
+          return false;
+        });
+        $('#switch-2').change(function(){
+          var isPlayeron = false;
+          if($(this).is(':checked')) {
+            isPlayeron = true;
+          }
+          $.ajax({
+            url: '/config',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            //data : JSON.stringify(data),
+            data: JSON.stringify(
+              {
+                "player" : 1,
+                "ison" : isPlayeron
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+                // Do something with the result
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[1].ison == true) {
+              $( '#player2-ison' ).text("ON");
+            } else {
+              $( '#player2-ison' ).text("OFF");
+            }
+          });
+          return false;
+        });
+        $('#switch-3').change(function(){
+          var isPlayeron = false;
+          if($(this).is(':checked')) {
+            isPlayeron = true;
+          }
+          $.ajax({
+            url: '/config',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            //data : JSON.stringify(data),
+            data: JSON.stringify(
+              {
+                "player" : 2,
+                "ison" : isPlayeron
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+                // Do something with the result
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[2].ison == true) {
+              $( '#player3-ison' ).text("ON");
+            } else {
+              $( '#player3-ison' ).text("OFF");
+            }
+          });
+          return false;
+        });
+        $('#switch-4').change(function(){
+          var isPlayeron = false;
+          if($(this).is(':checked')) {
+            isPlayeron = true;
+          }
+          $.ajax({
+            url: '/config',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            //data : JSON.stringify(data),
+            data: JSON.stringify(
+              {
+                "player" : 3,
+                "ison" : isPlayeron
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+                // Do something with the result
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+
+            if(playerData[3].ison == true) {
+              $( '#player4-ison' ).text("ON");
+            } else {
+              $( '#player4-ison' ).text("OFF");
+            }
+          });
+          return false;
+        });
+
+        /* Display server data on page load */
         $.getJSON( "http://localhost:4000/config", function( data ) {
           var playerData = data["PLAYERS"];
           var player1h, player2h, player3h, player4h;
@@ -424,6 +565,28 @@
           $( '#player2-name' ).append(playerData[1].name);
           $( '#player3-name' ).append(playerData[2].name);
           $( '#player4-name' ).append(playerData[3].name);
+
+          // diplay player ison from JSON file
+          if(playerData[0].ison == true) {
+            $( '#player1-ison' ).append("ON");
+          } else {
+            $( '#player1-ison' ).append("OFF");
+          }
+          if(playerData[1].ison == true) {
+            $( '#player2-ison' ).append("ON");
+          } else {
+            $( '#player2-ison' ).append("OFF");
+          }
+          if(playerData[2].ison == true) {
+            $( '#player3-ison' ).append("ON");
+          } else {
+            $( '#player3-ison' ).append("OFF");
+          }
+          if(playerData[3].ison == true) {
+            $( '#player4-ison' ).append("ON");
+          } else {
+            $( '#player4-ison' ).append("OFF");
+          }
         });
       });
     </script>
@@ -432,6 +595,9 @@
     <div class="mdl-grid header">
       <div class="mdl-cell mdl-cell--1-col guest-player">
         <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>On/Off</b>
       </div>
       <div class="mdl-cell mdl-cell--3-col">
         <b>Name</b>
@@ -446,6 +612,12 @@
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col guest-player">
         1
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+          <input type="checkbox" id="switch-1" class="mdl-switch__input" >
+          <span class="mdl-switch__label"></span>
+        </label>
       </div>
       <div class="mdl-cell mdl-cell--3-col">
         <input type="text" name="name" id="player1-name-text">
@@ -462,6 +634,8 @@
     <div class="mdl-grid player player-data">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
+      </div>
       <div class="mdl-cell mdl-cell--3-col" id="player1-name">
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player1-height">
@@ -473,6 +647,12 @@
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col guest-player">
         2
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
+          <input type="checkbox" id="switch-2" class="mdl-switch__input" >
+          <span class="mdl-switch__label"></span>
+        </label>
       </div>
       <div class="mdl-cell mdl-cell--3-col">
         <input type="text" name="name" id="player2-name-text">
@@ -489,6 +669,8 @@
     <div class="mdl-grid player player-data">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
+      </div>
       <div class="mdl-cell mdl-cell--3-col" id="player2-name">
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player2-height">
@@ -500,7 +682,13 @@
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col guest-player">
         3
-      </div>  
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-3">
+          <input type="checkbox" id="switch-3" class="mdl-switch__input" >
+          <span class="mdl-switch__label"></span>
+        </label>
+      </div>
       <div class="mdl-cell mdl-cell--3-col">
         <input type="text" name="name" id="player3-name-text">
         <button id="player3-name-submit">
@@ -516,6 +704,8 @@
     <div class="mdl-grid player player-data">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
+      </div>
       <div class="mdl-cell mdl-cell--3-col" id="player3-name">
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player3-height">
@@ -527,6 +717,12 @@
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col guest-player">
         4
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-4">
+          <input type="checkbox" id="switch-4" class="mdl-switch__input" >
+          <span class="mdl-switch__label"></span>
+        </label>
       </div>
       <div class="mdl-cell mdl-cell--3-col">
         <input type="text" name="name" id="player4-name-text">
@@ -542,6 +738,8 @@
     </div>
     <div class="mdl-grid player player-data">
       <div class="mdl-cell mdl-cell--1-col">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
       </div>
       <div class="mdl-cell mdl-cell--3-col" id="player4-name">
       </div>
