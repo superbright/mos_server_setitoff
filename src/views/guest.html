@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.5">
-    <title>Museum of Sex - VR - Guest</title>
+    <title>Guest - Museum of Sex - VR</title>
 
     <link rel="stylesheet" href="./mdl/material.min.css">
     <link rel="stylesheet" href="./css/style.css">
@@ -25,12 +25,6 @@
       var ip = 'http://localhost:4000';
       socket.on('hello', function (data) {
         console.log(data);
-      });
-
-      // refresh page
-      $( "#refresh" ).click(function() {
-        console.log("refresh");
-        location.reload();
       });
 
       var heightmap = [
@@ -644,7 +638,7 @@
         });
 
         /* Display server data on page load */
-        $.getJSON( "http://localhost:4000/config", function( data ) {
+        $.getJSON( ip + "/config", function( data ) {
           var playerData = data["PLAYERS"];
           var player1h, player2h, player3h, player4h;
 
@@ -719,6 +713,12 @@
           } else {
             $( '#player4-gender' ).append("Female");
           }
+        });
+
+        $( "#submit" ).click(function() {
+          console.log("submit");
+          //socket.emit('reset', { my: 'data' });
+          socket.emit('updateData', { my: 'data' });
         });
       });
     </script>
@@ -933,7 +933,7 @@
 
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="refresh" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
           Submit
         </button>
       </div>
@@ -952,6 +952,12 @@
             <span class="mdl-switch__label"></span>
           </label>
         </div>
+      </div>
+    </div>
+
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        game state
       </div>
     </div>
   </body>

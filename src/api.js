@@ -67,8 +67,4 @@ api.get('/config',
   }
 );
 
-var convertHeight = function(heightfeet) {
-
-}
-
 export default api;

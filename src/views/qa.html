@@ -1,1232 +1,728 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.5">
-  <title>SetitOff Control Panel</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+    <title>QA - Museum of Sex - VR</title>
 
-  <link rel="stylesheet" href="./mdl/material.min.css">
-  <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/dialog-polyfill.css">
-  <!-- <link rel="stylesheet" href="./css/mdl-selectfield.min.css"> -->
-  <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
+    <link rel="stylesheet" href="./mdl/material.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dialog-polyfill.css">
+    <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
 
-  <script src="./mdl/material.min.js"></script>
-  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-
+    <script src="./mdl/material.min.js"></script>
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/dialog-polyfill.js"></script>
-    <!-- <script src="./js/mdl-selectfield.min.js"></script> -->
-</head>
-<body>
-  <script src="/socket.io/socket.io.js"></script>
-<script>
-
- var heightmap = [
-    {
-      key: "5’0”",
-      value: 152.40
-    },
-    {
-      key: "5’1”",
-      value: 154.94
-    },
-    {
-      key: "5’2”",
-      value:  157.48
-    },
-    {
-      key: "5’3”",
-      value:  160.02
-    },
-    {
-      key: "5’4”",
-      value:  162.56
-    },
-    {
-      key: "5’5”",
-      value: 	165.10
-    },
-    {
-      key: "5’6”",
-      value: 167.74
-    },
-    {
-      key: "5’7”",
-      value: 	170.18
-    },
-    {
-      key: "5’8”",
-      value: 	172.72
-    },
-    {
-      key: "5’9”",
-      value: 175.26
-    },
-    {
-      key: "5’10”",
-      value: 177.80
-    },
-    {
-      key: "5’11”",
-      value: 180.34
-    },
-    {
-      key: "6’0”",
-      value: 182.88
-    },
-    {
-      key: "6’1”",
-      value: 185.45
-    },
-    {
-      key: "6’2”",
-      value: 187.96
-    },
-    {
-      key: "6’3”",
-      value: 190.50
-    },
-    {
-      key: "6’4”",
-      value: 193.04
-    },
-    {
-      key: "6’5”",
-      value: 195.58
-    },
-    {
-      key: "6’6”",
-      value: 198.12
-    },
-    {
-      key: "6’7”",
-      value: 200.66
-    },
-    {
-      key: "6’8”",
-      value: 	203.20
-    },
-    {
-      key: "6’9”",
-      value: 	205.74
-    },
-    {
-      key: "6’10”",
-      value: 208.28
-    }
-  ]
-  //var socket = io('http://192.168.1.212:4000');
-  var socket = io('localhost:4000');
-  socket.on('hello', function (data) {
-    console.log(data);
-
-  });
-  socket.on('errormessage', function (data) {
-      console.log(data["data"]);
-      var dialog = document.querySelector('dialog');
-      dialog.showModal();
-        $( "#errormessage" ).text(data["data"]);
-
-  });
-  socket.on('time', function (data) {
-      $( "#timer" ).text(data['time']);
-  });
-
-  //players connecting to optitrack
-  socket.on('connectionState', function(data) {
-      var dataarr = data.split(':');
-      console.log(dataarr);
-      var enabledColor = '#8ec252';
-      var disabledColor = '#ff0000';
-      if(dataarr[0] == 'player1') {
-        if(dataarr[1] == "True") {
-            $('#player1tracking').css('background',enabledColor)
-        } else {
-          $('#player1tracking').css('background',disabledColor)
-        }
-      }
-      if(dataarr[0] == 'player2') {
-        if(dataarr[1] == "True") {
-            $('#player2tracking').css('background',enabledColor)
-        } else {
-          $('#player2 tracking').css('background',disabledColor)
-        }
-      }
-
-      if(dataarr[0] == 'player3') {
-        if(dataarr[1] == "True") {
-            $('#player3tracking').css('background',enabledColor)
-        } else {
-          $('#player3tracking').css('background',disabledColor)
-        }
-      }
-      if(dataarr[0] == 'player4') {
-        if(dataarr[1] == "True") {
-            $('#player4tracking').css('background',enabledColor)
-        } else {
-          $('#player4tracking').css('background',disabledColor)
-        }
-      }
-
-  });
-
-  function populate(selector,key,value) {
-    $(selector)
-      .append('<option value="'+ value +'">'+ key + '</option>')
-  }
-
-  $(document).ready(function() {
-    //populate drop downs with heaight values
-    heightmap.forEach(function(item) {
-        populate('#player1',item.key,item.value);
-        populate('#player2',item.key,item.value);
-        populate('#player3',item.key,item.value);
-        populate('#player4',item.key,item.value);
-        populate('#player5',item.key,item.value);
-    });
-
-    //gender selection
-    $('input[type=radio][name=options1]').change(function() {
-       var gender = this.value;
-       $.ajax({
-         url: '/setgender',
-         type: 'POST',
-         dataType : "json",
-         contentType: "application/json; charset=utf-8",
-         data: JSON.stringify(
-           {
-             "player" : 0,
-             "gender" : parseInt(gender)
-           }
-         ), // data as js object
-         success: function(result) {
-             console.log("ok " + result)
-         }
-       });
-     });
-    $('input[type=radio][name=options2]').change(function() {
-        var gender = this.value;
-        $.ajax({
-          url: '/setgender',
-          type: 'POST',
-          dataType : "json",
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify(
-            {
-              "player" : 1,
-              "gender" : parseInt(gender)
-            }
-          ), // data as js object
-          success: function(result) {
-              console.log("ok " + result)
-          }
-        });
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      /* Connect to socket */
+      //var socket = io('http://192.168.1.212:4000');
+      //var ip = 'http://192.168.1.212:4000';
+      var socket = io('localhost:4000');
+      var ip = 'http://localhost:4000';
+      socket.on('hello', function (data) {
+        console.log(data);
       });
-    $('input[type=radio][name=options3]').change(function() {
-         var gender = this.value;
-         $.ajax({
-           url: '/setgender',
-           type: 'POST',
-           dataType : "json",
-           contentType: "application/json; charset=utf-8",
-           data: JSON.stringify(
-             {
-               "player" : 2,
-               "gender" : parseInt(gender)
-             }
-           ), // data as js object
-           success: function(result) {
-               console.log("ok " + result)
-           }
-         });
-       });
-    $('input[type=radio][name=options4]').change(function() {
-          var gender = this.value;
-          $.ajax({
-            url: '/setgender',
-            type: 'POST',
-            dataType : "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(
-              {
-                "player" : 3,
-                "gender" : parseInt(gender)
-              }
-            ), // data as js object
-            success: function(result) {
-                console.log("ok " + result)
+
+      var heightmap = [
+        {
+          key: "5’0” (152 cm)",
+          value: 152.40
+        },
+        {
+          key: "5’1” (156 cm)",
+          value: 154.94
+        },
+        {
+          key: "5’2” (157 cm)",
+          value:  157.48
+        },
+        {
+          key: "5’3” (160 cm)",
+          value:  160.02
+        },
+        {
+          key: "5’4” (162 cm)",
+          value:  162.56
+        },
+        {
+          key: "5’5” (165 cm)",
+          value:  165.10
+        },
+        {
+          key: "5’6” (168 cm)",
+          value: 167.74
+        },
+        {
+          key: "5’7” (170 cm)",
+          value:  170.18
+        },
+        {
+          key: "5’8” (173 cm)",
+          value:  172.72
+        },
+        {
+          key: "5’9” (175 cm)",
+          value: 175.26
+        },
+        {
+          key: "5’10” (178 cm)",
+          value: 177.80
+        },
+        {
+          key: "5’11” (180 cm)",
+          value: 180.34
+        },
+        {
+          key: "6’0” (183 cm)",
+          value: 182.88
+        },
+        {
+          key: "6’1” (185 cm)",
+          value: 185.45
+        },
+        {
+          key: "6’2” (188 cm)",
+          value: 187.96
+        },
+        {
+          key: "6’3” (190 cm)",
+          value: 190.50
+        },
+        {
+          key: "6’4” (193 cm)",
+          value: 193.04
+        },
+        {
+          key: "6’5” (195 cm)",
+          value: 195.58
+        },
+        {
+          key: "6’6” (198 cm)",
+          value: 198.12
+        },
+        {
+          key: "6’7” (200 cm)",
+          value: 200.66
+        },
+        {
+          key: "6’8” (203 cm)",
+          value:  203.20
+        },
+        {
+          key: "6’9” (206 cm)",
+          value:  205.74
+        },
+        {
+          key: "6’10” (208 cm)",
+          value: 208.28
+        }
+      ];
+
+      /* Players connecting to optitrack */
+      socket.on('connectionState', function(data) {
+        var dataarr = data.split(':');
+        console.log(dataarr);
+        var enabledColor = '#8ec252';
+        var disabledColor = '#ff0000';
+        if(dataarr[0] == 'player1') {
+          if(dataarr[1] == "True") {
+              $('#player1tracking').css('background',enabledColor)
+          } else {
+            $('#player1tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player2') {
+          if(dataarr[1] == "True") {
+              $('#player2tracking').css('background',enabledColor)
+          } else {
+            $('#player2 tracking').css('background',disabledColor)
+          }
+        }
+
+        if(dataarr[0] == 'player3') {
+          if(dataarr[1] == "True") {
+              $('#player3tracking').css('background',enabledColor)
+          } else {
+            $('#player3tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player4') {
+          if(dataarr[1] == "True") {
+              $('#player4tracking').css('background',enabledColor)
+          } else {
+            $('#player4tracking').css('background',disabledColor)
+          }
+        }
+      });
+
+      $(document).ready(function() {
+        /* OptiTrack connection */
+        $( "#player1tracking" ).click(function() {
+          socket.emit('recon', { data: 'player1' });
+        });
+
+        $( "#player2tracking" ).click(function() {
+          socket.emit('recon', { data: 'player2' });
+        });
+
+        $( "#player3tracking" ).click(function() {
+          socket.emit('recon', { data: 'player3' });
+        });
+
+        $( "#player4tracking" ).click(function() {
+          socket.emit('recon', { data: 'player4' });
+        });
+
+        /* Dildo controls */
+        // Player 1
+        $( "#player1-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player1vib' });
+        });
+
+        $( "#player1-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player1vib' });
+        });
+
+        $( "#player1-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player1vib' });
+        });
+
+        $( "#player1-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player1vib' });
+        });
+
+        $( "#player1-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player1vib' });
+        });
+
+        $( "#player1-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player1vib' });
+        });
+
+        $( "#player1-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player1vib' });
+        });
+
+        // Player 2
+        $( "#player2-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player2vib' });
+        });
+
+        $( "#player2-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player2vib' });
+        });
+
+        $( "#player2-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player2vib' });
+        });
+
+        $( "#player2-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player2vib' });
+        });
+
+        $( "#player2-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player2vib' });
+        });
+
+        $( "#player2-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player2vib' });
+        });
+
+        $( "#player2-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player2vib' });
+        });
+
+        // Player 3
+        $( "#player3-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player3vib' });
+        });
+
+        $( "#player3-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player3vib' });
+        });
+
+        $( "#player3-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player3vib' });
+        });
+
+        $( "#player3-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player3vib' });
+        });
+
+        $( "#player3-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player3vib' });
+        });
+
+        $( "#player3-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player3vib' });
+        });
+
+        $( "#player3-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player3vib' });
+        });
+
+        // Player 4
+        $( "#player4-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player4vib' });
+        });
+
+        $( "#player4-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player4vib' });
+        });
+
+        $( "#player4-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player4vib' });
+        });
+
+        $( "#player4-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player4vib' });
+        });
+
+        $( "#player4-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player4vib' });
+        });
+
+        $( "#player4-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player4vib' });
+        });
+
+        $( "#player4-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player4vib' });
+        });
+
+        /* Other buttons */
+        $( "#rotate" ).click(function() {
+          console.log('rotate');
+          socket.emit('rotate', { my: 'data' });
+        });
+
+        $( "#fans-on" ).click(function() {
+          console.log('turning fans on');
+          socket.emit('fans-on', { my: 'data' });
+        });
+
+        $( "#fans-off" ).click(function() {
+          console.log('turning fans off');
+          socket.emit('fans-off', { my: 'data' });
+        });
+
+        $( "#test" ).click(function() {
+          console.log('testing');
+          socket.emit('test', { player: 1 });
+        });
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $( "#player3-state-get" ).click(function() {
+          console.log("player 3 state GET");
+          
+        });
+
+       $( "#player3-state-send" ).click(function() {
+          console.log("sendHandshakeToPlayer");
+          socket.emit('sendHandshakeToPlayer', { my: 'data' });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      });
+
+      $( document ).ready(function() {
+        $.getJSON( ip + "/config", function( data ) {
+          var playerData = data["PLAYERS"];
+
+          var player1h, player2h, player3h, player4h;
+
+          // get player heights
+          heightmap.forEach(function(item) {
+            if(item.value == playerData[0].height) {
+              player1h = item.key;
             }
+            if(item.value == playerData[1].height) {
+              player2h = item.key;
+            }
+            if(item.value == playerData[2].height) {
+              player3h = item.key;
+            }
+            if(item.value == playerData[3].height) {
+              player4h = item.key;
+            }            
           });
-        });
 
+          $( '#player1-height' ).append(player1h);
+          $( '#player2-height' ).append(player2h);
+          $( '#player3-height' ).append(player3h);
+          $( '#player4-height' ).append(player4h);
 
+          if(playerData[0].ison == true) {
+            $( '#player1-ison' ).append("ON");
+          } else {
+            $( '#player1-ison' ).append("OFF");
+          }
+          if(playerData[1].ison == true) {
+            $( '#player2-ison' ).append("ON");
+          } else {
+            $( '#player2-ison' ).append("OFF");
+          }
+          if(playerData[2].ison == true) {
+            $( '#player3-ison' ).append("ON");
+          } else {
+            $( '#player3-ison' ).append("OFF");
+          }
+          if(playerData[3].ison == true) {
+            $( '#player4-ison' ).append("ON");
+          } else {
+            $( '#player4-ison' ).append("OFF");
+          }
 
-    $('#player1').on('change', function() {
-    //  alert( this.value );
-      var height = this.value;
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 0,
-            "height" : parseFloat(height)
+          if(playerData[0].gender == 1) {
+            $( '#player1-gender' ).append("Male");        
+          } else {
+            $( '#player1-gender' ).append("Female");
           }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-        }
-      });
-    });
-    $('#player2').on('change', function() {
-      var height = this.value;
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 1,
-            "height" : parseFloat(height)
+          if(playerData[1].gender == 1) {
+            $( '#player2-gender' ).append("Male");        
+          } else {
+            $( '#player2-gender' ).append("Female");
           }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-        }
-      });
-    })
-    $('#player3').on('change', function() {
-      var height = this.value;
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 2,
-            "height" : parseFloat(height)
+          if(playerData[2].gender == 1) {
+            $( '#player3-gender' ).append("Male");        
+          } else {
+            $( '#player3-gender' ).append("Female");
           }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-        }
-      });
-    })
-    $('#player4').on('change', function() {
-      var height = this.value;
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 3,
-            "height" : parseFloat(height)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-        }
-      });
-    })
-    $('#player5').on('change', function() {
-      var height = this.value;
-      $.ajax({
-        url: '/setheight',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(
-          {
-            "player" : 4,
-            "height" : parseFloat(height)
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-        }
-      });
-    })
-    //reset everythingin load
-    $( "#timer" ).text(0);
-    //toggle label
-    $('#switch-1').change(function(){
-        var isPlayeron = false;
-        if($(this).is(':checked')) {
-          isPlayeron = true;
-        }
-        $.ajax({
-          url: '/config',
-          type: 'POST',
-          dataType : "json",
-          contentType: "application/json; charset=utf-8",
-          //data : JSON.stringify(data),
-          data: JSON.stringify(
-            {
-              "player" : 0,
-              "ison" : isPlayeron
-            }
-          ), // data as js object
-          success: function(result) {
-              console.log("ok " + result)
-              // Do something with the result
+          if(playerData[3].gender == 1) {
+            $( '#player4-gender' ).append("Male");        
+          } else {
+            $( '#player4-gender' ).append("Female");
           }
         });
-    });
-
-    $('#switch-2').change(function(){
-      var isPlayeron = false;
-      if($(this).is(':checked')) {
-        isPlayeron = true;
-      }
-      $.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 1,
-            "ison" : isPlayeron
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-            // Do something with the result
-        }
       });
-    });
-
-    $('#switch-3').change(function(){
-      var isPlayeron = false;
-      if($(this).is(':checked')) {
-        isPlayeron = true;
-      }
-      $.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 2,
-            "ison" : isPlayeron
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-            // Do something with the result
-        }
-      });
-    });
-
-    $('#switch-4').change(function(){
-      var isPlayeron = false;
-      if($(this).is(':checked')) {
-        isPlayeron = true;
-      }
-      $.ajax({
-        url: '/config',
-        type: 'POST',
-        dataType : "json",
-        contentType: "application/json; charset=utf-8",
-        //data : JSON.stringify(data),
-        data: JSON.stringify(
-          {
-            "player" : 3,
-            "ison" : isPlayeron
-          }
-        ), // data as js object
-        success: function(result) {
-            console.log("ok " + result)
-            // Do something with the result
-        }
-      });
-    });
-
-    $( "#player1button" ).click(function() {
-        console.log("doit)")
-        $.ajax({
-          url: '/config',
-          type: 'POST',
-          dataType : "json",
-          contentType: "application/json; charset=utf-8",
-          //data : JSON.stringify(data),
-          data: {}, // data as js object
-          success: function(result) {
-              console.log("ok " + result)
-              // Do something with the result
-          }
-        });
-    });
-
-
-    //global warning message dialogue
-    function showMessage(value){
-        $( "#player1" ).text(value);
-    }
-    var dialog = document.querySelector('dialog');
-
-    if (! dialog.showModal) {
-      dialogPolyfill.registerDialog(dialog);
-    }
-
-    dialog.querySelector('.close').addEventListener('click', function() {
-      dialog.close();
-    });
-
-    // end warning message dialogue
-    $( "#player1tracking" ).click(function() {
-      socket.emit('recon', { data: 'player1' });
-    });
-
-    $( "#player2tracking" ).click(function() {
-      socket.emit('recon', { data: 'player2' });
-    });
-
-    $( "#player3tracking" ).click(function() {
-      socket.emit('recon', { data: 'player3' });
-    });
-
-    $( "#player4tracking" ).click(function() {
-      socket.emit('recon', { data: 'player4' });
-    });
-
-    $( "#startgame" ).click(function() {
-      socket.emit('startgame', { my: 'data' });
-    });
-
-    $( "#rotate" ).click(function() {
-      console.log(rotate);
-      socket.emit('rotate', { my: 'data' });
-      $("#rotate").removeClass("mdl-button--accent").addClass("disabled-button");
-    });
-
-    $( "#endgame" ).click(function() {
-      socket.emit('endgame', { my: 'data' });
-    });
-
-
-
-    $( "#player1-dildon" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'dildon', player: 'player1vib' });
-    });
-
-    $( "#player1-surf" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'surf', player: 'player1vib' });
-    });
-
-    $( "#player1-pingpong" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'pingpong', player: 'player1vib' });
-    });
-
-    $( "#player1-tide" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'tide', player: 'player1vib' });
-    });
-
-    $( "#player1-wave" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'wave', player: 'player1vib' });
-    });
-
-    $( "#player1-dildoff" ).click(function() {
-      console.log(player);
-      socket.emit('dildoff', { set: 'dildoff', player: 'player1vib' });
-    });
-
-    $( "#player1-connectvib" ).click(function() {
-      console.log("OK connect");
-      socket.emit('connectvib', { set: 'connect', player: 'player1vib' });
-    });
-
-    // PLAYER 2 VIBRATORS
-
-    $( "#player2-dildon" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'dildon', player: 'player2vib' });
-    });
-
-    $( "#player2-surf" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'surf', player: 'player2vib' });
-    });
-
-    $( "#player2-pingpong" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'pingpong', player: 'player2vib' });
-    });
-
-    $( "#player2-tide" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'tide', player: 'player2vib' });
-    });
-
-    $( "#player2-wave" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'wave', player: 'player2vib' });
-    });
-
-    $( "#player2-dildoff" ).click(function() {
-      console.log(player);
-      socket.emit('dildoff', { set: 'dildoff', player: 'player2vib' });
-    });
-
-    $( "#player2-connectvib" ).click(function() {
-      console.log("OK connect");
-      socket.emit('connectvib', { set: 'connect', player: 'player2vib' });
-    });
-
-
-    //PLAYER 3 VIBRATORS
-
-    $( "#player3-dildon" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'dildon', player: 'player3vib' });
-    });
-
-    $( "#player3-surf" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'surf', player: 'player3vib' });
-    });
-
-    $( "#player3-pingpong" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'pingpong', player: 'player3vib' });
-    });
-
-    $( "#player3-tide" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'tide', player: 'player3vib' });
-    });
-
-    $( "#player3-wave" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'wave', player: 'player3vib' });
-    });
-
-    $( "#player3-dildoff" ).click(function() {
-      console.log(player);
-      socket.emit('dildoff', { set: 'dildoff', player: 'player3vib' });
-    });
-
-    $( "#player3-connectvib" ).click(function() {
-      console.log("OK connect");
-      socket.emit('connectvib', { set: 'connect', player: 'player3vib' });
-    });
-
-    //PLAYER 4 VIBRATORS
-
-
-    $( "#player4-dildon" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'dildon', player: 'player4vib' });
-    });
-
-    $( "#player4-surf" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'surf', player: 'player4vib' });
-    });
-
-    $( "#player4-pingpong" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'pingpong', player: 'player4vib' });
-    });
-
-    $( "#player4-tide" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'tide', player: 'player4vib' });
-    });
-
-    $( "#player4-wave" ).click(function() {
-      console.log(player);
-      socket.emit('dildon', { set: 'wave', player: 'player4vib' });
-    });
-
-    $( "#player4-dildoff" ).click(function() {
-      console.log(player);
-      socket.emit('dildoff', { set: 'dildoff', player: 'player4vib' });
-    });
-
-    $( "#player4-connectvib" ).click(function() {
-      console.log("OK connect");
-      socket.emit('connectvib', { set: 'connect', player: 'player4vib' });
-    });
-
-
-    $( "#reset" ).click(function() {
-      console.log("reset");
-      $( "#timer" ).text(0);
-      socket.emit('reset', { my: 'data' });
-
-      // Reset button states
-      $("#rotate").addClass("mdl-button--accent").removeClass("disabled-button");
-      $("#elevator").addClass("mdl-button--accent").removeClass("disabled-button");
-      $("#start").addClass("mdl-button--accent").removeClass("disabled-button");
-      $("#exitScene").addClass("mdl-button--accent").removeClass("disabled-button");
-      $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
-      $("#disablePerformer").addClass("disabled-button").removeClass("mdl-button--accent");
-    });
-    $( "#elevator" ).click(function() {
-      console.log("elevator");
-      socket.emit('lobby', { my: 'data' });
-      $("#elevator").removeClass("mdl-button--accent").addClass("disabled-button");
-    });
-
-
-
-
-
-
-
-    $( "#player3-state-get" ).click(function() {
-      console.log("player 3 state GET");
-      socket.emit('respondPlayerHandshake', {data: 'player3'});
-    });
-
-   $( "#player3-state-send" ).click(function() {
-      console.log("player 3 state SEND");
-      socket.emit('sendHandshakeToPlayer', {data: 'player3'});
-
-    });
-
-
-
-
-
-
-
-
-    $( "#start" ).click(function() {
-      console.log("start");
-      socket.emit('start', { my: 'data' });
-      $("#start").removeClass("mdl-button--accent").addClass("disabled-button");
-    });
-    $( "#enablePerformer" ).click(function() {
-      console.log("enablePerformer");
-      socket.emit('enablePerformer', { my: 'data' });
-      $("#enablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
-      $("#disablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
-    });
-    $( "#disablePerformer" ).click(function() {
-      console.log("disablePerformer");
-      socket.emit('disablePerformer', { my: 'data' });
-      $("#disablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
-      $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
-    });
-    $( "#exitScene" ).click(function() {
-      console.log("exitScene");
-      socket.emit('exitScene', { my: 'data' });
-      $("#exitScene").removeClass("mdl-button--accent").addClass("disabled-button");
-    });
-  });
-
-  $( document ).ready(function() {
-    $.getJSON( "http://192.168.1.212:4000/config", function( data ) {
-      var playerData = data["PLAYERS"];
-
-      /*// Reflect stores values to form
-      // ison
-      if(playerData[0].ison == true) $('.mdl-js-switch')[0].MaterialSwitch.on();
-      if(playerData[1].ison == true) $('.mdl-js-switch')[1].MaterialSwitch.on();
-      if(playerData[2].ison == true) $('.mdl-js-switch')[2].MaterialSwitch.on();
-      if(playerData[3].ison == true) $('.mdl-js-switch')[3].MaterialSwitch.on();
-      console.log("player1 ison: " + playerData[0].ison);
-      console.log("player2 ison: " + playerData[1].ison);
-      console.log("player3 ison: " + playerData[2].ison);
-      console.log("player4 ison: " + playerData[3].ison);
-
-      // gender
-      if(playerData[0].gender == 2) $('.mdl-js-radio')[1].MaterialRadio.check();
-      if(playerData[1].gender == 2) $('.mdl-js-radio')[3].MaterialRadio.check();
-      if(playerData[2].gender == 2) $('.mdl-js-radio')[5].MaterialRadio.check();
-      if(playerData[3].gender == 2) $('.mdl-js-radio')[7].MaterialRadio.check();
-      console.log("player1 gender: " + playerData[0].gender);
-      console.log("player2 gender: " + playerData[1].gender);
-      console.log("player3 gender: " + playerData[2].gender);
-      console.log("player4 gender: " + playerData[3].gender);*/
-
-      var player1h, player2h, player3h, player4h;
-
-      // get player heights
-      heightmap.forEach(function(item) {
-        if(item.value == playerData[0].height) {
-          player1h = item.key;
-        }
-        if(item.value == playerData[1].height) {
-          player2h = item.key;
-        }
-        if(item.value == playerData[2].height) {
-          player3h = item.key;
-        }
-        if(item.value == playerData[3].height) {
-          player4h = item.key;
-        }            
-      });
-
-      $( '#player1-height' ).append(player1h);
-      $( '#player2-height' ).append(player2h);
-      $( '#player3-height' ).append(player3h);
-      $( '#player4-height' ).append(player4h);
-
-      if(playerData[0].ison == true) {
-        $( '#player1-ison' ).append("ON");
-      } else {
-        $( '#player1-ison' ).append("OFF");
-      }
-      if(playerData[1].ison == true) {
-        $( '#player2-ison' ).append("ON");
-      } else {
-        $( '#player2-ison' ).append("OFF");
-      }
-      if(playerData[2].ison == true) {
-        $( '#player3-ison' ).append("ON");
-      } else {
-        $( '#player3-ison' ).append("OFF");
-      }
-      if(playerData[3].ison == true) {
-        $( '#player4-ison' ).append("ON");
-      } else {
-        $( '#player4-ison' ).append("OFF");
-      }
-
-      if(playerData[0].gender == 1) {
-        $( '#player1-gender' ).append("Male");        
-      } else {
-        $( '#player1-gender' ).append("Female");
-      }
-      if(playerData[1].gender == 1) {
-        $( '#player2-gender' ).append("Male");        
-      } else {
-        $( '#player2-gender' ).append("Female");
-      }
-      if(playerData[2].gender == 1) {
-        $( '#player3-gender' ).append("Male");        
-      } else {
-        $( '#player3-gender' ).append("Female");
-      }
-      if(playerData[3].gender == 1) {
-        $( '#player4-gender' ).append("Male");        
-      } else {
-        $( '#player4-gender' ).append("Female");
-      }
-    });
-  });
-
-
-</script>
-
-<div class="mdl-grid">
-
-<div class="mdl-cell mdl-cell--3-col">
-<!-- Accent-colored raised button with ripple -->
-    <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
-      STARTGAME
-    </button>
-
-    <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      RESET
-    </button>
-
-    <hr>
-
-    <p>VR Experience</p>
-
-    <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent rotatebutton scenebutton">
-      ROTATE
-    </button>
-
-    <button id="elevator" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      ELEVATOR
-    </button>
-
-    <button id="start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      VOID
-    </button>
-
-    <button id="enablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      QUEEN ON
-    </button>
-
-    <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect disabled-button scenebutton">
-      QUEEN OFF
-    </button>
-
-    <button id="exitScene" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-      EXIT
-    </button>
-
-    <hr>
-
-    <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored endgame scenebutton">
-      ENDGAME
-    </button>
-</div>
-
-<div class="mdl-cell mdl-cell--1-col timer" id="timer">
-
-</div>
-
-<dialog class="mdl-dialog">
-  <h4 class="mdl-dialog__title">Warning</h4>
-  <div class="mdl-dialog__content">
-    <span id="errormessage">
-      Warning Message
-    </span>
-  </div>
-  <div class="mdl-dialog__actions">
-    <button type="button" class="mdl-button close">OK</button>
-  </div>
-</dialog>
-
-</div>
-
-<!-- PLAYER -->
-<div class="mdl-grid player">
-  <div class="mdl-cell mdl-cell--1-col">
-    <b>Player 1</b>
-  </div>
-  <div class="mdl-cell mdl-cell--1-col" id="player1tracking">
-    Tracking
-  </div>
-  <div class="mdl-cell mdl-cell--2-col">
-    <div class="mdl-selectfield mdl-js-selectfield">
-       <select class="mdl-selectfield__select" id="player1" name="player1">
-         <option value=""></option>
-       </select>
-         <label class="mdl-selectfield__label" for="player1">choose height</label>
+    </script>
+
+    <!-- ELEVATORS -->
+    <div class="mdl-grid header">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Elevators</b>
+      </div>
     </div>
-</div>
-<div class="mdl-cell mdl-cell--2-col">
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-1">
-    <input type="radio" id="player1-option-1" class="mdl-radio__button" name="options1" value="1" checked>
-    <span class="mdl-radio__label">Male</span>
-  </label>
-
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-2">
-    <input type="radio" id="player1-option-2" class="mdl-radio__button" name="options1" value="2">
-    <span class="mdl-radio__label">Female</span>
-  </label>
- </div>
-</div>
-
-<div class="mdl-grid player player-data">
-  <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
-  </div>
-  <div class="mdl-cell mdl-cell--1-col">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player1-height">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player1-gender">
-  </div>
-</div>
-
-<div class="mdl-grid player player-data">
-  <button id="player1-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDON
-  </button>
-
-  <button id="player1-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    WAVE
-  </button>
-
-  <button id="player1-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    SURF
-  </button>
-
-  <button id="player1-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    TIDE
-  </button>
-
-  <button id="player1-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    PING PONG
-  </button>
-
-  <button id="player1-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDOFF
-  </button>
-
-  <button id="player1-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    CONNECT
-  </button>
-</div>
-<!-- END PLAYER -->
-
-<!-- PLAYER 2 -->
-<div class="mdl-grid player">
-  <div class="mdl-cell mdl-cell--1-col">
-    <b>Player 2</b>
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
-  <input type="checkbox" id="switch-2" class="mdl-switch__input" >
-  <span class="mdl-switch__label"></span>
-</label>
-  </div>
-  <div class="mdl-cell mdl-cell--1-col" id="player2tracking">
-    Tracking
-  </div>
-  <div class="mdl-cell mdl-cell--2-col">
-    <div class="mdl-selectfield mdl-js-selectfield">
-       <select class="mdl-selectfield__select" id="player2" name="player2">
-         <option value=""></option>
-       </select>
-         <label class="mdl-selectfield__label" for="player2">choose height</label>
-     </div>
-</div>
-
-<div class="mdl-cell mdl-cell--2-col">
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-1">
-    <input type="radio" id="player2-option-1" class="mdl-radio__button" name="options2" value="1" checked>
-    <span class="mdl-radio__label">Male</span>
-  </label>
-
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-2">
-    <input type="radio" id="player2-option-2" class="mdl-radio__button" name="options2" value="2">
-    <span class="mdl-radio__label">Female</span>
-  </label>
-</div>
-</div>
-
-<div class="mdl-grid player player-data">
-  <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
-  </div>
-  <div class="mdl-cell mdl-cell--1-col">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player2-height">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player2-gender">
-  </div>
-</div>
-
-<div class="mdl-grid player player-data">
-  <button id="player2-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDON
-  </button>
-
-  <button id="player2-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    WAVE
-  </button>
-
-  <button id="player2-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    SURF
-  </button>
-
-  <button id="player2-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    TIDE
-  </button>
-
-  <button id="player2-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    PING PONG
-  </button>
-
-  <button id="player2-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDOFF
-  </button>
-
-  <button id="player2-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    CONNECT
-  </button>
-</div>
-
-<!-- END PLAYER -->
-
-<!-- PLAYER 3-->
-<div class="mdl-grid player">
-  <div class="mdl-cell mdl-cell--1-col">
-    <b>Player 3</b>
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-3">
-    <input type="checkbox" id="switch-3" class="mdl-switch__input" >
-    <span class="mdl-switch__label"></span>
-  </label>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent rotatebutton scenebutton">
+          ROTATE
+        </button>
+      </div>
     </div>
-    <div class="mdl-cell mdl-cell--1-col" id="player3tracking">
-      Tracking
+    <!-- END ELEVATORS -->
+
+    <!-- FANS -->
+    <div class="mdl-grid header">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Fans</b>
+      </div>
     </div>
-    <div class="mdl-cell mdl-cell--2-col">
-      <div class="mdl-selectfield mdl-js-selectfield">
-         <select class="mdl-selectfield__select" id="player3" name="player3">
-           <option value=""></option>
-         </select>
-           <label class="mdl-selectfield__label" for="player3">choose height</label>
-       </div>
-  </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="fans-on" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+          FANS ON
+        </button>
+        <button id="fans-off" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+          FANS OFF
+        </button>
+      </div>
+    </div>
+    <!-- END FANS -->
 
-  <div class="mdl-cell mdl-cell--2-col">
-    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-1">
-      <input type="radio" id="player3-option-1" class="mdl-radio__button" name="options3" value="1" checked>
-      <span class="mdl-radio__label">Male</span>
-    </label>
+    <!-- VIBRATORS -->
+    <div class="mdl-grid header">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Vibrators</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 1
+      </div>
+      <!-- PLAYER 1 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player1-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDON
+        </button>
 
-    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-2">
-      <input type="radio" id="player3-option-2" class="mdl-radio__button" name="options3" value="2">
-      <span class="mdl-radio__label">Female</span>
-    </label>
-  </div>
+        <button id="player1-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          WAVE
+        </button>
 
-</div>
+        <button id="player1-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          SURF
+        </button>
 
-<div class="mdl-grid player player-data">
-  <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
-  </div>
-  <div class="mdl-cell mdl-cell--1-col">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player3-height">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player3-gender">
-  </div>
-</div>
+        <button id="player1-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          TIDE
+        </button>
 
-<div class="mdl-grid player player-data">
-  <button id="player3-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDON
-  </button>
+        <button id="player1-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          PING PONG
+        </button>
 
-  <button id="player3-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    WAVE
-  </button>
+        <button id="player1-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDOFF
+        </button>
 
-  <button id="player3-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    SURF
-  </button>
+        <button id="player1-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          CONNECT
+        </button>
+      </div>
+      <!-- END PLAYER 1 -->
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 2
+      </div>
+      <!-- PLAYER 2 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player2-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDON
+        </button>
 
-  <button id="player3-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    TIDE
-  </button>
+        <button id="player2-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          WAVE
+        </button>
 
-  <button id="player3-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    PING PONG
-  </button>
+        <button id="player2-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          SURF
+        </button>
 
-  <button id="player3-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDOFF
-  </button>
+        <button id="player2-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          TIDE
+        </button>
 
-  <button id="player3-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    CONNECT
-  </button>
-</div>
+        <button id="player2-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          PING PONG
+        </button>
 
-  <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    SEND STATE
-  </button>
+        <button id="player2-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDOFF
+        </button>
 
-  <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    GET STATE
-  </button>
-<!-- END PLAYER -->
+        <button id="player2-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          CONNECT
+        </button>
+      </div>
+      <!-- END PLAYER 2 -->
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 3
+      </div>
+      <!-- PLAYER 3 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player3-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDON
+        </button>
 
-<!-- PLAYER 4-->
-<div class="mdl-grid player">
+        <button id="player3-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          WAVE
+        </button>
 
-  <div class="mdl-cell mdl-cell--1-col">
-    <b>Player 4</b>
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-4">
-  <input type="checkbox" id="switch-4" class="mdl-switch__input" >
-  <span class="mdl-switch__label"></span>
-</label>
-  </div>
-  <div class="mdl-cell mdl-cell--1-col" id="player4tracking">
-    Tracking
-  </div>
-  <div class="mdl-cell mdl-cell--2-col">
-    <div class="mdl-selectfield mdl-js-selectfield">
-       <select class="mdl-selectfield__select" id="player4" name="player4">
-         <option value=""></option>
-       </select>
-         <label class="mdl-selectfield__label" for="player4">choose height</label>
-     </div>
-</div>
+        <button id="player3-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          SURF
+        </button>
 
-<div class="mdl-cell mdl-cell--2-col">
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-1">
-    <input type="radio" id="player4-option-1" class="mdl-radio__button" name="options4" value="1" checked>
-    <span class="mdl-radio__label">Male</span>
-  </label>
+        <button id="player3-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          TIDE
+        </button>
 
-  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-2">
-    <input type="radio" id="player4-option-2" class="mdl-radio__button" name="options4" value="2">
-    <span class="mdl-radio__label">Female</span>
-  </label>
- </div>
+        <button id="player3-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          PING PONG
+        </button>
 
-</div>
+        <button id="player3-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDOFF
+        </button>
 
-<div class="mdl-grid player player-data">
-  <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
-  </div>
-  <div class="mdl-cell mdl-cell--1-col">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player4-height">
-  </div>
-  <div class="mdl-cell mdl-cell--2-col" id="player4-gender">
-  </div>
-</div>
+        <button id="player3-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          CONNECT
+        </button>
+      </div>
+      <!-- END PLAYER 3 -->
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 4
+      </div>
+      <!-- PLAYER 4 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player4-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDON
+        </button>
 
-<div class="mdl-grid player player-data">
-  <button id="player4-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDON
-  </button>
+        <button id="player4-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          WAVE
+        </button>
 
-  <button id="player4-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    WAVE
-  </button>
+        <button id="player4-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          SURF
+        </button>
 
-  <button id="player4-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    SURF
-  </button>
+        <button id="player4-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          TIDE
+        </button>
 
-  <button id="player4-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    TIDE
-  </button>
+        <button id="player4-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          PING PONG
+        </button>
 
-  <button id="player4-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    PING PONG
-  </button>
+        <button id="player4-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          DILDOFF
+        </button>
 
-  <button id="player4-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    DILDOFF
-  </button>
+        <button id="player4-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          CONNECT
+        </button>
+      </div>
+      <!-- PLAYER 4 -->
+    </div>
+    <!-- END VIBRATORS -->
 
-  <button id="player4-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    CONNECT
-  </button>
-</div>
+    <!-- PLAYER DATA -->
+    <div class="mdl-grid header">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Data</b>
+      </div>
+    </div>
+    <div class="mdl-grid player-data">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>On/Off</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Name</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <b>Height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Gender</b>
+      </div>
+    </div>
+    <!-- PLAYER 1-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        1
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 1-->
+    <!-- PLAYER 2-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        2
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 2-->
+    <!-- PLAYER 3 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        3
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 3 -->
+    <!-- PLAYER 4 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        4
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 4 -->
+    <!-- END PLAYER DATA -->
 
-<!-- PERFORMER-->
-<div class="mdl-grid player">
-  <div class="mdl-cell mdl-cell--1-col">
-    <b>Queen</b>
-  </div>
-  <div class="mdl-cell mdl-cell--1-col" id="player5tracking">
-    Tracking
-  </div>
-  <div class="mdl-cell mdl-cell--2-col">
-    <div class="mdl-selectfield mdl-js-selectfield">
-       <select class="mdl-selectfield__select" id="player5" name="player5">
-         <option value=""></option>
-       </select>
-         <label class="mdl-selectfield__label" for="player5">choose height</label>
-     </div>
-</div>
-</div>
-<br>
+    <!-- PLAYER CONNECTION -->
+    <div class="mdl-grid header">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Connection</b>
+      </div>
+    </div>
+    <!-- END PLAYER CONNECTION -->
 
-<div class="mdl-grid">
+    <!--
 
-</div>
+        <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          SEND STATE
+        </button>
 
+        <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          GET STATE
+        </button>
 
-<!-- END PLAYER -->
-</body>
+        <button id="test" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+          TEST
+        </button>
+  -->
+
+    <!-- END PLAYER -->
+  </body>
 </html>
