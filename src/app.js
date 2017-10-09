@@ -54,6 +54,7 @@ var serialport = require('serialport'), // include the serialport library
 //myPort.on('open', openPort); // called when the serial port opens
 
 
+
 function openPort() {
     console.log('port open');
     console.log('baud rate: ' + myPort.options.baudRate);
@@ -63,6 +64,15 @@ function openPort() {
 var timerInterval;
 var timer = new Timer();
 var totaltime = 420;
+
+
+const APPSTATE = {
+    SETUP: 0,
+    READY: 1,
+    INGAME: 2,
+}
+
+
 
 var fantimes=[
   {
@@ -273,6 +283,16 @@ function endGame() {
   io.on( 'dildoff', ( ctx, data ) => {
     console.log("dildoff ", data);
     io.broadcast( 'dildoff',data);
+  });
+
+  io.on( 'sendHandshakeToPlayer', ( ctx, data ) => {
+    //console.log("handshake ", data);
+    io.broadcast( 'playerHandshake',data);
+  });
+
+  io.on( 'respondPlayerHandshake', ( ctx, data ) => {
+    console.log("handshake ", data);
+    //io.broadcast( 'playerHandshake',data);
   });
 
   io.on( 'enablePerformer', ( ctx, data ) => {
