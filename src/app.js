@@ -224,11 +224,10 @@ function resetGame() {
 
   if(currentState == APPSTATE.END) {
     // reset data
+    import config from './config';
     app.context.config = config;
-    console.log("ENDGAME");
   } 
   
-  console.log("reset");  
   currentState = APPSTATE.SETUP;
 
   // rebind player data
@@ -374,6 +373,7 @@ io.on('reset', ( ctx, data ) => {
   endGame();
   resetGame();
   io.broadcast( 'resetscene', 'resetscene');
+  io.broadcast('currentState', currentState);
 });
 
 io.on( 'getCurrentState' , ( ctx, data) => {
