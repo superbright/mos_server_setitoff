@@ -27,6 +27,101 @@
         console.log(data);
       });
 
+      var heightmap = [
+        {
+          key: "5’0” (152 cm)",
+          value: 152.40
+        },
+        {
+          key: "5’1” (156 cm)",
+          value: 154.94
+        },
+        {
+          key: "5’2” (157 cm)",
+          value:  157.48
+        },
+        {
+          key: "5’3” (160 cm)",
+          value:  160.02
+        },
+        {
+          key: "5’4” (162 cm)",
+          value:  162.56
+        },
+        {
+          key: "5’5” (165 cm)",
+          value:  165.10
+        },
+        {
+          key: "5’6” (168 cm)",
+          value: 167.74
+        },
+        {
+          key: "5’7” (170 cm)",
+          value:  170.18
+        },
+        {
+          key: "5’8” (173 cm)",
+          value:  172.72
+        },
+        {
+          key: "5’9” (175 cm)",
+          value: 175.26
+        },
+        {
+          key: "5’10” (178 cm)",
+          value: 177.80
+        },
+        {
+          key: "5’11” (180 cm)",
+          value: 180.34
+        },
+        {
+          key: "6’0” (183 cm)",
+          value: 182.88
+        },
+        {
+          key: "6’1” (185 cm)",
+          value: 185.45
+        },
+        {
+          key: "6’2” (188 cm)",
+          value: 187.96
+        },
+        {
+          key: "6’3” (190 cm)",
+          value: 190.50
+        },
+        {
+          key: "6’4” (193 cm)",
+          value: 193.04
+        },
+        {
+          key: "6’5” (195 cm)",
+          value: 195.58
+        },
+        {
+          key: "6’6” (198 cm)",
+          value: 198.12
+        },
+        {
+          key: "6’7” (200 cm)",
+          value: 200.66
+        },
+        {
+          key: "6’8” (203 cm)",
+          value:  203.20
+        },
+        {
+          key: "6’9” (206 cm)",
+          value:  205.74
+        },
+        {
+          key: "6’10” (208 cm)",
+          value: 208.28
+        }
+      ];
+
       /* Error dialog */
       socket.on('errormessage', function (data) {
         console.log(data["data"]);
@@ -35,41 +130,171 @@
         $( "#errormessage" ).text(data["data"]);
       });
 
-      /* Players connecting to optitrack *///players connecting to optitrack
+      /* Players connecting to optitrack */
       socket.on('connectionState', function(data) {
         var dataarr = data.split(':');
         console.log(dataarr);
-        var enabledColor = '#8ec252';
-        var disabledColor = '#ff0000';
+
+        var enabledColor = '#8bc34a';
+        var disabledColor = '#ff5252';
+
         if(dataarr[0] == 'player1') {
           if(dataarr[1] == "True") {
-            $('#player1tracking').css('background',enabledColor)
+            $('#player1tracking').css('background',enabledColor);
+            $('#player1tracking-text').text('Tracking');
           } else {
-            $('#player1tracking').css('background',disabledColor)
+            $('#player1tracking').css('background',disabledColor);
+            $('#player1tracking-text').text('Reconnect');
           }
         }
         if(dataarr[0] == 'player2') {
           if(dataarr[1] == "True") {
-            $('#player2tracking').css('background',enabledColor)
+            $('#player2tracking').css('background',enabledColor);
+            $('#player2tracking-text').text('Tracking');
           } else {
-            $('#player2 tracking').css('background',disabledColor)
+            $('#player2tracking').css('background',disabledColor);
+            $('#player2tracking-text').text('Reconnect');
           }
         }
         if(dataarr[0] == 'player3') {
           if(dataarr[1] == "True") {
-            $('#player3tracking').css('background',enabledColor)
+            $('#player3tracking').css('background',enabledColor);
+            $('#player3tracking-text').text('Tracking');
           } else {
-            $('#player3tracking').css('background',disabledColor)
+            $('#player3tracking').css('background',disabledColor);
+            $('#player1tracking-text').text('Reconnect');
           }
         }
         if(dataarr[0] == 'player4') {
           if(dataarr[1] == "True") {
-            $('#player4tracking').css('background',enabledColor)
+            $('#player4tracking').css('background',enabledColor);
+            $('#player4tracking-text').text('Tracking');
           } else {
-            $('#player4tracking').css('background',disabledColor)
+            $('#player4tracking').css('background',disabledColor);
+            $('#player4tracking-text').text('Reconnect');
           }
         }
       });
+
+      function updatePlayerData() {
+        $.getJSON( ip + "/config", function( data ) {
+          var playerData = data["PLAYERS"];
+
+          var player1h, player2h, player3h, player4h;
+
+          // get player heights
+          heightmap.forEach(function(item) {
+            if(item.value == playerData[0].height) {
+              player1h = item.key;
+            }
+            if(item.value == playerData[1].height) {
+              player2h = item.key;
+            }
+            if(item.value == playerData[2].height) {
+              player3h = item.key;
+            }
+            if(item.value == playerData[3].height) {
+              player4h = item.key;
+            }            
+          });
+
+          // display player height from JSON file
+          $( '#player1-height' ).text(player1h);
+          $( '#player2-height' ).text(player2h);
+          $( '#player3-height' ).text(player3h);
+          $( '#player4-height' ).text(player4h);
+
+          // display player names from JSON file
+          $( '#player1-name' ).text(playerData[0].name);
+          $( '#player2-name' ).text(playerData[1].name);
+          $( '#player3-name' ).text(playerData[2].name);
+          $( '#player4-name' ).text(playerData[3].name);
+
+          // display player ison from JSON file
+          if(playerData[0].ison == true) {
+            $( '#player1-ison' ).text("ON");
+          } else {
+            $( '#player1-ison' ).text("OFF");
+          }
+          if(playerData[1].ison == true) {
+            $( '#player2-ison' ).text("ON");
+          } else {
+            $( '#player2-ison' ).text("OFF");
+          }
+          if(playerData[2].ison == true) {
+            $( '#player3-ison' ).text("ON");
+          } else {
+            $( '#player3-ison' ).text("OFF");
+          }
+          if(playerData[3].ison == true) {
+            $( '#player4-ison' ).text("ON");
+          } else {
+            $( '#player4-ison' ).text("OFF");
+          }
+
+          // display player gender from JSON file
+          if(playerData[0].gender == 1) {
+            $( '#player1-gender' ).text("Male");        
+          } else {
+            $( '#player1-gender' ).text("Female");
+          }
+          if(playerData[1].gender == 1) {
+            $( '#player2-gender' ).text("Male");        
+          } else {
+            $( '#player2-gender' ).text("Female");
+          }
+          if(playerData[2].gender == 1) {
+            $( '#player3-gender' ).text("Male");        
+          } else {
+            $( '#player3-gender' ).text("Female");
+          }
+          if(playerData[3].gender == 1) {
+            $( '#player4-gender' ).text("Male");        
+          } else {
+            $( '#player4-gender' ).text("Female");
+          }
+        });
+      }
+
+      function disableButtons() {
+        for(i = 1; i <= 9; i++) {
+          $('.mdl-button')[i].MaterialButton.disable();
+        }
+      }
+
+      function enableButtons() {
+        for(i = 1; i <= 9; i++) {
+          $('.mdl-button')[i].MaterialButton.enable();
+        }
+      }
+
+      /* UI changes for game states */
+      function setupState() {
+        // update game state
+        $('#game-state').children(0).text('Setup');
+        $('#game-state').removeClass('game-state-ingame game-state-ready');
+
+        // disable buttons
+        disableButtons();
+      }
+
+      function readyState() {
+        // update game state
+        $('#game-state').children(0).text('Ready');
+        $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
+
+        // game is ready; update player data
+        updatePlayerData();
+
+        // enable buttons
+        enableButtons();
+      }
+
+      function ingameState() {
+        // update game state
+        $('#game-state').children(0).text('In game');
+        $('#game-state').addClass('game-state-ingame').removeClass('game-state-ready');
+      }
 
       $(document).ready(function() {
         // reset everything load
@@ -91,85 +316,97 @@
         $( "#player1tracking" ).click(function() {
           socket.emit('recon', { data: 'player1' });
         });
-
         $( "#player2tracking" ).click(function() {
           socket.emit('recon', { data: 'player2' });
         });
-
         $( "#player3tracking" ).click(function() {
           socket.emit('recon', { data: 'player3' });
         });
-
         $( "#player4tracking" ).click(function() {
           socket.emit('recon', { data: 'player4' });
         });
 
+        /* Update player data on load */
+        updatePlayerData();
+
         /* Gameplay */
         $( "#startgame" ).click(function() {
-          socket.emit('startgame', { my: 'data' });
+          socket.emit('stateIngame', { my: 'data' });
+          $('#startgame').prop('disabled', true);
         });
 
-        $( "#rotate" ).click(function() {
-          console.log(rotate);
+        $( "#rotate-in" ).click(function() {
           socket.emit('rotate', { my: 'data' });
-          $("#rotate").removeClass("mdl-button--accent").addClass("disabled-button");
+          $('#rotate-in').prop('disabled', true);
+        });
+
+        $( "#elevator" ).click(function() {
+          console.log("elevator");
+          socket.emit('lobby', { my: 'data' });
+          $('#elevator').prop('disabled', true);
+        });
+
+        // void
+        $( "#start" ).click(function() {
+          console.log("start");
+          socket.emit('start', { my: 'data' });
+          $("#start").prop('disabled', true);
+        });
+
+        $( "#enablePerformer" ).click(function() {
+          console.log("enablePerformer");
+          socket.emit('enablePerformer', { my: 'data' });
+          $("#enablePerformer").prop('disabled', true);
+        });
+
+        $( "#disablePerformer" ).click(function() {
+          console.log("disablePerformer");
+          socket.emit('disablePerformer', { my: 'data' });
+          $("#disablePerformer").prop('disabled', true);
+        });
+
+        $( "#exitScene" ).click(function() {
+          console.log("exitScene");
+          socket.emit('exitScene', { my: 'data' });
+          $("#exitScene").prop('disabled', true);
+        });
+
+        $( "#rotate-out" ).click(function() {
+          socket.emit('rotate', { my: 'data' });
+          $('#rotate-out').prop('disabled', true);
         });
 
         $( "#endgame" ).click(function() {
           socket.emit('endgame', { my: 'data' });
+          // do this on server side?
+          //socket.emit('startgame', { my: 'data' });
         });
 
         $( "#reset" ).click(function() {
           console.log("reset");
           $( "#timer" ).text(0);
           socket.emit('reset', { my: 'data' });
-
-          // Reset button states
-          $("#rotate").addClass("mdl-button--accent").removeClass("disabled-button");
-          $("#elevator").addClass("mdl-button--accent").removeClass("disabled-button");
-          $("#start").addClass("mdl-button--accent").removeClass("disabled-button");
-          $("#exitScene").addClass("mdl-button--accent").removeClass("disabled-button");
-          $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
-          $("#disablePerformer").addClass("disabled-button").removeClass("mdl-button--accent");
-
-          // Reset player heights
-          $('#player1').get(0).selectedIndex = 0;
-          $('#player2').get(0).selectedIndex = 0;
-          $('#player3').get(0).selectedIndex = 0;
-          $('#player4').get(0).selectedIndex = 0;
-          $('#player5').get(0).selectedIndex = 0;
         });
 
-        $( "#elevator" ).click(function() {
-          console.log("elevator");
-          socket.emit('lobby', { my: 'data' });
-          $("#elevator").removeClass("mdl-button--accent").addClass("disabled-button");
-        });
+        /* Update game state on load */
+        socket.emit('getCurrentState', { my: 'data' });
 
-        $( "#start" ).click(function() {
-          console.log("start");
-          socket.emit('start', { my: 'data' });
-          $("#start").removeClass("mdl-button--accent").addClass("disabled-button");
-        });
-
-        $( "#enablePerformer" ).click(function() {
-          console.log("enablePerformer");
-          socket.emit('enablePerformer', { my: 'data' });
-          $("#enablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
-          $("#disablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
-        });
-
-        $( "#disablePerformer" ).click(function() {
-          console.log("disablePerformer");
-          socket.emit('disablePerformer', { my: 'data' });
-          $("#disablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
-          $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
-        });
-
-        $( "#exitScene" ).click(function() {
-          console.log("exitScene");
-          socket.emit('exitScene', { my: 'data' });
-          $("#exitScene").removeClass("mdl-button--accent").addClass("disabled-button");
+        /* Listen for any game state changes */
+        socket.on('currentState', function(data) {
+          if(data == 0) {
+            setupState();
+            console.log('setup');
+          } else if(data == 1) {
+            readyState();
+            console.log('ready');
+          } else if(data == 2) {
+            ingameState();
+            console.log('ingame');
+          } else if(data == 3) {
+            console.log('end');
+          } else {
+            console.log('invalid currentState');
+          }
         });
       });
     </script>
@@ -186,49 +423,127 @@
       </div>
     </dialog>
 
-    <!-- STATUS -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>Status</b>
+    <!-- PLAYER DATA -->
+    <div class="mdl-grid player-data">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>On/Off</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Name</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <b>Height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Gender</b>
       </div>
     </div>
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <h4>
-          Player data
-        </h4>
+    <!-- PLAYER 1-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        1
       </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 1-->
+    <!-- PLAYER 2-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        2
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 2-->
+    <!-- PLAYER 3 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        3
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 3 -->
+    <!-- PLAYER 4 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col mdl-center">
+        4
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 4 -->
+    <!-- END PLAYER DATA -->
+
+    <!-- STATUS -->
+<!--     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
         <h4>
           Connection
         </h4>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <h4>
-          State
-        </h4>
-        <span class="mdl-chip">
-            <span class="mdl-chip__text">Setup</span>
-        </span>
-        <span class="mdl-chip game-state-ready">
-            <span class="mdl-chip__text">Ready</span>
-        </span>
-        <span class="mdl-chip game-state-ingame">
-            <span class="mdl-chip__text">In game</span>
-        </span>
-      </div>
-    </div>
+    </div> -->
     <!-- END STATUS -->
 
     <!-- VR EXPERIENCE -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>VR Experience</b>
+    <div class="mdl-grid player-data">
+      <div class="mdl-cell mdl-cell--1-col">
+        <span class="mdl-chip" id="game-state">
+            <span class="mdl-chip__text"></span>
+        </span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-center">
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player1tracking">1</span>
+          <span class="mdl-chip__text" id="player1tracking-text"></span>
+        </span>
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player2tracking">2</span>
+          <span class="mdl-chip__text" id="player1tracking-text"></span>
+        </span>
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player3tracking">3</span>
+          <span class="mdl-chip__text" id="player1tracking-text"></span>
+        </span>
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player4tracking">4</span>
+          <span class="mdl-chip__text" id="player1tracking-text"></span>
+        </span>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="timer">
       </div>
     </div>
     <div class="mdl-grid mdl-center">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="ingame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
+        <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
           Start game
         </button>
       </div>
@@ -262,16 +577,6 @@
           Exit
         </button>
       </div>
-    </div>
-    <!-- END VR EXPERIENCE-->
-
-    <!-- ENDGAME -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>Endgame</b>
-      </div>
-    </div>
-    <div class="mdl-grid mdl-center">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
         <button id="rotate-out" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton scenebutton">
           Rotate
@@ -288,7 +593,7 @@
         </button>
       </div> -->
     </div>
-    <!-- END ENGAME -->
+    <!-- END VR EXPERIENCE -->
 
     <!-- RESET -->
 

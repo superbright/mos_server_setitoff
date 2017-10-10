@@ -11,9 +11,8 @@
   text-transform: uppercase;
 }
 
-.timer {
-  padding:40px;
-  font-size: 10em;
+#timer {
+  font-size: 3em;
 }
 
 .disabled-button {
@@ -36,6 +35,7 @@
 
 .player-data {
   background-color: #e8e8e8;
+  align-items: center;
 }
 
 .mdl-radio {
@@ -83,4 +83,16 @@
 .mdl-button--reset {
   background-color: rgb(255,82,82);
   color: #fff;
+}
+
+.mdl-chip__text {
+  font-size: 17px;
+}
+
+.custom-red {
+  background-color: rgb(255,82,82);
+}
+
+.custom-green {
+  background-color: rgb(139,195,74);
 }

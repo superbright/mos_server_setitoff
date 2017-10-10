@@ -212,16 +212,19 @@ function endGame() {
 }
 
 /* Game state functions */
-// called by endgame after all games are destroyed by process launcher (called by socketmessage endgame)
+// DONE called by endgame after all games are destroyed by process launcher (called by socketmessage endgame)
+// DONE OR if someone presses the reset button
+// DONE OR if someone toggles the ready button off
 function resetGame() {
   // reset JSON data - turn all ison to false and reset gender
   // send socket message to reset ready toggle to off on guest page
   // DONE make the current app state to SETUP
   // DONE send socket message to gameplay UI to update state
-  // send socket message to guests page to reset all data on UI
+  // DONE send socket message to guests page to reset all data on UI
 
   if(currentState == APPSTATE.ENDGAME) {
     // reset data
+    app.context.config = config;
   } 
   
   currentState = APPSTATE.SETUP;
@@ -259,11 +262,30 @@ function readyGame() {
   }
 }
 
-// called by start game button on gameplay UI
+// DONE called by start game button on gameplay UI
 function startGame() {
-  // check if the current state is ready; if not send error message saying not ready to start
-  // if state is ready, change state to INGAME 
-  // this allows all buttons on gameplay UI to be useable
+  // DONE check if the current state is ready; if not send error message saying not ready to start
+  // DONE if state is ready, change state to INGAME 
+  // DONE this allows all buttons on gameplay UI to be useable -- moved to ready state instead
+  if(currentState != APPSTATE.READY) {
+    console.log("error");
+    
+    // get currentState text
+    var stateGame;
+    if(currentState == APPSTATE.SETUP) stateGame = 'SETUP';
+    else if (currentState == APPSTATE.READY) stateGame = 'READY';
+    else if (currentState == APPSTATE.INGAME) stateGame = 'INGAME';
+    else if (currentState == APPSTATE.END) stateGame = 'END';
+    else console.log("invalid state");
+
+    io.broadcast('errormessage', {
+      data : "Game must be in READY state to proceed. It is currently in " + stateGame + " state." });
+  } else {
+    currentState = APPSTATE.INGAME;
+
+    // rebind player data
+    io.broadcast( 'updatePlayerData', 'updatePlayerData');
+  }
 }
 
 io.on( 'connection', ( ctx, data ) => {
@@ -272,11 +294,6 @@ io.on( 'connection', ( ctx, data ) => {
   io.broadcast( 'hello', {
     numConnections: io.connections.size
   });
-});
-
-io.on( 'updateConnectionState', ( ctx, data ) => {
-  console.log(data);
-  io.broadcast('connectionState',data);
 });
 
 io.on( 'vibon', ( ctx, data ) => {
@@ -340,6 +357,11 @@ io.on('connectvib', ( ctx, data ) => {
 });
 
 /* Server */
+io.on( 'updateConnectionState', ( ctx, data ) => {
+  console.log(data);
+  io.broadcast('connectionState',data);
+});
+
 io.on('updateData', ( ctx, data ) => {
   console.log( 'update player data' );
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
@@ -348,6 +370,7 @@ io.on('updateData', ( ctx, data ) => {
 io.on('reset', ( ctx, data ) => {
   console.log( 'reset' );
   endGame();
+  resetGame();
   io.broadcast( 'resetscene', 'resetscene');
 });
 
@@ -397,10 +420,11 @@ io.on('rotate', (ctx, data) => {
 });
 
 /* Experience */
-io.on( 'startgame', ( ctx, data ) => {
+// combined to engame process
+/*io.on( 'startgame', ( ctx, data ) => {
   console.log("call start game");
   io.broadcast( 'startGame');
-});
+});*/
 
 io.on('lobby', ( ctx, data ) => {
   console.log( 'lobby' );
@@ -444,11 +468,20 @@ io.on( 'exitScene', ( ctx, data ) => {
 });
 
 io.on( 'endgame', ( ctx, data ) => {
-  io.broadcast( 'disconnectMotive',data);
+  currentState = APPSTATE.END;
+  resetGame();
 
+  io.broadcast('disconnectMotive',data);
+
+  // close game
   setTimeout(function() {
-    io.broadcast( 'endGame');
+    io.broadcast('endGame');
   }, 3000);
+
+  // open game after 1 minute
+  setTimeout(function() {
+    io.broadcast('startGame');
+  }, 60000);
 });
 
 io.attach( app )

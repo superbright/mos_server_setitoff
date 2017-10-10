@@ -174,18 +174,6 @@
         $('.mdl-js-switch')[4].MaterialSwitch.off();
       }
 
-      function endState() {
-        // update game state
-        $('#game-state').children(0).text('End');
-        $('#game-state').removeClass('game-state-ingame game-state-ready');
-
-        // disable all fields
-        disableFields();
-        
-        // toggle ready switch off
-        $('.mdl-js-switch')[4].MaterialSwitch.off();
-      }
-
       function disableFields() {
         // switches
         for(i = 0; i < 5; i++) {
@@ -877,15 +865,6 @@
           }
         });
 
-        /* Ready switch logic */
-        $('#switch-ready').change(function(){
-          if($(this).is(':checked')) {
-            socket.emit('stateReady', { my: 'data' });
-          } else { 
-            socket.emit('stateSetup', { my: 'data' });
-          }
-        });
-
         /* Update game state on load */
         socket.emit('getCurrentState', { my: 'data' });
 
@@ -901,14 +880,22 @@
             ingameState();
             console.log('ingame');
           } else if(data == 3) {
-            endState();
             console.log('end');
           } else {
             console.log('invalid currentState');
           }
         });
 
-        /* Etcetera */
+        /* Ready switch logic */
+        $('#switch-ready').change(function(){
+          if($(this).is(':checked')) {
+            socket.emit('stateReady', { my: 'data' });
+          } else { 
+            socket.emit('stateSetup', { my: 'data' });
+          }
+        });
+
+        /* Submit button */
         $( "#submit" ).click(function() {
           console.log("submit");
           socket.emit('updateData', { my: 'data' });
