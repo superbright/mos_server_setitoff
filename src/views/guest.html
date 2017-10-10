@@ -123,11 +123,229 @@
       ];
      
       function populate(selector,key,value) {
-        $(selector)
-          .append('<option value="'+ value +'">'+ key + '</option>');
+        $(selector).append('<option value="'+ value +'">'+ key + '</option>');
+      }
+
+      /* Error dialog */
+      socket.on('errormessage', function (data) {
+        // prevent ready switch to toggle on
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
+
+        console.log(data["data"]);
+        var dialog = document.querySelector('dialog');
+        dialog.showModal();
+          $( "#errormessage" ).text(data["data"]);
+      });
+
+      /* UI changes for game states */
+      function setupState() {
+        // update game state
+        $('#game-state').children(0).text('Setup');
+        $('#game-state').removeClass('game-state-ingame game-state-ready');
+
+        // enable all fields
+        enableFields();
+
+        // toggle ready switch off
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
+      }
+
+      function readyState() {
+        // update game state
+        $('#game-state').children(0).text('Ready');
+        $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
+
+        // enable all fields
+        enableFields();
+
+        // toggle ready switch on
+        $('.mdl-js-switch')[4].MaterialSwitch.on();
+      }
+
+      function ingameState() {
+        // update game state
+        $('#game-state').children(0).text('In game');
+        $('#game-state').addClass('game-state-ingame').removeClass('game-state-ready');
+
+        // disable all fields
+        disableFields();
+
+        // toggle ready switch off
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
+      }
+
+      function endState() {
+        // update game state
+        $('#game-state').children(0).text('End');
+        $('#game-state').removeClass('game-state-ingame game-state-ready');
+
+        // disable all fields
+        disableFields();
+        
+        // toggle ready switch off
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
+      }
+
+      function disableFields() {
+        // switches
+        for(i = 0; i < 5; i++) {
+          $('.mdl-js-switch')[i].MaterialSwitch.disable();
+        }
+
+        // radio buttons
+        for(i = 0; i < 8; i++) {
+          $('.mdl-js-radio')[i].MaterialRadio.disable();
+        }
+
+        // text fields
+        for(i = 1; i <= 4; i++) {
+          $('#player' + i +'-name-text').prop('disabled', true);
+        }
+
+        // buttons
+        for(i = 1; i <= 4; i++) {
+          $('#player' + i +'-name-submit').prop('disabled', true);
+        }
+        $('#submit').prop('disabled', true);
+
+        // dropdown menus
+        for(i = 1; i <= 4; i++) {
+          $('#player' + i).prop('disabled', true);
+        }
+      }
+
+      function enableFields() {
+        // switches
+        for(i = 0; i < 5; i++) {
+          $('.mdl-js-switch')[i].MaterialSwitch.enable();
+        }
+
+        // radio buttons
+        for(i = 0; i < 8; i++) {
+          $('.mdl-js-radio')[i].MaterialRadio.enable();
+        }
+
+        // text fields
+        for(i = 1; i <= 4; i++) {
+          $('#player' + i +'-name-text').prop('disabled', false);
+        }
+
+        // buttons
+        for(i = 1; i <= 4; i++) {
+          $('#player' + i +'-name-submit').prop('disabled', false);
+        }
+        $('#submit').prop('disabled', false);
+
+        // dropdown menus
+        for(i = 1; i <= 4; i++) {
+          $('#player' + i).prop('disabled', false);
+        }
       }
 
       $(document).ready(function() {
+        // warning message dialog
+        var dialog = document.querySelector('dialog');
+
+        if (! dialog.showModal) {
+          dialogPolyfill.registerDialog(dialog);
+        }
+
+        dialog.querySelector('.close').addEventListener('click', function() {
+          dialog.close();
+        });
+        // end warning message dialogue
+
+        /* Display server data on page load */
+        $.getJSON( ip + "/config", function( data ) {
+          var playerData = data["PLAYERS"];
+          var player1h, player2h, player3h, player4h;
+
+          // get player heights in feet and inches
+          heightmap.forEach(function(item) {
+            if(item.value == playerData[0].height) {
+              player1h = item.key;
+            }
+            if(item.value == playerData[1].height) {
+              player2h = item.key;
+            }
+            if(item.value == playerData[2].height) {
+              player3h = item.key;
+            }
+            if(item.value == playerData[3].height) {
+              player4h = item.key;
+            }            
+          });
+
+          // display player heights from JSON file
+          $( '#player1-height' ).append(player1h);
+          $( '#player2-height' ).append(player2h);
+          $( '#player3-height' ).append(player3h);
+          $( '#player4-height' ).append(player4h);
+
+          // display player names from JSON file
+          $( '#player1-name' ).append(playerData[0].name);
+          $( '#player2-name' ).append(playerData[1].name);
+          $( '#player3-name' ).append(playerData[2].name);
+          $( '#player4-name' ).append(playerData[3].name);
+
+          // diplay player ison from JSON file
+          if(playerData[0].ison == true) {
+            $( '#player1-ison' ).append("ON");
+          } else {
+            $( '#player1-ison' ).append("OFF");
+          }
+          if(playerData[1].ison == true) {
+            $( '#player2-ison' ).append("ON");
+          } else {
+            $( '#player2-ison' ).append("OFF");
+          }
+          if(playerData[2].ison == true) {
+            $( '#player3-ison' ).append("ON");
+          } else {
+            $( '#player3-ison' ).append("OFF");
+          }
+          if(playerData[3].ison == true) {
+            $( '#player4-ison' ).append("ON");
+          } else {
+            $( '#player4-ison' ).append("OFF");
+          }
+
+          // display player gender from JSON file
+          if(playerData[0].gender == 1) {
+            $( '#player1-gender' ).append("Male");        
+          } else {
+            $( '#player1-gender' ).append("Female");
+          }
+          if(playerData[1].gender == 1) {
+            $( '#player2-gender' ).append("Male");        
+          } else {
+            $( '#player2-gender' ).append("Female");
+          }
+          if(playerData[2].gender == 1) {
+            $( '#player3-gender' ).append("Male");        
+          } else {
+            $( '#player3-gender' ).append("Female");
+          }
+          if(playerData[3].gender == 1) {
+            $( '#player4-gender' ).append("Male");        
+          } else {
+            $( '#player4-gender' ).append("Female");
+          }
+              
+          /* Reflect stored JSON values to form */
+          // ison
+          if(playerData[0].ison == true) $('.mdl-js-switch')[0].MaterialSwitch.on();
+          if(playerData[1].ison == true) $('.mdl-js-switch')[1].MaterialSwitch.on();
+          if(playerData[2].ison == true) $('.mdl-js-switch')[2].MaterialSwitch.on();
+          if(playerData[3].ison == true) $('.mdl-js-switch')[3].MaterialSwitch.on();
+
+          // gender
+          if(playerData[0].gender == 2) $('.mdl-js-radio')[1].MaterialRadio.check();
+          if(playerData[1].gender == 2) $('.mdl-js-radio')[3].MaterialRadio.check();
+          if(playerData[2].gender == 2) $('.mdl-js-radio')[5].MaterialRadio.check();
+          if(playerData[3].gender == 2) $('.mdl-js-radio')[7].MaterialRadio.check();
+        });
+
         /* Player heights */
         heightmap.forEach(function(item) {
           populate('#player1',item.key,item.value);
@@ -637,90 +855,6 @@
           });
         });
 
-        /* Display server data on page load */
-        $.getJSON( ip + "/config", function( data ) {
-          var playerData = data["PLAYERS"];
-          var player1h, player2h, player3h, player4h;
-
-          // get player heights in feet and inches
-          heightmap.forEach(function(item) {
-            if(item.value == playerData[0].height) {
-              player1h = item.key;
-            }
-            if(item.value == playerData[1].height) {
-              player2h = item.key;
-            }
-            if(item.value == playerData[2].height) {
-              player3h = item.key;
-            }
-            if(item.value == playerData[3].height) {
-              player4h = item.key;
-            }            
-          });
-
-          // display player heights from JSON file
-          $( '#player1-height' ).append(player1h);
-          $( '#player2-height' ).append(player2h);
-          $( '#player3-height' ).append(player3h);
-          $( '#player4-height' ).append(player4h);
-
-          // display player names from JSON file
-          $( '#player1-name' ).append(playerData[0].name);
-          $( '#player2-name' ).append(playerData[1].name);
-          $( '#player3-name' ).append(playerData[2].name);
-          $( '#player4-name' ).append(playerData[3].name);
-
-          // diplay player ison from JSON file
-          if(playerData[0].ison == true) {
-            $( '#player1-ison' ).append("ON");
-          } else {
-            $( '#player1-ison' ).append("OFF");
-          }
-          if(playerData[1].ison == true) {
-            $( '#player2-ison' ).append("ON");
-          } else {
-            $( '#player2-ison' ).append("OFF");
-          }
-          if(playerData[2].ison == true) {
-            $( '#player3-ison' ).append("ON");
-          } else {
-            $( '#player3-ison' ).append("OFF");
-          }
-          if(playerData[3].ison == true) {
-            $( '#player4-ison' ).append("ON");
-          } else {
-            $( '#player4-ison' ).append("OFF");
-          }
-
-          // display player gender from JSON file
-          if(playerData[0].gender == 1) {
-            $( '#player1-gender' ).append("Male");        
-          } else {
-            $( '#player1-gender' ).append("Female");
-          }
-          if(playerData[1].gender == 1) {
-            $( '#player2-gender' ).append("Male");        
-          } else {
-            $( '#player2-gender' ).append("Female");
-          }
-          if(playerData[2].gender == 1) {
-            $( '#player3-gender' ).append("Male");        
-          } else {
-            $( '#player3-gender' ).append("Female");
-          }
-          if(playerData[3].gender == 1) {
-            $( '#player4-gender' ).append("Male");        
-          } else {
-            $( '#player4-gender' ).append("Female");
-          }
-        });
-
-        $( "#submit" ).click(function() {
-          console.log("submit");
-          //socket.emit('reset', { my: 'data' });
-          socket.emit('updateData', { my: 'data' });
-        });
-
         /* Bind enter key to name submission */
         $('#player1-name-text').keypress(function(e) {
           if(e.which == 13) {
@@ -741,9 +875,61 @@
           if(e.which == 13) {
             $('#player4-name-submit').click();
           }
-        });      
+        });
+
+        /* Ready switch logic */
+        $('#switch-ready').change(function(){
+          if($(this).is(':checked')) {
+            socket.emit('stateReady', { my: 'data' });
+          } else { 
+            socket.emit('stateSetup', { my: 'data' });
+          }
+        });
+
+        /* Update game state on load */
+        socket.emit('getCurrentState', { my: 'data' });
+
+        /* Listen for any game state changes */
+        socket.on('currentState', function(data) {
+          if(data == 0) {
+            setupState();
+            console.log('setup');
+          } else if(data == 1) {
+            readyState();
+            console.log('ready');
+          } else if(data == 2) {
+            ingameState();
+            console.log('ingame');
+          } else if(data == 3) {
+            endState();
+            console.log('end');
+          } else {
+            console.log('invalid currentState');
+          }
+        });
+
+        /* Etcetera */
+        $( "#submit" ).click(function() {
+          console.log("submit");
+          socket.emit('updateData', { my: 'data' });
+          location.reload();
+        });
       });
     </script>
+
+    <!-- ERROR DIALOG -->
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title">Warning</h4>
+      <div class="mdl-dialog__content">
+        <span id="errormessage">
+          Warning Message
+        </span>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close">OK</button>
+      </div>
+    </dialog>
+    <!-- END ERROR DIALOG -->
 
     <!-- HEADER -->
     <div class="mdl-grid header">
@@ -982,14 +1168,8 @@
         <h4>
           Game State
         </h4>
-        <span class="mdl-chip">
-            <span class="mdl-chip__text">Setup</span>
-        </span>
-        <span class="mdl-chip game-state-ready">
-            <span class="mdl-chip__text">Ready</span>
-        </span>
-        <span class="mdl-chip game-state-ingame">
-            <span class="mdl-chip__text">In game</span>
+        <span class="mdl-chip" id="game-state">
+            <span class="mdl-chip__text"></span>
         </span>
       </div>
     </div>

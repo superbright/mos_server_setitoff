@@ -18,24 +18,24 @@ api.get('/',
 api.get('/qa',
   async (ctx, next) => {
     await ctx.render('qa', {
-     user: 'museum'
-   });
+      user: 'museum'
+    });
   }
 );
 
 api.get('/guest',
   async (ctx, next) => {
     await ctx.render('guest', {
-     user: 'museum'
-   });
+      user: 'museum'
+    });
   }
 );
 
 api.get('/gameplay',
   async (ctx, next) => {
     await ctx.render('gameplay', {
-     user: 'museum'
-   });
+      user: 'museum'
+    });
   }
 );
 
@@ -62,12 +62,11 @@ api.post('/setgender', async (ctx, next) => {
 );
 
 api.post('/setname', async (ctx, next) => {
-      console.log( ctx.request.body.name);
-      ctx.config.PLAYERS[ctx.request.body.player].name = ctx.request.body.name;
-      ctx.body = JSON.stringify(ctx.request.body);
-      ctx.status = 200;
-    }
-);
+  console.log( ctx.request.body.name);
+  ctx.config.PLAYERS[ctx.request.body.player].name = ctx.request.body.name;
+  ctx.body = JSON.stringify(ctx.request.body);
+  ctx.status = 200;
+});
 
 api.get('/config',
   async (ctx, next) => {

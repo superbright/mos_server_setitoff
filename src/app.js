@@ -60,13 +60,6 @@ function openPort() {
 var timerInterval;
 var timer = new Timer();
 var totaltime = 420;
-
-const APPSTATE = {
-  SETUP: 0,
-  READY: 1,
-  INGAME: 2,
-}
-var currentState = APPSTATE.READY
 var fantimes=[
   {
     start: 5,
@@ -78,10 +71,16 @@ var fantimes=[
   }
 ]
 
-// var FeetToMeters = require("feet-to-meters");
-// var ftm = new FeetToMeters();
-// console.log(ftm.get(0.2));
+/* Game state variables */
+const APPSTATE = {
+  SETUP: 0,
+  READY: 1,
+  INGAME: 2,
+  END: 3,
+}
+var currentState = APPSTATE.SETUP;
 
+/* Haptic funtions */
 function startFan() {
   console.log("start fan");
   //return;
@@ -173,6 +172,7 @@ function checkFan() {
   // }
 }
 
+/* Game functions */
 function startGame() {
 
   timer.on('time', function (time) {
@@ -211,29 +211,52 @@ function endGame() {
   clearInterval(timerInterval);
 }
 
+/* Game state functions */
 // called by endgame after all games are destroyed by process launcher (called by socketmessage endgame)
 function resetGame() {
-
   // reset JSON data - turn all ison to false and reset gender
   // send socket message to reset ready toggle to off on guest page
-  // make the current app state to SETUP
-  // send socket message to gameplay UI to update state
+  // DONE make the current app state to SETUP
+  // DONE send socket message to gameplay UI to update state
   // send socket message to guests page to reset all data on UI
+
+  if(currentState == APPSTATE.ENDGAME) {
+    // reset data
+  } 
+  
+  currentState = APPSTATE.SETUP;
+
+  // rebind player data
+  io.broadcast( 'updatePlayerData', 'updatePlayerData');
 }
 
-// called by toggle from guests page
+// DONE called by toggle from guests page
 function readyGame() {
+  // DONE if current state is not setup, send an error message back to guests page saying: current state
+  // DONE update all the data one last time
+  // DONE (same as above?) send socket message to backpacks to update JSON file updatePlayerData socket message
+  // DONE (skeleton in place) send socket message to gameplay UI to update state
+  // DONE IF ready state is toggled off, BACK to setup mode with similar restrictions to gameplay UI and guests page
+  // DONE sets current state to READY
   if(currentState != APPSTATE.SETUP) {
     console.log("error");
+    
+    // get currentState text
+    var stateGame;
+    if(currentState == APPSTATE.SETUP) stateGame = 'SETUP';
+    else if (currentState == APPSTATE.READY) stateGame = 'READY';
+    else if (currentState == APPSTATE.INGAME) stateGame = 'INGAME';
+    else if (currentState == APPSTATE.END) stateGame = 'END';
+    else console.log("invalid state");
+
+    io.broadcast('errormessage', {
+      data : "Game must be in SETUP state to proceed. It is currently in " + stateGame + " state." });
   } else {
-    console.log("error 2")
+    currentState = APPSTATE.READY;
+
+    // rebind player data
+    io.broadcast( 'updatePlayerData', 'updatePlayerData');
   }
-  // if current state is not setup, send an error message back to guests page saying: current state
-  // update all the data one last time
-  // send socket message to backpacks to update JSON file updatePlayerData socket message
-  // send socket message to gameplay UI to update state
-  // IF ready state is toggled off, BACK to setup mode with similar restrictions to gameplay UI and guests page
-  // sets current state to READY
 }
 
 // called by start game button on gameplay UI
@@ -242,17 +265,6 @@ function startGame() {
   // if state is ready, change state to INGAME 
   // this allows all buttons on gameplay UI to be useable
 }
-
-io.on('rotate', (ctx, data) => {
- setTimeout(() => {
-   console.log("rotate elevator");
-   var input = "3;3;3;3;";
-   // convert the value to an ASCII string before sending it:
-   //console.log('Sending ' + input + ' out the serial port');
-   myPort.write(input.toString());
-   console.log("DONE");
- }, 1300);
-});
 
 io.on( 'connection', ( ctx, data ) => {
   console.log( 'join event fired', data )
@@ -281,18 +293,14 @@ io.on( 'viboff', ( ctx, data ) => {
   io.broadcast( 'dildoff',{ set: dataarr[1], player: dataarr[0] });
 });
 
-io.on( 'viboff', ( ctx, data ) => {
+// unneeded?
+/*io.on( 'viboff', ( ctx, data ) => {
   console.log(data);
   io.broadcast( 'dildoff',data);
-});
+});*/
 
 io.on( 'recon', ( ctx, data ) => {
   io.broadcast( 'reconnectMotive',data);
-});
-
-io.on( 'startgame', ( ctx, data ) => {
-  console.log("call start game");
-  io.broadcast( 'startGame');
 });
 
 io.on( 'dildon', ( ctx, data ) => {
@@ -315,21 +323,6 @@ io.on( 'respondPlayerHandshake', ( ctx, data ) => {
   //io.broadcast( 'playerHandshake',data);
 });
 
-io.on( 'enablePerformer', ( ctx, data ) => {
-  console.log("enablePerformer ", data);
-  io.broadcast( 'enablePerformer',data);
-});
-
-io.on( 'disablePerformer', ( ctx, data ) => {
-  console.log("disablePerformer ", data);
-  io.broadcast( 'disablePerformer',data);
-});
-
-io.on( 'exitScene', ( ctx, data ) => {
-  console.log("exitScene ", data);
-  io.broadcast( 'exitScene',data);
-});
-
 //'pairing' and 'connected'
 io.on('pairing', ( ctx, data ) => {
     console.log("pairing vib ", data);
@@ -346,12 +339,10 @@ io.on('connectvib', ( ctx, data ) => {
    io.broadcast( 'connectvib',data);
 });
 
-io.on( 'endgame', ( ctx, data ) => {
-  io.broadcast( 'disconnectMotive',data);
-
-  setTimeout(function() {
-    io.broadcast( 'endGame');
-  }, 3000);
+/* Server */
+io.on('updateData', ( ctx, data ) => {
+  console.log( 'update player data' );
+  io.broadcast( 'updatePlayerData', 'updatePlayerData');
 });
 
 io.on('reset', ( ctx, data ) => {
@@ -360,9 +351,55 @@ io.on('reset', ( ctx, data ) => {
   io.broadcast( 'resetscene', 'resetscene');
 });
 
-io.on('updateData', ( ctx, data ) => {
-  console.log( 'update' );
-  io.broadcast( 'updatePlayerData', 'updatePlayerData');
+io.on( 'getCurrentState' , ( ctx, data) => {
+  console.log( 'get current game state' );
+  io.broadcast('currentState', currentState);
+});
+
+io.on('stateSetup', (ctx, data) => {
+  console.log('setup game state');
+  resetGame();
+  io.broadcast('currentState', currentState);
+});
+
+io.on('stateReady', (ctx, data) => {
+  console.log('ready game state');
+  readyGame();
+  io.broadcast('currentState', currentState);
+});
+
+io.on('stateIngame', (ctx, data) => {
+  console.log('ingame game state');
+  startGame();
+  io.broadcast('currentState', currentState);
+});
+
+/* Haptic */
+io.on('fans-on', ( ctx, data ) => {
+  console.log( 'turning fans on' );
+  startFan();
+});
+
+io.on('fans-off', ( ctx, data ) => {
+  console.log( 'turning fans off' );
+  stopFan();
+});
+
+io.on('rotate', (ctx, data) => {
+  setTimeout(() => {
+    console.log("rotate elevator");
+    var input = "3;3;3;3;";
+    // convert the value to an ASCII string before sending it:
+    // console.log('Sending ' + input + ' out the serial port');
+    myPort.write(input.toString());
+    console.log("DONE");
+  }, 1300);
+});
+
+/* Experience */
+io.on( 'startgame', ( ctx, data ) => {
+  console.log("call start game");
+  io.broadcast( 'startGame');
 });
 
 io.on('lobby', ( ctx, data ) => {
@@ -378,21 +415,11 @@ io.on('lobby', ( ctx, data ) => {
   io.broadcast( 'enterlobby', 'lobby');
 });
 
-io.on('fans-on', ( ctx, data ) => {
-  console.log( 'turning fans on' );
-  startFan();
-});
-
-io.on('fans-off', ( ctx, data ) => {
-  console.log( 'turning fans off' );
-  stopFan();
-});
-
 io.on('start', ( ctx, data ) => {
   console.log( 'start' );
   //check if game is on
   if(timer.isStarted()) {
-      io.broadcast( 'errormessage', {
+    io.broadcast( 'errormessage', {
       data : "Experience already started"
     });
   } else {
@@ -401,14 +428,27 @@ io.on('start', ( ctx, data ) => {
   }
 });
 
-io.on('state', ( ctx, data ) => {
-  console.log('game status');
-  console.log(data);
+io.on( 'enablePerformer', ( ctx, data ) => {
+  console.log("enablePerformer ", data);
+  io.broadcast( 'enablePerformer',data);
 });
 
-io.on('setHeight', ( ctx, data ) => {
-  console.log( "height " + data );
-  io.broadcast( 'updatePlayerData', data);
+io.on( 'disablePerformer', ( ctx, data ) => {
+  console.log("disablePerformer ", data);
+  io.broadcast( 'disablePerformer',data);
+});
+
+io.on( 'exitScene', ( ctx, data ) => {
+  console.log("exitScene ", data);
+  io.broadcast( 'exitScene',data);
+});
+
+io.on( 'endgame', ( ctx, data ) => {
+  io.broadcast( 'disconnectMotive',data);
+
+  setTimeout(function() {
+    io.broadcast( 'endGame');
+  }, 3000);
 });
 
 io.attach( app )
