@@ -18,6 +18,7 @@ import Timer from 'timer-machine'
 var player = require('play-sound')({player: "afplay"});
 
 import config from './config';
+import configReset from './config';
 console.log("HAPTIC FAN URL " + config.FAN_URL);
 
 const io = new IO();
@@ -223,8 +224,8 @@ function resetGame() {
 
   if(currentState == APPSTATE.END) {
     // reset data
-    console.log(app.context.config);
-    app.context.config = config;
+    console.log(configRest);
+    app.context.config = configReset;
   } 
   
   currentState = APPSTATE.SETUP;
