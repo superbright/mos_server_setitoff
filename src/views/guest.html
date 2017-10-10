@@ -137,47 +137,6 @@
           $( "#errormessage" ).text(data["data"]);
       });
 
-      /* UI changes for game states */
-      function setupState() {
-        // update game state
-        $('#game-state').children(0).text('Setup');
-        $('#game-state').removeClass('game-state-ingame game-state-ready');
-
-        // enable all fields
-        enableFields();
-
-        // toggle ready switch off
-        $('.mdl-js-switch')[4].MaterialSwitch.off();
-
-        updatePlayerData();
-      }
-
-      function readyState() {
-        // update game state
-        $('#game-state').children(0).text('Ready');
-        $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
-
-        // enable all fields
-        enableFields();
-
-        // toggle ready switch on
-        $('.mdl-js-switch')[4].MaterialSwitch.on();
-
-        updatePlayerData();
-      }
-
-      function ingameState() {
-        // update game state
-        $('#game-state').children(0).text('In game');
-        $('#game-state').addClass('game-state-ingame').removeClass('game-state-ready');
-
-        // disable all fields
-        disableFields();
-
-        // toggle ready switch off
-        $('.mdl-js-switch')[4].MaterialSwitch.off();
-      }
-
       function updatePlayerData() {
         $.getJSON( ip + "/config", function( data ) {
           var playerData = data["PLAYERS"];
@@ -197,7 +156,7 @@
             }
             if(item.value == playerData[3].height) {
               player4h = item.key;
-            }            
+            }
           });
 
           // display player height from JSON file
@@ -255,7 +214,59 @@
           } else {
             $( '#player4-gender' ).text("Female");
           }
+
+          // Reflect stores values to form
+          // ison
+          if(playerData[0].ison == true) $('.mdl-js-switch')[0].MaterialSwitch.on();
+          if(playerData[1].ison == true) $('.mdl-js-switch')[1].MaterialSwitch.on();
+          if(playerData[2].ison == true) $('.mdl-js-switch')[2].MaterialSwitch.on();
+          if(playerData[3].ison == true) $('.mdl-js-switch')[3].MaterialSwitch.on();
+
+          // gender
+          if(playerData[0].gender == 2) $('.mdl-js-radio')[1].MaterialRadio.check();
+          if(playerData[1].gender == 2) $('.mdl-js-radio')[3].MaterialRadio.check();
+          if(playerData[2].gender == 2) $('.mdl-js-radio')[5].MaterialRadio.check();
+          if(playerData[3].gender == 2) $('.mdl-js-radio')[7].MaterialRadio.check();
         });
+      }
+
+      /* UI changes for game states */
+      function setupState() {
+        // update game state
+        $('#game-state').children(0).text('Setup');
+        $('#game-state').removeClass('game-state-ingame game-state-ready');
+
+        // enable all fields
+        enableFields();
+
+        // toggle ready switch off
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
+
+        updatePlayerData();
+      }
+
+      function readyState() {
+        // update game state
+        $('#game-state').children(0).text('Ready');
+        $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
+
+        // enable all fields
+        enableFields();
+
+        // toggle ready switch on
+        $('.mdl-js-switch')[4].MaterialSwitch.on();
+      }
+
+      function ingameState() {
+        // update game state
+        $('#game-state').children(0).text('In game');
+        $('#game-state').addClass('game-state-ingame').removeClass('game-state-ready');
+
+        // disable all fields
+        disableFields();
+
+        // toggle ready switch off
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
       }
 
       function disableFields() {
