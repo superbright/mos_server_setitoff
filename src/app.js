@@ -209,6 +209,8 @@ function endGame() {
   //timer.reset();
   timer = new Timer();
   clearInterval(timerInterval);
+  
+  io.broadcast( 'time', { time: 0 });
 }
 
 /* Game state functions */
