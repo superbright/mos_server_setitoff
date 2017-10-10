@@ -130,29 +130,28 @@
         var disabledColor = '#ff0000';
         if(dataarr[0] == 'player1') {
           if(dataarr[1] == "True") {
-              $('#player1tracking').css('background',enabledColor)
+            $('#player1tracking').css('background',enabledColor)
           } else {
             $('#player1tracking').css('background',disabledColor)
           }
         }
         if(dataarr[0] == 'player2') {
           if(dataarr[1] == "True") {
-              $('#player2tracking').css('background',enabledColor)
+            $('#player2tracking').css('background',enabledColor)
           } else {
             $('#player2 tracking').css('background',disabledColor)
           }
         }
-
         if(dataarr[0] == 'player3') {
           if(dataarr[1] == "True") {
-              $('#player3tracking').css('background',enabledColor)
+            $('#player3tracking').css('background',enabledColor)
           } else {
             $('#player3tracking').css('background',disabledColor)
           }
         }
         if(dataarr[0] == 'player4') {
           if(dataarr[1] == "True") {
-              $('#player4tracking').css('background',enabledColor)
+            $('#player4tracking').css('background',enabledColor)
           } else {
             $('#player4tracking').css('background',disabledColor)
           }
@@ -380,11 +379,19 @@
             }            
           });
 
+          // display player height from JSON file
           $( '#player1-height' ).append(player1h);
           $( '#player2-height' ).append(player2h);
           $( '#player3-height' ).append(player3h);
           $( '#player4-height' ).append(player4h);
 
+          // display player names from JSON file
+          $( '#player1-name' ).append(playerData[0].name);
+          $( '#player2-name' ).append(playerData[1].name);
+          $( '#player3-name' ).append(playerData[2].name);
+          $( '#player4-name' ).append(playerData[3].name);
+
+          // display player ison from JSON file
           if(playerData[0].ison == true) {
             $( '#player1-ison' ).append("ON");
           } else {
@@ -406,6 +413,7 @@
             $( '#player4-ison' ).append("OFF");
           }
 
+          // display player gender from JSON file
           if(playerData[0].gender == 1) {
             $( '#player1-gender' ).append("Male");        
           } else {
@@ -431,40 +439,58 @@
     </script>
 
     <!-- ELEVATORS -->
-    <div class="mdl-grid header">
+    <div class="mdl-grid header header-title header-title">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Elevators</b>
       </div>
     </div>
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent rotatebutton scenebutton">
-          ROTATE
+        <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+          Rotate
         </button>
       </div>
     </div>
     <!-- END ELEVATORS -->
 
     <!-- FANS -->
-    <div class="mdl-grid header">
+    <div class="mdl-grid header header-title header-title">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Fans</b>
       </div>
     </div>
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="fans-on" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-          FANS ON
+        <button id="fans-on" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Fans on
         </button>
-        <button id="fans-off" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
-          FANS OFF
+        <button id="fans-off" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Fans off
         </button>
       </div>
     </div>
     <!-- END FANS -->
 
+    <!-- GAME -->
+    <div class="mdl-grid header header-title header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Game</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="game-launch" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Launch game
+        </button>
+        <button id="game-close" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Close game
+        </button>
+      </div>
+    </div>
+    <!-- END GAME -->
+
     <!-- VIBRATORS -->
-    <div class="mdl-grid header">
+    <div class="mdl-grid header header-title">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Vibrators</b>
       </div>
@@ -475,31 +501,31 @@
       </div>
       <!-- PLAYER 1 -->
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="player1-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDON
         </button>
 
-        <button id="player1-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           WAVE
         </button>
 
-        <button id="player1-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           SURF
         </button>
 
-        <button id="player1-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           TIDE
         </button>
 
-        <button id="player1-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           PING PONG
         </button>
 
-        <button id="player1-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDOFF
         </button>
 
-        <button id="player1-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player1-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           CONNECT
         </button>
       </div>
@@ -511,31 +537,31 @@
       </div>
       <!-- PLAYER 2 -->
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="player2-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDON
         </button>
 
-        <button id="player2-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           WAVE
         </button>
 
-        <button id="player2-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           SURF
         </button>
 
-        <button id="player2-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           TIDE
         </button>
 
-        <button id="player2-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           PING PONG
         </button>
 
-        <button id="player2-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDOFF
         </button>
 
-        <button id="player2-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player2-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           CONNECT
         </button>
       </div>
@@ -547,31 +573,31 @@
       </div>
       <!-- PLAYER 3 -->
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="player3-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDON
         </button>
 
-        <button id="player3-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           WAVE
         </button>
 
-        <button id="player3-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           SURF
         </button>
 
-        <button id="player3-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           TIDE
         </button>
 
-        <button id="player3-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           PING PONG
         </button>
 
-        <button id="player3-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDOFF
         </button>
 
-        <button id="player3-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           CONNECT
         </button>
       </div>
@@ -583,31 +609,31 @@
       </div>
       <!-- PLAYER 4 -->
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="player4-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDON
         </button>
 
-        <button id="player4-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           WAVE
         </button>
 
-        <button id="player4-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           SURF
         </button>
 
-        <button id="player4-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           TIDE
         </button>
 
-        <button id="player4-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           PING PONG
         </button>
 
-        <button id="player4-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           DILDOFF
         </button>
 
-        <button id="player4-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player4-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           CONNECT
         </button>
       </div>
@@ -616,7 +642,7 @@
     <!-- END VIBRATORS -->
 
     <!-- PLAYER DATA -->
-    <div class="mdl-grid header">
+    <div class="mdl-grid header header-title">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Player Data</b>
       </div>
@@ -701,24 +727,45 @@
     <!-- END PLAYER DATA -->
 
     <!-- PLAYER CONNECTION -->
-    <div class="mdl-grid header">
+    <div class="mdl-grid header header-title">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Player Connection</b>
       </div>
     </div>
     <!-- END PLAYER CONNECTION -->
 
+    <!-- GAME STATE -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Game State</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <span class="mdl-chip">
+            <span class="mdl-chip__text">Setup</span>
+        </span>
+        <span class="mdl-chip game-state-ready">
+            <span class="mdl-chip__text">Ready</span>
+        </span>
+        <span class="mdl-chip game-state-ingame">
+            <span class="mdl-chip__text">In game</span>
+        </span>
+      </div>
+    </div>
+    <!-- END GAME STATE -->
+
     <!--
 
-        <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           SEND STATE
         </button>
 
-        <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           GET STATE
         </button>
 
-        <button id="test" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+        <button id="test" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
           TEST
         </button>
   -->

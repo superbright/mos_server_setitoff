@@ -4,9 +4,11 @@
 }
 
 .scenebutton {
-  width: 200px;
-  height:50px;
+  width: 400px;
+  height: 75px;
   margin-bottom: 5px;
+  font-size: 30px;
+  text-transform: uppercase;
 }
 
 .timer {
@@ -19,17 +21,13 @@
   color: #fff;
 }
 
-.content-grid {
-  max-width: 768px;
-}
-
-.mdl-grid {
-  padding: 0!important;
-}
-
 .header {
   background-color: #ff4081;
   color: #fff;
+}
+
+.header-title {
+  font-size: 20px;
 }
 
 .mdl-center {
@@ -55,7 +53,7 @@
 
 .mdl-table-cell {
   display: table-cell;
-  text-align: center;	
+  text-align: center;
 }
 
 .mdl-table {
@@ -63,5 +61,26 @@
 }
 
 .mdl-switch-custom {
-	margin-left: 25px;
+  margin-left: 25px;
+}
+
+.mdl-chip__text {
+  font-size: 20px;
+}
+
+.game-state-ready {
+  background-color: rgb(139,195,74);
+}
+
+.game-state-ingame {
+  background-color: rgb(255,82,82);
+}
+
+.reset-button {
+  margin-top: 200px;
+}
+
+.mdl-button--reset {
+  background-color: rgb(255,82,82);
+  color: #fff;
 }

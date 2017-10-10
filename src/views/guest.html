@@ -18,7 +18,7 @@
   <body>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      // Connect to socket
+      /* Socket connection */
       //var socket = io('http://192.168.1.212:4000');
       //var ip = 'http://192.168.1.212:4000';
       var socket = io('localhost:4000');
@@ -720,6 +720,28 @@
           //socket.emit('reset', { my: 'data' });
           socket.emit('updateData', { my: 'data' });
         });
+
+        /* Bind enter key to name submission */
+        $('#player1-name-text').keypress(function(e) {
+          if(e.which == 13) {
+            $('#player1-name-submit').click();
+          }
+        });
+        $('#player2-name-text').keypress(function(e) {
+          if(e.which == 13) {
+            $('#player2-name-submit').click();
+          }
+        });
+        $('#player3-name-text').keypress(function(e) {
+          if(e.which == 13) {
+            $('#player3-name-submit').click();
+          }
+        });
+        $('#player4-name-text').keypress(function(e) {
+          if(e.which == 13) {
+            $('#player4-name-submit').click();
+          }
+        });      
       });
     </script>
 
@@ -933,7 +955,7 @@
 
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent scenebutton">
+        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
           Submit
         </button>
       </div>
@@ -957,7 +979,18 @@
 
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
-        game state
+        <h4>
+          Game State
+        </h4>
+        <span class="mdl-chip">
+            <span class="mdl-chip__text">Setup</span>
+        </span>
+        <span class="mdl-chip game-state-ready">
+            <span class="mdl-chip__text">Ready</span>
+        </span>
+        <span class="mdl-chip game-state-ingame">
+            <span class="mdl-chip__text">In game</span>
+        </span>
       </div>
     </div>
   </body>

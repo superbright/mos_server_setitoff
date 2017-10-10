@@ -1,0 +1,305 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+    <title>Gameplay - Museum of Sex - VR</title>
+
+    <link rel="stylesheet" href="./mdl/material.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dialog-polyfill.css">
+    <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
+
+    <script src="./mdl/material.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/dialog-polyfill.js"></script>
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      /* Socket connection */
+      //var socket = io('http://192.168.1.212:4000');
+      //var ip = 'http://192.168.1.212:4000';
+      var socket = io('localhost:4000');
+      var ip = 'http://localhost:4000';
+      socket.on('hello', function (data) {
+        console.log(data);
+      });
+
+      /* Error dialog */
+      socket.on('errormessage', function (data) {
+        console.log(data["data"]);
+        var dialog = document.querySelector('dialog');
+        dialog.showModal();
+          $( "#errormessage" ).text(data["data"]);
+      });
+
+      /* Players connecting to optitrack *///players connecting to optitrack
+      socket.on('connectionState', function(data) {
+        var dataarr = data.split(':');
+        console.log(dataarr);
+        var enabledColor = '#8ec252';
+        var disabledColor = '#ff0000';
+        if(dataarr[0] == 'player1') {
+          if(dataarr[1] == "True") {
+            $('#player1tracking').css('background',enabledColor)
+          } else {
+            $('#player1tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player2') {
+          if(dataarr[1] == "True") {
+            $('#player2tracking').css('background',enabledColor)
+          } else {
+            $('#player2 tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player3') {
+          if(dataarr[1] == "True") {
+            $('#player3tracking').css('background',enabledColor)
+          } else {
+            $('#player3tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player4') {
+          if(dataarr[1] == "True") {
+            $('#player4tracking').css('background',enabledColor)
+          } else {
+            $('#player4tracking').css('background',disabledColor)
+          }
+        }
+      });
+
+      $(document).ready(function() {
+        // reset everything load
+        $( "#timer" ).text(0);
+
+        // warning message dialog
+        var dialog = document.querySelector('dialog');
+
+        if (! dialog.showModal) {
+          dialogPolyfill.registerDialog(dialog);
+        }
+
+        dialog.querySelector('.close').addEventListener('click', function() {
+          dialog.close();
+        });
+        // end warning message dialogue
+        
+        /* OptiTrack reconnect */
+        $( "#player1tracking" ).click(function() {
+          socket.emit('recon', { data: 'player1' });
+        });
+
+        $( "#player2tracking" ).click(function() {
+          socket.emit('recon', { data: 'player2' });
+        });
+
+        $( "#player3tracking" ).click(function() {
+          socket.emit('recon', { data: 'player3' });
+        });
+
+        $( "#player4tracking" ).click(function() {
+          socket.emit('recon', { data: 'player4' });
+        });
+
+        /* Gameplay */
+        $( "#startgame" ).click(function() {
+          socket.emit('startgame', { my: 'data' });
+        });
+
+        $( "#rotate" ).click(function() {
+          console.log(rotate);
+          socket.emit('rotate', { my: 'data' });
+          $("#rotate").removeClass("mdl-button--accent").addClass("disabled-button");
+        });
+
+        $( "#endgame" ).click(function() {
+          socket.emit('endgame', { my: 'data' });
+        });
+
+        $( "#reset" ).click(function() {
+          console.log("reset");
+          $( "#timer" ).text(0);
+          socket.emit('reset', { my: 'data' });
+
+          // Reset button states
+          $("#rotate").addClass("mdl-button--accent").removeClass("disabled-button");
+          $("#elevator").addClass("mdl-button--accent").removeClass("disabled-button");
+          $("#start").addClass("mdl-button--accent").removeClass("disabled-button");
+          $("#exitScene").addClass("mdl-button--accent").removeClass("disabled-button");
+          $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
+          $("#disablePerformer").addClass("disabled-button").removeClass("mdl-button--accent");
+
+          // Reset player heights
+          $('#player1').get(0).selectedIndex = 0;
+          $('#player2').get(0).selectedIndex = 0;
+          $('#player3').get(0).selectedIndex = 0;
+          $('#player4').get(0).selectedIndex = 0;
+          $('#player5').get(0).selectedIndex = 0;
+        });
+
+        $( "#elevator" ).click(function() {
+          console.log("elevator");
+          socket.emit('lobby', { my: 'data' });
+          $("#elevator").removeClass("mdl-button--accent").addClass("disabled-button");
+        });
+
+        $( "#start" ).click(function() {
+          console.log("start");
+          socket.emit('start', { my: 'data' });
+          $("#start").removeClass("mdl-button--accent").addClass("disabled-button");
+        });
+
+        $( "#enablePerformer" ).click(function() {
+          console.log("enablePerformer");
+          socket.emit('enablePerformer', { my: 'data' });
+          $("#enablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
+          $("#disablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
+        });
+
+        $( "#disablePerformer" ).click(function() {
+          console.log("disablePerformer");
+          socket.emit('disablePerformer', { my: 'data' });
+          $("#disablePerformer").removeClass("mdl-button--accent").addClass("disabled-button");
+          $("#enablePerformer").addClass("mdl-button--accent").removeClass("disabled-button");
+        });
+
+        $( "#exitScene" ).click(function() {
+          console.log("exitScene");
+          socket.emit('exitScene', { my: 'data' });
+          $("#exitScene").removeClass("mdl-button--accent").addClass("disabled-button");
+        });
+      });
+    </script>
+
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title">Warning</h4>
+      <div class="mdl-dialog__content">
+        <span id="errormessage">
+          Warning Message
+        </span>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close">OK</button>
+      </div>
+    </dialog>
+
+    <!-- STATUS -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Status</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <h4>
+          Player data
+        </h4>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <h4>
+          Connection
+        </h4>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <h4>
+          State
+        </h4>
+        <span class="mdl-chip">
+            <span class="mdl-chip__text">Setup</span>
+        </span>
+        <span class="mdl-chip game-state-ready">
+            <span class="mdl-chip__text">Ready</span>
+        </span>
+        <span class="mdl-chip game-state-ingame">
+            <span class="mdl-chip__text">In game</span>
+        </span>
+      </div>
+    </div>
+    <!-- END STATUS -->
+
+    <!-- VR EXPERIENCE -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>VR Experience</b>
+      </div>
+    </div>
+    <div class="mdl-grid mdl-center">
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="ingame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
+          Start game
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="rotate-in" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton scenebutton">
+          Rotate
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="elevator" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+          Elevator
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+          Void
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="enablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+          Queen on
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+          Queen off
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="exitScene" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+          Exit
+        </button>
+      </div>
+    </div>
+    <!-- END VR EXPERIENCE-->
+
+    <!-- ENDGAME -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Endgame</b>
+      </div>
+    </div>
+    <div class="mdl-grid mdl-center">
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="rotate-out" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton scenebutton">
+          Rotate
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored endgame scenebutton">
+          End game
+        </button>
+      </div>
+<!--       <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
+          Launch game
+        </button>
+      </div> -->
+    </div>
+    <!-- END ENGAME -->
+
+    <!-- RESET -->
+
+    <!-- NOTE TO SELF: ADD A PROMPT -->
+    <div class="mdl-grid mdl-center reset-button">
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--reset scenebutton">
+          Reset
+        </button>
+      </div>
+    </div>
+    <!-- END RESET -->
+  </body>
+</html>

@@ -357,14 +357,11 @@ io.on( 'endgame', ( ctx, data ) => {
 io.on('reset', ( ctx, data ) => {
   console.log( 'reset' );
   endGame();
-
   io.broadcast( 'resetscene', 'resetscene');
 });
 
 io.on('updateData', ( ctx, data ) => {
   console.log( 'update' );
-  endGame();
-
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
 });
 
