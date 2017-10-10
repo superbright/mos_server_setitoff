@@ -40,7 +40,7 @@ app.context.config = config;
 // serial port initialization:
 var serialport = require('serialport'), // include the serialport library
     SerialPort = serialport.SerialPort, // make a local instance of serial
-    portName = "/dev/tty.usbmodem1471",
+    portName = "/dev/tty.usbmodem1461",
     portConfig = {
       baudRate: 9600,
       // call myPort.on('data') when a newline is received:
@@ -173,7 +173,7 @@ function checkFan() {
 }
 
 /* Game functions */
-function startGame() {
+function startVoid() {
 
   timer.on('time', function (time) {
 
@@ -447,7 +447,7 @@ io.on('start', ( ctx, data ) => {
       data : "Experience already started"
     });
   } else {
-    startGame();
+    startVoid();
     io.broadcast( 'startvoid', 'startvoid');
   }
 });
