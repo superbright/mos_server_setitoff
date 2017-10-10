@@ -223,6 +223,7 @@ function resetGame() {
 
   if(currentState == APPSTATE.END) {
     // reset data
+    console.log(app.context.config);
     app.context.config = config;
   } 
   
