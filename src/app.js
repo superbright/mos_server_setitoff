@@ -174,7 +174,6 @@ function checkFan() {
 
 /* Game functions */
 function startVoid() {
-
   timer.on('time', function (time) {
 
     //calculate fine thingy
