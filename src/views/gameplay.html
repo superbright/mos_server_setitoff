@@ -130,6 +130,11 @@
         $( "#errormessage" ).text(data["data"]);
       });
 
+      /* Timer */
+      socket.on('time', function (data) {
+        $( "#timer" ).text(data['time']);
+      });
+
       /* Players connecting to optitrack */
       socket.on('connectionState', function(data) {
         var dataarr = data.split(':');
