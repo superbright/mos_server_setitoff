@@ -234,6 +234,7 @@ function resetGame() {
 
   // rebind player data
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
+  io.broadcast('currentState', currentState);
 }
 
 // DONE called by toggle from guests page
@@ -487,8 +488,6 @@ io.on( 'endgame-cp', ( ctx, data ) => {
   setTimeout(function() {
     io.broadcast('startGame');
   }, 60000);
-
-  io.broadcast('currentState', currentState);
 });
 
 io.attach( app )
