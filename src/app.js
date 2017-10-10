@@ -225,8 +225,9 @@ function resetGame() {
   if(currentState == APPSTATE.ENDGAME) {
     // reset data
     app.context.config = config;
+    console.log("ENDGAME");
   } 
-  
+    console.log("reset");  
   currentState = APPSTATE.SETUP;
 
   // rebind player data
@@ -469,6 +470,7 @@ io.on( 'exitScene', ( ctx, data ) => {
 
 io.on( 'endgame', ( ctx, data ) => {
   currentState = APPSTATE.END;
+  endGame();
   resetGame();
 
   io.broadcast('disconnectMotive',data);
