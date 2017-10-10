@@ -224,7 +224,6 @@ function resetGame() {
 
   if(currentState == APPSTATE.END) {
     // reset data
-    import config from './config';
     app.context.config = config;
   } 
   
