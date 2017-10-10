@@ -102,7 +102,7 @@ function stopFan() {
 //element, index, array
 function checkFan() {
   //console.log('a[' + index + '] = ' + element['start']);
-  console.log( parseInt(timer.time()/1000) )
+  //console.log( parseInt(timer.time()/1000) )
 
   let wastedtime = parseInt(timer.time()/1000);
 
@@ -222,12 +222,13 @@ function resetGame() {
   // DONE send socket message to gameplay UI to update state
   // DONE send socket message to guests page to reset all data on UI
 
-  if(currentState == APPSTATE.ENDGAME) {
+  if(currentState == APPSTATE.END) {
     // reset data
     app.context.config = config;
     console.log("ENDGAME");
   } 
-    console.log("reset");  
+  
+  console.log("reset");  
   currentState = APPSTATE.SETUP;
 
   // rebind player data
@@ -468,7 +469,7 @@ io.on( 'exitScene', ( ctx, data ) => {
   io.broadcast( 'exitScene',data);
 });
 
-io.on( 'endgame', ( ctx, data ) => {
+io.on( 'endgame-cp', ( ctx, data ) => {
   currentState = APPSTATE.END;
   endGame();
   resetGame();
@@ -484,6 +485,8 @@ io.on( 'endgame', ( ctx, data ) => {
   setTimeout(function() {
     io.broadcast('startGame');
   }, 60000);
+
+  io.broadcast('currentState', currentState);
 });
 
 io.attach( app )

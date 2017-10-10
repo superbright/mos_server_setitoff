@@ -377,7 +377,7 @@
         });
 
         $( "#endgame" ).click(function() {
-          socket.emit('endgame', { my: 'data' });
+          socket.emit('endgame-cp', { my: 'data' });
           // do this on server side?
           //socket.emit('startgame', { my: 'data' });
         });
