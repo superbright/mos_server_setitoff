@@ -616,8 +616,13 @@
               }
             ), // data as js object
             success: function(result) {
-                console.log("ok " + result)
-                // Do something with the result
+              console.log("ok " + result)
+              // Do something with the result
+            },
+            error: function(data){
+              console.log(data);
+              alert("player not ready");
+              $('.mdl-js-switch')[0].MaterialSwitch.off();
             }
           });
 
@@ -652,6 +657,11 @@
             success: function(result) {
                 console.log("ok " + result)
                 // Do something with the result
+            }, 
+            error: function(data){
+              console.log(data);
+              alert("player not ready");
+              $('.mdl-js-switch')[1].MaterialSwitch.off();
             }
           });
 
@@ -686,6 +696,11 @@
             success: function(result) {
                 console.log("ok " + result)
                 // Do something with the result
+            }, 
+            error: function(data){
+              console.log(data);
+              alert("player not ready");
+              $('.mdl-js-switch')[2].MaterialSwitch.off();
             }
           });
 
@@ -720,6 +735,11 @@
             success: function(result) {
                 console.log("ok " + result)
                 // Do something with the result
+            }, 
+            error: function(data){
+              console.log(data);
+              alert("player not ready");
+              $('.mdl-js-switch')[3].MaterialSwitch.off();
             }
           });
 
@@ -912,6 +932,11 @@
           socket.emit('updateData', { my: 'data' });
           location.reload();
         });
+
+        /* Submit button */
+        $( "#check-computers" ).click(function() {
+          location.reload();
+        });
       });
     </script>
 
@@ -928,6 +953,14 @@
       </div>
     </dialog>
     <!-- END ERROR DIALOG -->
+
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--12-col mdl-center">
+        <button id="check-computers" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+          Check computers
+        </button>
+      </div>
+    </div>
 
     <!-- HEADER -->
     <div class="mdl-grid header">

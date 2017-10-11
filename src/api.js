@@ -40,11 +40,19 @@ api.get('/gameplay',
 );
 
 api.post('/config', async (ctx, next) => {
-      ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.ison;
-      ctx.body = JSON.stringify(ctx.request.body);
-      ctx.status = 200;
-    }
-);
+    if(ctx.playerStates[ctx.request.body.player])
+      {
+        ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.ison;
+        ctx.body = JSON.stringify(ctx.request.body);
+        ctx.status = 200;
+
+      } else {
+
+         ctx.body = "Player " + ctx.request.body.player  +" is not up yet";
+         ctx.status = 500;
+
+      }
+});
 
 api.post('/setheight', async (ctx, next) => {
       ctx.config.PLAYERS[ctx.request.body.player].height = ctx.request.body.height;

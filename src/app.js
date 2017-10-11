@@ -17,6 +17,9 @@ import Timer from 'timer-machine'
 
 var player = require('play-sound')({player: "afplay"});
 
+// player handshake results
+var playerConnectedStates = [false, false, false, false];
+
 import config from './config';
 var configReset = JSON.parse(JSON.stringify(config));
 console.log("HAPTIC FAN URL " + config.FAN_URL);
@@ -37,6 +40,7 @@ app.use(api.routes())
 app.use(api.allowedMethods());
 //inject config into context
 app.context.config = config;
+app.context.playerStates = playerConnectedStates;
 
 // serial port initialization:
 var serialport = require('serialport'), // include the serialport library
@@ -230,6 +234,8 @@ function resetGame() {
     app.context.config = JSON.parse(JSON.stringify(configReset));;
   }
 
+  app.context.playerStates = [false, false, false, false];
+
   // rebind player data
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
   io.broadcast('currentState', currentState);
@@ -341,7 +347,14 @@ io.on( 'sendHandshakeToPlayer', ( ctx, data ) => {
 
 io.on( 'respondPlayerHandshake', ( ctx, data ) => {
   console.log("handshake return ", data);
-  //io.broadcast( 'playerHandshake',data);
+  // if player 1, then make playerConnectedStates[0] = true
+
+  if(data == 'player1') playerConnectedStates[0] = true
+  else if(data == 'player2') playerConnectedStates[1] = true
+  else if(data == 'player3') playerConnectedStates[2] = true
+  else if(data == 'player4') playerConnectedStates[3] = true
+
+  io.broadcast('playerConnectedStateResponse',data);  
 });
 
 //'pairing' and 'connected'
@@ -369,6 +382,7 @@ io.on( 'updateConnectionState', ( ctx, data ) => {
 io.on('updateData', ( ctx, data ) => {
   console.log( 'update player data' );
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
+  io.broadcast( 'playerHandshake', data);
 });
 
 io.on('reset', ( ctx, data ) => {
@@ -487,7 +501,7 @@ io.on( 'endgame-cp', ( ctx, data ) => {
   // open game after 1 minute
   setTimeout(function() {
     io.broadcast('startGame');
-  }, 60000);
+  }, 30000);
 });
 
 io.attach( app )
