@@ -234,7 +234,7 @@ function resetGame() {
     app.context.config = JSON.parse(JSON.stringify(configReset));;
   }
 
-  app.context.playerStates = [false, false, false, false];
+  playerConnectedStates = [false, false, false, false];
 
   // rebind player data
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
