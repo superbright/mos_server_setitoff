@@ -49,8 +49,8 @@ var serialport = require('serialport'), // include the serialport library
     };
 
 // open the serial port:
-var myPort = new SerialPort(portName, portConfig);
-myPort.on('open', openPort); // called when the serial port opens
+//var myPort = new SerialPort(portName, portConfig);
+//myPort.on('open', openPort); // called when the serial port opens
 
 function openPort() {
   console.log('port open');
@@ -228,13 +228,13 @@ function resetGame() {
     // reset data
     console.log(configReset);
     app.context.config = JSON.parse(JSON.stringify(configReset));;
-  } 
-  
-  currentState = APPSTATE.SETUP;
+  }
 
   // rebind player data
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
   io.broadcast('currentState', currentState);
+  
+  currentState = APPSTATE.SETUP;
 }
 
 // DONE called by toggle from guests page

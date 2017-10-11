@@ -5,22 +5,26 @@ export default {
       {
         ison: false,
         height: 171.0,
-        gender : 1
-      },
-      {
-        ison: false,
-        height: 171.0,
-        gender : 1
+        gender : 1,
+        name: ''
       },
       {
         ison: false,
         height: 171.0,
         gender : 1,
+        name: ''
       },
       {
         ison: false,
         height: 171.0,
         gender : 1,
+        name: ''
+      },
+      {
+        ison: false,
+        height: 171.0,
+        gender : 1,
+        name: ''
       },
       {
         ison: false,
