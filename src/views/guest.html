@@ -935,7 +935,7 @@
 
         /* Submit button */
         $( "#check-computers" ).click(function() {
-          location.reload();
+          socket.emit('sendHandshakeToPlayer', { my: 'data' });
         });
       });
     </script>
