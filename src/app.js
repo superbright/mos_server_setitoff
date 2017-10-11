@@ -234,7 +234,7 @@ function resetGame() {
     app.context.config = JSON.parse(JSON.stringify(configReset));;
   }
 
-  playerConnectedStates = [false, false, false, false];
+  app.context.playerStates = [false, false, false, false];
 
   // rebind player data
   io.broadcast( 'updatePlayerData', 'updatePlayerData');
@@ -349,10 +349,10 @@ io.on( 'respondPlayerHandshake', ( ctx, data ) => {
   console.log("handshake return ", data);
   // if player 1, then make playerConnectedStates[0] = true
 
-  if(data == 'player1') playerConnectedStates[0] = true
-  else if(data == 'player2') playerConnectedStates[1] = true
-  else if(data == 'player3') playerConnectedStates[2] = true
-  else if(data == 'player4') playerConnectedStates[3] = true
+  if(data == 'player1') app.context.playerStates[0] = true
+  else if(data == 'player2') app.context.playerStates[1] = true
+  else if(data == 'player3') app.context.playerStates[2] = true
+  else if(data == 'player4') app.context.playerStates[3] = true
 
   io.broadcast('playerConnectedStateResponse',data);  
 });
