@@ -341,7 +341,7 @@
         });
 
         $( "#rotate-in" ).click(function() {
-          socket.emit('rotate', { my: 'data' });
+          socket.emit('rotate-all', { my: 'data' });
           $('#rotate-in').prop('disabled', true);
         });
 
@@ -377,7 +377,7 @@
         });
 
         $( "#rotate-out" ).click(function() {
-          socket.emit('rotate', { my: 'data' });
+          socket.emit('rotate-all', { my: 'data' });
           $('#rotate-out').prop('disabled', true);
         });
 
