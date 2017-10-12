@@ -229,18 +229,18 @@ function resetGame() {
   // DONE send socket message to guests page to reset all data on UI
 
   if(currentState == APPSTATE.END) {
-    // reset data
-    console.log(configReset);
-    app.context.config = JSON.parse(JSON.stringify(configReset));;
+    // reset player data
+    app.context.config = JSON.parse(JSON.stringify(configReset));
+
+    // rebind player data
+    io.broadcast( 'updatePlayerData', 'updatePlayerData');
+    
+    // reset playerConnectedStates (handshake)
+    app.context.playerStates = [false, false, false, false];
   }
 
-  app.context.playerStates = [false, false, false, false];
-
-  // rebind player data
-  io.broadcast( 'updatePlayerData', 'updatePlayerData');
-  io.broadcast('currentState', currentState);
-  
   currentState = APPSTATE.SETUP;
+  io.broadcast('currentState', currentState);
 }
 
 // DONE called by toggle from guests page
