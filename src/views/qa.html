@@ -293,12 +293,33 @@
           socket.emit('connectvib', { set: 'connect', player: 'player4vib' });
         });
 
-        /* Other buttons */
-        $( "#rotate" ).click(function() {
-          console.log('rotate');
-          socket.emit('rotate', { my: 'data' });
+        /* Elevators */
+        $( "#rotate-all" ).click(function() {
+          console.log('rotate all');
+          socket.emit('rotate-all', { my: 'data' });
         });
 
+        $( "#rotate-one" ).click(function() {
+          console.log('rotate one');
+          socket.emit('rotate-one', { my: 'data' });
+        });
+        
+        $( "#rotate-two" ).click(function() {
+          console.log('rotate two');
+          socket.emit('rotate-two', { my: 'data' });
+        });
+        
+        $( "#rotate-three" ).click(function() {
+          console.log('rotate three');
+          socket.emit('rotate-three', { my: 'data' });
+        });
+        
+        $( "#rotate-four" ).click(function() {
+          console.log('rotate four');
+          socket.emit('rotate-four', { my: 'data' });
+        });
+
+        /* Other buttons */
         $( "#fans-on" ).click(function() {
           console.log('turning fans on');
           socket.emit('fans-on', { my: 'data' });
@@ -446,8 +467,20 @@
     </div>
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="rotate" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
-          Rotate
+        <button id="rotate-all" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+          Rotate all
+        </button>
+        <button id="rotate-one" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+          Rotate one
+        </button>
+        <button id="rotate-two" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+          Rotate two
+        </button>
+        <button id="rotate-three" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+          Rotate three
+        </button>
+        <button id="rotate-four" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+          Rotate four
         </button>
       </div>
     </div>

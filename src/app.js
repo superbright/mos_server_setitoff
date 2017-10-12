@@ -416,7 +416,7 @@ io.on('stateIngame', (ctx, data) => {
   io.broadcast('currentState', currentState);
 });
 
-/* Haptic */
+/* Fans */
 io.on('fans-on', ( ctx, data ) => {
   console.log( 'turning fans on' );
   startFan();
@@ -427,14 +427,47 @@ io.on('fans-off', ( ctx, data ) => {
   stopFan();
 });
 
-io.on('rotate', (ctx, data) => {
+/* Elevators */
+io.on('rotate-all', (ctx, data) => {
   setTimeout(() => {
-    console.log("rotate elevator");
-    var input = "3;3;3;3;";
+    console.log("rotate all elevators");
+    var input = "1;1;1;1;";
     // convert the value to an ASCII string before sending it:
     // console.log('Sending ' + input + ' out the serial port');
     myPort.write(input.toString());
     console.log("DONE");
+  }, 1300);
+});
+
+io.on('rotate-one', (ctx, data) => {
+  setTimeout(() => {
+    console.log("rotate elevator one");
+    var input = "1;0;0;0;";
+    myPort.write(input.toString());
+  }, 1300);
+});
+
+io.on('rotate-two', (ctx, data) => {
+  setTimeout(() => {
+    console.log("rotate elevator two");
+    var input = "0;1;0;0;";
+    myPort.write(input.toString());
+  }, 1300);
+});
+
+io.on('rotate-three', (ctx, data) => {
+  setTimeout(() => {
+    console.log("rotate elevator three");
+    var input = "0;0;1;0;";
+    myPort.write(input.toString());
+  }, 1300);
+});
+
+io.on('rotate-four', (ctx, data) => {
+  setTimeout(() => {
+    console.log("rotate elevator four");
+    var input = "0;0;0;1;";
+    myPort.write(input.toString());
   }, 1300);
 });
 
