@@ -513,6 +513,7 @@ io.on('reset', (ctx, data) => {
 
   timerReset();
   stateSetup();
+  stopFan();
 
   io.broadcast('resetscene', 'resetscene');
 });
