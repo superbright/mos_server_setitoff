@@ -317,18 +317,18 @@
         });
         // end warning message dialogue
         
-        /* OptiTrack reconnect */
+        /* Tracking reconnect */
         $( "#player1tracking" ).click(function() {
-          socket.emit('recon', { data: 'player1' });
+          socket.emit('reconnectTracking', { data: 'player1' });
         });
         $( "#player2tracking" ).click(function() {
-          socket.emit('recon', { data: 'player2' });
+          socket.emit('reconnectTracking', { data: 'player2' });
         });
         $( "#player3tracking" ).click(function() {
-          socket.emit('recon', { data: 'player3' });
+          socket.emit('reconnectTracking', { data: 'player3' });
         });
         $( "#player4tracking" ).click(function() {
-          socket.emit('recon', { data: 'player4' });
+          socket.emit('reconnectTracking', { data: 'player4' });
         });
 
         /* Update player data on load */
@@ -341,50 +341,47 @@
         });
 
         $( "#rotate-in" ).click(function() {
-          socket.emit('rotate', { my: 'data' });
+          socket.emit('rotateAll', { my: 'data' });
           $('#rotate-in').prop('disabled', true);
         });
 
         $( "#elevator" ).click(function() {
-          console.log("elevator");
-          socket.emit('lobby', { my: 'data' });
+          console.log("elevator scene");
+          socket.emit('sceneElevator', { my: 'data' });
           $('#elevator').prop('disabled', true);
         });
 
-        // void
         $( "#start" ).click(function() {
-          console.log("start");
-          socket.emit('start', { my: 'data' });
+          console.log("void scene");
+          socket.emit('sceneVoid', { my: 'data' });
           $("#start").prop('disabled', true);
         });
 
         $( "#enablePerformer" ).click(function() {
-          console.log("enablePerformer");
+          console.log("enable performer");
           socket.emit('enablePerformer', { my: 'data' });
           $("#enablePerformer").prop('disabled', true);
         });
 
         $( "#disablePerformer" ).click(function() {
-          console.log("disablePerformer");
+          console.log("disable performer");
           socket.emit('disablePerformer', { my: 'data' });
           $("#disablePerformer").prop('disabled', true);
         });
 
         $( "#exitScene" ).click(function() {
-          console.log("exitScene");
-          socket.emit('exitScene', { my: 'data' });
+          console.log("exit scene");
+          socket.emit('sceneExit', { my: 'data' });
           $("#exitScene").prop('disabled', true);
         });
 
         $( "#rotate-out" ).click(function() {
-          socket.emit('rotate', { my: 'data' });
+          socket.emit('rotateAll', { my: 'data' });
           $('#rotate-out').prop('disabled', true);
         });
 
         $( "#endgame" ).click(function() {
-          socket.emit('endgame-cp', { my: 'data' });
-          // do this on server side?
-          //socket.emit('startgame', { my: 'data' });
+          socket.emit('gameRestart', { my: 'data' });
         });
 
         $( "#reset" ).click(function() {

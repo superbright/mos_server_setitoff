@@ -39,35 +39,35 @@ api.get('/gameplay',
   }
 );
 
+api.get('/config',
+  async (ctx, next) => {
+    ctx.body = ctx.config;
+  }
+);
+
 api.post('/config', async (ctx, next) => {
-    if(ctx.playerStates[ctx.request.body.player])
-      {
-        ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.ison;
-        ctx.body = JSON.stringify(ctx.request.body);
-        ctx.status = 200;
-
-      } else {
-
-         ctx.body = "Player " + ctx.request.body.player  +" is not up yet";
-         ctx.status = 500;
-
-      }
+  if(ctx.playerStates[ctx.request.body.player]) {
+    ctx.config.PLAYERS[ctx.request.body.player].ison = ctx.request.body.ison;
+    ctx.body = JSON.stringify(ctx.request.body);
+    ctx.status = 200;
+  } else {
+    ctx.body = "Player " + ctx.request.body.player  +" is not up yet";
+    ctx.status = 500;
+  }
 });
 
 api.post('/setheight', async (ctx, next) => {
-      ctx.config.PLAYERS[ctx.request.body.player].height = ctx.request.body.height;
-      ctx.body = JSON.stringify(ctx.request.body);
-      ctx.status = 200;
-    }
-);
+  ctx.config.PLAYERS[ctx.request.body.player].height = ctx.request.body.height;
+  ctx.body = JSON.stringify(ctx.request.body);
+  ctx.status = 200;
+});
 
 api.post('/setgender', async (ctx, next) => {
-      console.log( ctx.request.body.gender);
-      ctx.config.PLAYERS[ctx.request.body.player].gender = ctx.request.body.gender;
-      ctx.body = JSON.stringify(ctx.request.body);
-      ctx.status = 200;
-    }
-);
+  console.log( ctx.request.body.gender);
+  ctx.config.PLAYERS[ctx.request.body.player].gender = ctx.request.body.gender;
+  ctx.body = JSON.stringify(ctx.request.body);
+  ctx.status = 200;
+});
 
 api.post('/setname', async (ctx, next) => {
   console.log( ctx.request.body.name);
@@ -75,11 +75,5 @@ api.post('/setname', async (ctx, next) => {
   ctx.body = JSON.stringify(ctx.request.body);
   ctx.status = 200;
 });
-
-api.get('/config',
-  async (ctx, next) => {
-    ctx.body = ctx.config;
-  }
-);
 
 export default api;
