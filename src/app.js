@@ -32,15 +32,6 @@ app.use(bodyParser());
 app.use(api.routes());
 app.use(api.allowedMethods());
 
-//inject config into context
-app.context.config = config;
-app.context.playerStates = playerConnectedStates;
-
-/* Initialize variables */
-var configReset = JSON.parse(JSON.stringify(config));
-var player = require('play-sound')({player: "afplay"});
-var playerConnectedStates = [false, false, false, false]; // player handshake results
-
 /* Serial port */
 // serial port initialization
 var serialport = require('serialport'), // include the serialport library
@@ -53,13 +44,22 @@ var serialport = require('serialport'), // include the serialport library
     };
 
 // open the serial port
-//var myPort = new SerialPort(portName, portConfig);
-//myPort.on('open', openPort); // called when the serial port opens
+var myPort = new SerialPort(portName, portConfig);
+myPort.on('open', openPort); // called when the serial port opens
 
 function openPort() {
   console.log('port open');
   console.log('baud rate: ' + myPort.options.baudRate);
 }
+
+/* Initialize variables */
+var configReset = JSON.parse(JSON.stringify(config));
+var player = require('play-sound')({player: "afplay"});
+var playerConnectedStates = [false, false, false, false]; // player handshake results
+
+//inject config into context
+app.context.config = config;
+app.context.playerStates = playerConnectedStates;
 
 /* Timer */
 //app time mode here
@@ -84,6 +84,7 @@ const APPSTATE = {
   INGAME: 2,
   END: 3,
 }
+
 var currentState = APPSTATE.SETUP;
 
 /* Fans */
@@ -194,7 +195,7 @@ function startVoid() {
     var minutes = Math.floor(remaindertime / 60);
     var seconds = remaindertime - minutes * 60;
     // send time to the control panel
-    io.broadcast( 'time', {
+    io.broadcast('time', {
       time: minutes + ":" + seconds
     });
   });
@@ -211,7 +212,7 @@ function timerReset() {
   timer = new Timer();
   clearInterval(timerInterval);
   
-  io.broadcast( 'time', { time: 0 });
+  io.broadcast('time', { time: 0 });
 }
 
 /* Game state functions */
@@ -222,7 +223,7 @@ function stateReady() {
     app.context.config = JSON.parse(JSON.stringify(configReset));
 
     // rebind player data
-    io.broadcast( 'updatePlayerData', 'updatePlayerData');
+    io.broadcast('updatePlayerData', 'updatePlayerData');
     
     // reset playerConnectedStates (handshake)
     app.context.playerStates = [false, false, false, false];
@@ -253,7 +254,7 @@ function stateReady() {
     io.broadcast('currentState', currentState);
 
     // rebind player data
-    io.broadcast( 'updatePlayerData', 'updatePlayerData');
+    io.broadcast('updatePlayerData', 'updatePlayerData');
   }
 }
 
@@ -308,18 +309,14 @@ io.on('viboff', ( ctx, data ) => {
   io.broadcast( 'dildoff',data);
 });*/
 
-io.on('recon', ( ctx, data ) => {
-  io.broadcast( 'reconnectMotive',data);
-});
-
 io.on('dildon', ( ctx, data ) => {
   console.log("dildon ",data);
-  io.broadcast( 'dildon',data);
+  io.broadcast('dildon',data);
 });
 
 io.on('dildoff', ( ctx, data ) => {
   console.log("dildoff ", data);
-  io.broadcast( 'dildoff',data);
+  io.broadcast('dildoff',data);
 });
 
 //'pairing' and 'connected'
@@ -359,9 +356,14 @@ io.on('respondPlayerHandshake', ( ctx, data ) => {
 });
 
 /* Player tracking state */
-io.on('updateConnectionState', ( ctx, data ) => {
+io.on('updateConnectionState', (ctx, data) => {
   console.log(data);
-  io.broadcast('connectionState',data);
+  io.broadcast('connectionState', data);
+});
+
+io.on('reconnectTracking', (ctx, data) => {
+  console.log('reconnect tracking');
+  io.broadcast('reconnectMotive', data);
 });
 
 /* Rebind player data */
@@ -450,12 +452,29 @@ io.on('rotateFour', (ctx, data) => {
 io.on('sceneElevator', (ctx, data) => {
   console.log('elevator scene');
 
+  // play elevator music
   setTimeout(() => {
     console.log("play elevator");
     player.play('audio/ELEVATOR.wav', { aplay: [ '-v', 10 ] }, function(err){
       if (err) throw err
     });
   }, 1000);
+
+  // reconnect tracking
+  setTimeout(() => {
+    console.log("reconnect tracking");
+    io.broadcast('reconnectMotive', { data: 'player1' });
+    io.broadcast('reconnectMotive', { data: 'player2' });
+    io.broadcast('reconnectMotive', { data: 'player3' });
+    io.broadcast('reconnectMotive', { data: 'player4' });
+  }, 1000);
+
+  // restart vibrator
+  console.log('reconnect to vibrators');
+  io.broadcast('dildoff', { set: 'dildoff', player: 'player1vib' });
+  io.broadcast('dildoff', { set: 'dildoff', player: 'player2vib' });
+  io.broadcast('dildoff', { set: 'dildoff', player: 'player3vib' });
+  io.broadcast('dildoff', { set: 'dildoff', player: 'player4vib' });
 
   io.broadcast('enterlobby', 'lobby');
 });
@@ -476,12 +495,12 @@ io.on('sceneVoid', (ctx, data) => {
 
 io.on('enablePerformer', (ctx, data) => {
   console.log("enablePerformer ", data);
-  io.broadcast( 'enablePerformer',data);
+  io.broadcast('enablePerformer',data);
 });
 
 io.on('disablePerformer', (ctx, data) => {
   console.log("disablePerformer ", data);
-  io.broadcast( 'disablePerformer',data);
+  io.broadcast('disablePerformer',data);
 });
 
 io.on('sceneExit', (ctx, data) => {
@@ -510,6 +529,7 @@ io.on('gameRestart', ( ctx, data ) => {
 
 io.on('reset', (ctx, data) => {
   console.log('reset');
+
 
   timerReset();
   stateSetup();

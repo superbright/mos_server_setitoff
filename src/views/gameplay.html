@@ -317,18 +317,18 @@
         });
         // end warning message dialogue
         
-        /* OptiTrack reconnect */
+        /* Tracking reconnect */
         $( "#player1tracking" ).click(function() {
-          socket.emit('recon', { data: 'player1' });
+          socket.emit('reconnectTracking', { data: 'player1' });
         });
         $( "#player2tracking" ).click(function() {
-          socket.emit('recon', { data: 'player2' });
+          socket.emit('reconnectTracking', { data: 'player2' });
         });
         $( "#player3tracking" ).click(function() {
-          socket.emit('recon', { data: 'player3' });
+          socket.emit('reconnectTracking', { data: 'player3' });
         });
         $( "#player4tracking" ).click(function() {
-          socket.emit('recon', { data: 'player4' });
+          socket.emit('reconnectTracking', { data: 'player4' });
         });
 
         /* Update player data on load */
