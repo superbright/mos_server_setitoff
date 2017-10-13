@@ -21,12 +21,12 @@ const io = new IO();
 
 app.use(cors({
   origin: '*',
-}))
+}));
 app.use(views(__dirname + '/views', {
   map: {
     html: 'underscore'
   }
-}))
+}));
 app.use(require('koa-static')("./static", {}));
 app.use(bodyParser());
 app.use(api.routes());
@@ -54,7 +54,7 @@ function openPort() {
 
 /* Initialize variables */
 var configReset = JSON.parse(JSON.stringify(config));
-var player = require('play-sound')({player: "afplay"});
+var player = require('play-sound')({ player: "afplay" });
 var playerConnectedStates = [false, false, false, false]; // player handshake results
 
 //inject config into context
@@ -217,7 +217,7 @@ function timerReset() {
 
 /* Game state functions */
 // Sets game to SETUP state. Can be set from any state.
-function stateReady() {
+function stateSetup() {
   if(currentState == APPSTATE.END) {
     // reset player data
     app.context.config = JSON.parse(JSON.stringify(configReset));
@@ -529,7 +529,6 @@ io.on('gameRestart', ( ctx, data ) => {
 
 io.on('reset', (ctx, data) => {
   console.log('reset');
-
 
   timerReset();
   stateSetup();
