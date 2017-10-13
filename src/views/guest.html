@@ -126,19 +126,8 @@
         $(selector).append('<option value="'+ value +'">'+ key + '</option>');
       }
 
-      /* Error dialog */
-      socket.on('errormessage', function (data) {
-        // prevent ready switch to toggle on
-        $('.mdl-js-switch')[4].MaterialSwitch.off();
-
-        console.log(data["data"]);
-        var dialog = document.querySelector('dialog');
-        dialog.showModal();
-          $( "#errormessage" ).text(data["data"]);
-      });
-
-      function updatePlayerData() {
-        console.log("updatePlayerData");
+      function updatePlayerDataView() {
+        console.log("update player data view");
         $.getJSON( ip + "/config", function( data ) {
           var playerData = data["PLAYERS"];
 
@@ -245,13 +234,14 @@
         $('#game-state').children(0).text('Setup');
         $('#game-state').removeClass('game-state-ingame game-state-ready');
 
-        // enable all fields
-        enableFields();
-
         // toggle ready switch off
         $('.mdl-js-switch')[4].MaterialSwitch.off();
 
-        updatePlayerData();
+        // enable all fields
+        enableFields();
+
+        // update player data view
+        updatePlayerDataView();
       }
 
       function readyState() {
@@ -259,11 +249,14 @@
         $('#game-state').children(0).text('Ready');
         $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
 
+        // toggle ready switch on
+        $('.mdl-js-switch')[4].MaterialSwitch.on();
+
         // enable all fields
         enableFields();
 
-        // toggle ready switch on
-        $('.mdl-js-switch')[4].MaterialSwitch.on();
+        // update player data view
+        updatePlayerDataView();
       }
 
       function ingameState() {
@@ -273,6 +266,9 @@
 
         // disable all fields
         disableFields();
+
+        // update player data view
+        updatePlayerDataView();
       }
 
       function disableFields() {
@@ -330,6 +326,17 @@
           $('#player' + i).prop('disabled', false);
         }
       }
+
+      /* Error dialog */
+      socket.on('errormessage', function (data) {
+        // prevent ready switch to toggle on
+        $('.mdl-js-switch')[4].MaterialSwitch.off();
+
+        console.log(data["data"]);
+        var dialog = document.querySelector('dialog');
+        dialog.showModal();
+          $( "#errormessage" ).text(data["data"]);
+      });
 
       $(document).ready(function() {
         // warning message dialog
