@@ -19,10 +19,10 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       /* Socket connection */
-      var socket = io('http://192.168.1.212:4000');
-      var ip = 'http://192.168.1.212:4000';
-      //var socket = io('localhost:4000');
-      //var ip = 'http://localhost:4000';
+      //var socket = io('http://192.168.1.212:4000');
+      //var ip = 'http://192.168.1.212:4000';
+      var socket = io('localhost:4000');
+      var ip = 'http://localhost:4000';
       socket.on('hello', function (data) {
         console.log(data);
       });

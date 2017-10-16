@@ -52,6 +52,10 @@ function openPort() {
   console.log('baud rate: ' + myPort.options.baudRate);
 }
 
+myPort.on('data', function(data) {
+  console.log('data received: ' + data);
+});
+
 /* Initialize variables */
 var configReset = JSON.parse(JSON.stringify(config));
 var player = require('play-sound')({ player: "afplay" });
@@ -415,9 +419,6 @@ io.on('rotateAll', (ctx, data) => {
     // convert the value to an ASCII string before sending it:
     // console.log('Sending ' + input + ' out the serial port');
     myPort.write(input.toString());
-    myPort.on('data', function(data) {
-      console.log('data received: ' + data);
-    });
     myPort.flush();
     console.log("DONE");
   }, 1300);
