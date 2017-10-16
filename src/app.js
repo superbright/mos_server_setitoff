@@ -36,7 +36,7 @@ app.use(api.allowedMethods());
 // serial port initialization
 var serialport = require('serialport'), // include the serialport library
     SerialPort = serialport.SerialPort, // make a local instance of serial
-    portName = "/dev/tty.usbmodem1461",
+    portName = "/dev/tty.usbmodem1471",
     portConfig = {
       baudRate: 9600,
       // call myPort.on('data') when a newline is received:
@@ -211,7 +211,7 @@ function timerReset() {
   //timer.reset();
   timer = new Timer();
   clearInterval(timerInterval);
-  
+
   io.broadcast('time', { time: 0 });
 }
 
@@ -224,7 +224,7 @@ function stateSetup() {
 
     // rebind player data
     io.broadcast('updatePlayerData', 'updatePlayerData');
-    
+
     // reset playerConnectedStates (handshake)
     app.context.playerStates = [false, false, false, false];
 
@@ -240,7 +240,7 @@ function stateSetup() {
 function stateReady() {
   if(currentState != APPSTATE.SETUP) {
     console.log("error");
-    
+
     // get currentState text
     var stateGame;
     if(currentState == APPSTATE.SETUP) stateGame = 'SETUP';
@@ -265,7 +265,7 @@ function stateReady() {
 function stateIngame() {
   if(currentState != APPSTATE.READY) {
     console.log("error");
-    
+
     // get currentState text
     var stateGame;
     if(currentState == APPSTATE.SETUP) stateGame = 'SETUP';
