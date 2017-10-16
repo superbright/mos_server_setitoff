@@ -355,7 +355,7 @@ io.on('respondPlayerHandshake', ( ctx, data ) => {
   else if(data == 'player3') app.context.playerStates[2] = true
   else if(data == 'player4') app.context.playerStates[3] = true
 
-  io.broadcast('playerConnectedStateResponse',data);
+  io.broadcast('playerConnectedStateResponse', data);
 });
 
 /* Player tracking state */
@@ -520,15 +520,20 @@ io.on('gameRestart', ( ctx, data ) => {
 
   io.broadcast('disconnectMotive', data);
 
-  // close game
+  // close game after 3 seconds
   setTimeout(function() {
     io.broadcast('endGame');
   }, 3000);
 
-  // open game after 30 seconds
+  // open game after 20 seconds
   setTimeout(function() {
     io.broadcast('startGame');
-  }, 30000);
+  }, 20000);
+
+  // send handshake to player after 45 seconds
+  setTimeout(function() {
+    io.broadcast('playerHandshake',data);
+  }, 45000);
 });
 
 io.on('reset', (ctx, data) => {

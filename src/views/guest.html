@@ -275,56 +275,64 @@
       }
 
       function disableFields() {
-        // switches
+        // ison + ready switches
         for(i = 0; i < 5; i++) {
           $('.mdl-js-switch')[i].MaterialSwitch.disable();
         }
 
-        // radio buttons
+        // gender radio buttons
         for(i = 0; i < 8; i++) {
           $('.mdl-js-radio')[i].MaterialRadio.disable();
         }
 
-        // text fields
         for(i = 1; i <= 4; i++) {
+          // name text fields
           $('#player' + i +'-name-text').prop('disabled', true);
+          
+          // enter buttons
+          $('#player' + i +'-name-submit').prop('disabled', true);
+
+          // player connection buttons
+          $('#player' + i +'-connection').prop('disabled', true);
+          $('#player' + i +'-connection').addClass('player-connection-disabled');
         }
 
-        // buttons
-        for(i = 1; i <= 4; i++) {
-          $('#player' + i +'-name-submit').prop('disabled', true);
-        }
+        // submit button
         $('#submit').prop('disabled', true);
 
-        // dropdown menus
+        // height dropdown menus
         for(i = 1; i <= 4; i++) {
           $('#player' + i).prop('disabled', true);
         }
       }
 
       function enableFields() {
-        // switches
+        // ison + ready switches
         for(i = 0; i < 5; i++) {
           $('.mdl-js-switch')[i].MaterialSwitch.enable();
         }
 
-        // radio buttons
+        // gender radio buttons
         for(i = 0; i < 8; i++) {
           $('.mdl-js-radio')[i].MaterialRadio.enable();
         }
 
-        // text fields
+        // name text fields
         for(i = 1; i <= 4; i++) {
           $('#player' + i +'-name-text').prop('disabled', false);
+
+          // enter buttons
+          $('#player' + i +'-name-submit').prop('disabled', false);
+
+          // player connection buttons
+          $('#player' + i +'-connection').prop('disabled', false);
+          $('#player' + i +'-connection').removeClass('player-connection-disabled');
         }
 
-        // buttons
-        for(i = 1; i <= 4; i++) {
-          $('#player' + i +'-name-submit').prop('disabled', false);
-        }
+        // submit buttons
         $('#submit').prop('disabled', false);
 
-        // dropdown menus
+        // height dropdown menus
         for(i = 1; i <= 4; i++) {
           $('#player' + i).prop('disabled', false);
         }
@@ -339,6 +347,33 @@
         var dialog = document.querySelector('dialog');
         dialog.showModal();
           $( "#errormessage" ).text(data["data"]);
+      });
+
+      /* Listen for any game state changes */
+      socket.on('currentState', function(data) {
+        if(data == 0) {
+          setupState();
+          console.log('setup');
+        } else if(data == 1) {
+          readyState();
+          console.log('ready');
+        } else if(data == 2) {
+          ingameState();
+          console.log('ingame');
+        } else if(data == 3) {
+          location.reload();
+          console.log('end');
+        } else {
+          console.log('invalid currentState');
+        }
+      });
+
+      /* Listen for player connection updates */  
+      socket.on('playerConnectedStateResponse', function(data) {
+        if(data == 'player1') $('#player1-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        if(data == 'player2') $('#player2-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        if(data == 'player3') $('#player3-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        if(data == 'player4') $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
       });
 
       $(document).ready(function() {
@@ -631,7 +666,7 @@
             },
             error: function(data){
               console.log(data);
-              alert("player not ready");
+              alert("Player 1 is not ready.");
               $('.mdl-js-switch')[0].MaterialSwitch.off();
             }
           });
@@ -670,7 +705,7 @@
             }, 
             error: function(data){
               console.log(data);
-              alert("player not ready");
+              alert("Player 2 is not ready.");
               $('.mdl-js-switch')[1].MaterialSwitch.off();
             }
           });
@@ -709,7 +744,7 @@
             }, 
             error: function(data){
               console.log(data);
-              alert("player not ready");
+              alert("Player 3 is not ready.");
               $('.mdl-js-switch')[2].MaterialSwitch.off();
             }
           });
@@ -748,7 +783,7 @@
             }, 
             error: function(data){
               console.log(data);
-              alert("player not ready");
+              alert("Player 4 is not ready.");
               $('.mdl-js-switch')[3].MaterialSwitch.off();
             }
           });
@@ -905,28 +940,6 @@
           }
         });
 
-        /* Update game state on load */
-        socket.emit('getCurrentState', { my: 'data' });
-
-        /* Listen for any game state changes */
-        socket.on('currentState', function(data) {
-          if(data == 0) {
-            setupState();
-            console.log('setup');
-          } else if(data == 1) {
-            readyState();
-            console.log('ready');
-          } else if(data == 2) {
-            ingameState();
-            console.log('ingame');
-          } else if(data == 3) {
-            location.reload();
-            console.log('end');
-          } else {
-            console.log('invalid currentState');
-          }
-        });
-
         /* Ready switch logic */
         $('#switch-ready').change(function(){
           if($(this).is(':checked')) {
@@ -943,10 +956,29 @@
           location.reload();
         });
 
-        /* Submit button */
-        $( "#check-computers" ).click(function() {
+        /* Player connection handshake */
+        $( "#player1-connection" ).click(function() {
+          $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green');
           socket.emit('sendHandshakeToPlayer', { my: 'data' });
         });
+        $( "#player2-connection" ).click(function() {
+          $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green');
+          socket.emit('sendHandshakeToPlayer', { my: 'data' });
+        });
+        $( "#player3-connection" ).click(function() {
+          $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green');
+          socket.emit('sendHandshakeToPlayer', { my: 'data' });
+        });
+        $( "#player4-connection" ).click(function() {
+          $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green');
+          socket.emit('sendHandshakeToPlayer', { my: 'data' });
+        });
+
+        /* Update player connection on load */
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
+
+        /* Update game state on load */
+        socket.emit('getCurrentState', { my: 'data' });
       });
     </script>
 
@@ -963,14 +995,6 @@
       </div>
     </dialog>
     <!-- END ERROR DIALOG -->
-
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="check-computers" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
-          Check computers
-        </button>
-      </div>
-    </div>
 
     <!-- HEADER -->
     <div class="mdl-grid header">
@@ -995,7 +1019,9 @@
     <!-- PLAYER 1 -->
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col mdl-center">
-        1
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player1-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">1</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col">
         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
@@ -1042,7 +1068,9 @@
     <!-- PLAYER 2 -->
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col mdl-center">
-        2
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player2-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">2</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col">
         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
@@ -1089,7 +1117,9 @@
     <!-- PLAYER 3-->
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col mdl-center">
-        3
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player3-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">3</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col">
         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-3">
@@ -1136,7 +1166,9 @@
     <!-- PLAYER 4-->
     <div class="mdl-grid player">
       <div class="mdl-cell mdl-cell--1-col mdl-center">
-        4
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player4-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">4</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col">
         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-4">

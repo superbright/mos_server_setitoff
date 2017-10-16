@@ -15,16 +15,6 @@
   font-size: 3em;
 }
 
-.disabled-button {
-  background-color: rgb(110, 150, 170)!important;
-  color: #fff;
-}
-
-.header {
-  background-color: #ff4081;
-  color: #fff;
-}
-
 .header-title {
   font-size: 20px;
 }
@@ -89,10 +79,22 @@
   font-size: 17px;
 }
 
-.custom-red {
+/* Layout */
+.header {
+  background-color: #ff4081;
+  color: #fff;
+}
+
+/* Colors */
+.bg-color-red {
   background-color: rgb(255,82,82);
 }
 
-.custom-green {
+.bg-color-green {
   background-color: rgb(139,195,74);
+}
+
+/* Buttons */
+.player-connection-disabled {
+  background-color: #dedede;
 }
