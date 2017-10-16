@@ -415,8 +415,8 @@ io.on('rotateAll', (ctx, data) => {
     // convert the value to an ASCII string before sending it:
     // console.log('Sending ' + input + ' out the serial port');
     myPort.write(input.toString());
-    myPort.on('data', function() {
-      console.log(myPort.parsers.readline('\n'));
+    myPort.on('data', function(data) {
+      console.log('data received: ' + data);
     });
     console.log("DONE");
   }, 1300);
