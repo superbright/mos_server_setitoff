@@ -418,6 +418,7 @@ io.on('rotateAll', (ctx, data) => {
     myPort.on('data', function(data) {
       console.log('data received: ' + data);
     });
+    myPort.flush();
     console.log("DONE");
   }, 1300);
 });
