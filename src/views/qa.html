@@ -318,6 +318,16 @@
           console.log('rotate four');
           socket.emit('rotateFour', { my: 'data' });
         });
+        
+        $( "#rotate-stop" ).click(function() {
+          console.log('stop rotate');
+          socket.emit('rotateStop', { my: 'data' });
+        });
+        
+        $( "#rotate-start" ).click(function() {
+          console.log('start rotate');
+          socket.emit('rotateStart', { my: 'data' });
+        });
 
         /* Other buttons */
         $( "#fans-on" ).click(function() {
@@ -467,20 +477,26 @@
     </div>
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="rotate-all" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+        <button id="rotate-all" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate all
         </button>
-        <button id="rotate-one" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+        <button id="rotate-one" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate one
         </button>
-        <button id="rotate-two" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+        <button id="rotate-two" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate two
         </button>
-        <button id="rotate-three" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+        <button id="rotate-three" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate three
         </button>
-        <button id="rotate-four" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton">
+        <button id="rotate-four" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate four
+        </button>
+        <button id="rotate-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Stop
+        </button>
+        <button id="rotate-start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Start
         </button>
       </div>
     </div>

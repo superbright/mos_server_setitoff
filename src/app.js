@@ -456,6 +456,22 @@ io.on('rotateFour', (ctx, data) => {
   }, 1300);
 });
 
+io.on('rotateStop', (ctx, data) => {
+  setTimeout(() => {
+    console.log("stop all elevator rotations");
+    var input = "stop";
+    myPort.write(input.toString());
+  }, 100);
+});
+
+io.on('rotateStart', (ctx, data) => {
+  setTimeout(() => {
+    console.log("start all elevator rotations");
+    var input = "start";
+    myPort.write(input.toString());
+  }, 100);
+});
+
 /* Experience */
 io.on('sceneElevator', (ctx, data) => {
   console.log('elevator scene');
