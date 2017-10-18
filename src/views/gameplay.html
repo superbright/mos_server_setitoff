@@ -388,9 +388,12 @@
         });
 
         $( "#reset" ).click(function() {
-          console.log("reset");
-          $( "#timer" ).text(0);
-          socket.emit('reset', { my: 'data' });
+          if(confirm("Are you sure you want to reset?")) {
+            console.log("reset");
+            $( "#timer" ).text(0);
+            socket.emit('reset', { my: 'data' });
+            location.reload();
+          }
         });
 
         /* Update game state on load */
@@ -508,16 +511,6 @@
     </div>
     <!-- END PLAYER 4 -->
     <!-- END PLAYER DATA -->
-
-    <!-- STATUS -->
-<!--     <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <h4>
-          Connection
-        </h4>
-      </div>
-    </div> -->
-    <!-- END STATUS -->
 
     <!-- VR EXPERIENCE -->
     <div class="mdl-grid player-data">
