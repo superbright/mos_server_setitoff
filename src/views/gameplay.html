@@ -284,6 +284,9 @@
       }
 
       function readyState() {
+        // play notification sound
+        $('#notification').trigger('play');
+
         // update game state
         $('#game-state').children(0).text('Ready');
         $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
@@ -590,17 +593,11 @@
           End game
         </button>
       </div>
-<!--       <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
-          Launch game
-        </button>
-      </div> -->
     </div>
     <!-- END VR EXPERIENCE -->
 
     <!-- RESET -->
-
-    <!-- NOTE TO SELF: ADD A PROMPT -->
+    <!-- NOTE TO SELF: ADD A PROMPT ASKING R U SURE -->
     <div class="mdl-grid mdl-center reset-button">
       <div class="mdl-cell mdl-cell--12-col mdl-center">
         <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-button--reset scenebutton">
@@ -609,5 +606,11 @@
       </div>
     </div>
     <!-- END RESET -->
+
+    <!-- AUDIO -->
+    <audio id="notification" preload="none"> 
+      <source src="audio/notification.wav" type="audio/wav">
+    </audio>
+    <!-- END AUDIO -->
   </body>
 </html>
