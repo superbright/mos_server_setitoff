@@ -415,19 +415,18 @@ io.on('fansOff', ( ctx, data ) => {
 io.on('rotateAll', (ctx, data) => {
   setTimeout(() => {
     console.log("rotate all elevators");
-    var input = "1;1;1;1;";
+    var input = "1;1;1;1;\n";
     // convert the value to an ASCII string before sending it:
     // console.log('Sending ' + input + ' out the serial port');
     myPort.write(input.toString());
     myPort.flush();
-    console.log("DONE");
   }, 1300);
 });
 
 io.on('rotateOne', (ctx, data) => {
   setTimeout(() => {
     console.log("rotate elevator one");
-    var input = "1;0;0;0;";
+    var input = "1;0;0;0;\n";
     myPort.write(input.toString());
   }, 1300);
 });
@@ -435,7 +434,7 @@ io.on('rotateOne', (ctx, data) => {
 io.on('rotateTwo', (ctx, data) => {
   setTimeout(() => {
     console.log("rotate elevator two");
-    var input = "0;1;0;0;";
+    var input = "0;1;0;0;\n";
     myPort.write(input.toString());
   }, 1300);
 });
@@ -443,7 +442,7 @@ io.on('rotateTwo', (ctx, data) => {
 io.on('rotateThree', (ctx, data) => {
   setTimeout(() => {
     console.log("rotate elevator three");
-    var input = "0;0;1;0;";
+    var input = "0;0;1;0;\n";
     myPort.write(input.toString());
   }, 1300);
 });
@@ -451,7 +450,7 @@ io.on('rotateThree', (ctx, data) => {
 io.on('rotateFour', (ctx, data) => {
   setTimeout(() => {
     console.log("rotate elevator four");
-    var input = "0;0;0;1;";
+    var input = "0;0;0;1;\n";
     myPort.write(input.toString());
   }, 1300);
 });
