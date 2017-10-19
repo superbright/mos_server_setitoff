@@ -458,7 +458,7 @@ io.on('rotateFour', (ctx, data) => {
 io.on('rotateStop', (ctx, data) => {
   setTimeout(() => {
     console.log("stop all elevator rotations");
-    var input = "stop";
+    var input = "stop\n";
     myPort.write(input.toString());
   }, 100);
 });
@@ -466,7 +466,7 @@ io.on('rotateStop', (ctx, data) => {
 io.on('rotateStart', (ctx, data) => {
   setTimeout(() => {
     console.log("start all elevator rotations");
-    var input = "start";
+    var input = "start\n";
     myPort.write(input.toString());
   }, 100);
 });
