@@ -486,10 +486,7 @@ io.on('sceneElevator', (ctx, data) => {
   // reconnect tracking
   setTimeout(() => {
     console.log("reconnect tracking");
-    io.broadcast('reconnectMotive', { data: 'player1' });
-    io.broadcast('reconnectMotive', { data: 'player2' });
-    io.broadcast('reconnectMotive', { data: 'player3' });
-    io.broadcast('reconnectMotive', { data: 'player4' });
+    io.broadcast('reconnectMotive', { my: 'data' });
   }, 1000);
 
   // restart vibrator
