@@ -274,6 +274,19 @@
         updatePlayerDataView();
       }
 
+      function endState() {
+        // reset player connection states
+        resetPlayerConnectionState();
+      }
+
+      function resetState() {
+        // reset player connection states
+        resetPlayerConnectionState();
+
+        // send another handshake to make sure they are still up
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
+      }
+
       function disableFields() {
         // ison + ready switches
         for(i = 0; i < 5; i++) {
@@ -355,8 +368,6 @@
         $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green');
         $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green');
         $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green');
-
-        socket.emit('sendHandshakeToPlayer', { my: 'data' });
       }
 
       /* Error dialog */
@@ -382,10 +393,10 @@
           ingameState();
           console.log('ingame');
         } else if(data == 3) {
-          resetPlayerConnectionState();
+          endState();
           console.log('end');
         } else if(data == 4) {
-          resetPlayerConnectionState();
+          resetState();
           console.log('reset');
         } else {
           console.log('invalid currentState');
