@@ -543,6 +543,7 @@ io.on('gameRestart', ( ctx, data ) => {
   // close game after 3 seconds
   setTimeout(function() {
     io.broadcast('endGame');
+    io.broadcast('playerHandshake',data);
   }, 3000);
 
   // open game after 20 seconds
