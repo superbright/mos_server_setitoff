@@ -281,19 +281,6 @@
         updatePlayerDataView();
       }
 
-      function endState() {
-        // reset player connection states
-        resetPlayerConnectionState();
-      }
-
-      function resetState() {
-        // reset player connection states
-        resetPlayerConnectionState();
-
-        // send another handshake to make sure they are still up
-        socket.emit('sendHandshakeToPlayer', { my: 'data' });
-      }
-
       function disableFields() {
         // ison + ready switches
         for(i = 0; i < 5; i++) {
@@ -393,10 +380,8 @@
           ingameState();
           console.log('ingame');
         } else if(data == 3) {
-          //endState();
           console.log('end');
         } else if(data == 4) {
-          //resetState();
           console.log('reset');
         } else {
           console.log('invalid currentState');

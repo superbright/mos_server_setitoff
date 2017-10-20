@@ -581,6 +581,11 @@ io.on('reset', (ctx, data) => {
   stopFan();
 
   io.broadcast('resetscene', 'resetscene');
+
+  // notify everyone this was a forced reset, not endgame
+  io.broadcast('errormessage', {
+    data : "Game was reset during the middle of the experience."
+  });
 });
 
 io.attach( app )
