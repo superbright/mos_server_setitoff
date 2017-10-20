@@ -577,7 +577,6 @@ io.on('gameRestart', ( ctx, data ) => {
   currentState = APPSTATE.END;
 
   timerReset();
-  stateSetup();
 
   io.broadcast('disconnectMotive', data);
 
@@ -585,6 +584,11 @@ io.on('gameRestart', ( ctx, data ) => {
   setTimeout(function() {
     io.broadcast('endGame');
   }, 3000);
+
+  // change state after 3.5 seconds to allow game to close and player connection to properly update
+  setTimeout(function() {
+    stateSetup();
+  }, 3500);
 
   // open game after 20 seconds
   setTimeout(function() {
