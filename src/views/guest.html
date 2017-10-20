@@ -228,6 +228,13 @@
         });
       }
 
+      function resetPlayerConnectionState() {
+        $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green');
+        $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green');
+        $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green');
+        $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green');
+      }
+
       /* UI changes for game states */
       function setupState() {
         // update game state
@@ -363,13 +370,6 @@
         $('.bg-color-gray').addClass('bg-color-purple').removeClass('bg-color-gray');
       }
 
-      function resetPlayerConnectionState() {
-        $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green');
-        $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green');
-        $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green');
-        $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green');
-      }
-
       /* Error dialog */
       socket.on('errormessage', function (data) {
         // prevent ready switch to toggle on
@@ -405,10 +405,17 @@
 
       /* Listen for player connection updates */  
       socket.on('playerConnectedStateResponse', function(data) {
-        if(data == 'player1') $('#player1-connection').addClass('bg-color-green').removeClass('bg-color-red')
-        if(data == 'player2') $('#player2-connection').addClass('bg-color-green').removeClass('bg-color-red')
-        if(data == 'player3') $('#player3-connection').addClass('bg-color-green').removeClass('bg-color-red')
-        if(data == 'player4') $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        if(data[0] == true) $('#player1-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[1] == true) $('#player2-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[2] == true) $('#player3-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[3] == true) $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green')
       });
 
       $(document).ready(function() {
