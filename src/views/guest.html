@@ -232,7 +232,7 @@
       function setupState() {
         // update game state
         $('#game-state').children(0).text('Setup');
-        $('#game-state').removeClass('game-state-ingame game-state-ready');
+        $('#game-state').removeClass('bg-color-red bg-color-green');
 
         // toggle ready switch off
         $('.mdl-js-switch')[4].MaterialSwitch.off();
@@ -247,7 +247,7 @@
       function readyState() {
         // update game state
         $('#game-state').children(0).text('Ready');
-        $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
+        $('#game-state').addClass('bg-color-green').removeClass('bg-color-red');
 
         // toggle ready switch on
         $('.mdl-js-switch')[4].MaterialSwitch.on();
@@ -265,7 +265,7 @@
       function ingameState() {
         // update game state
         $('#game-state').children(0).text('In game');
-        $('#game-state').addClass('game-state-ingame').removeClass('game-state-ready');
+        $('#game-state').addClass('bg-color-red').removeClass('bg-color-green');
 
         // disable all fields
         disableFields();
@@ -294,7 +294,7 @@
 
           // player connection buttons
           $('#player' + i +'-connection').prop('disabled', true);
-          $('#player' + i +'-connection').addClass('player-connection-disabled');
+          $('#player' + i +'-connection').addClass('button-chip-disabled');
         }
 
         // submit button
@@ -304,6 +304,12 @@
         for(i = 1; i <= 4; i++) {
           $('#player' + i).prop('disabled', true);
         }
+
+        // gray out layout
+        for(i = 0; i < 4; i++) {
+          $('.bg-color-purple-light').addClass('bg-color-gray-light').removeClass('bg-color-purple-light');
+        }
+        $('.bg-color-purple').addClass('bg-color-gray').removeClass('bg-color-purple');
       }
 
       function enableFields() {
@@ -326,7 +332,7 @@
 
           // player connection buttons
           $('#player' + i +'-connection').prop('disabled', false);
-          $('#player' + i +'-connection').removeClass('player-connection-disabled');
+          $('#player' + i +'-connection').removeClass('button-chip-disabled');
         }
 
         // submit buttons
@@ -336,6 +342,12 @@
         for(i = 1; i <= 4; i++) {
           $('#player' + i).prop('disabled', false);
         }
+
+        // color in layout
+        for(i = 0; i < 4; i++) {
+          $('.bg-color-gray-light').addClass('bg-color-purple-light').removeClass('bg-color-gray-light');
+        }
+        $('.bg-color-gray').addClass('bg-color-purple').removeClass('bg-color-gray');
       }
 
       /* Error dialog */
@@ -361,11 +373,11 @@
           ingameState();
           console.log('ingame');
         } else if(data == 3) {
-          location.reload();
           console.log('end');
-        } else if(data == 4) {
           location.reload();
+        } else if(data == 4) {
           console.log('reset');
+          location.reload();
         } else {
           console.log('invalid currentState');
         }
@@ -1000,8 +1012,8 @@
     <!-- END ERROR DIALOG -->
 
     <!-- HEADER -->
-    <div class="mdl-grid header">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid align-items-center bg-color-purple mdl-color-text--white">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         <b>Player #</b>
       </div>
       <div class="mdl-cell mdl-cell--1-col">
@@ -1016,12 +1028,19 @@
       <div class="mdl-cell mdl-cell--1-col">
         <b>Gender</b>
       </div>
+      <div class="mdl-cell mdl-cell--2-col">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col text-align-center">
+        <span class="mdl-chip" id="game-state">
+          <span class="mdl-chip__text"></span>
+        </span>
+      </div> 
     </div>
     <!-- END HEADER -->
 
     <!-- PLAYER 1 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player1-connection">
           <span class="mdl-chip__contact mdl-color-text--white">1</span>
         </button>
@@ -1043,7 +1062,7 @@
           <option value=""></option>
         </select>
       </div>
-      <div class="mdl-cell mdl-cell--1-col">
+      <div class="mdl-cell mdl-cell--3-col">
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player1-option-1">
           <input type="radio" id="player1-option-1" class="mdl-radio__button" name="options1" value="1" checked>
           <span class="mdl-radio__label">Male</span>
@@ -1052,9 +1071,9 @@
           <input type="radio" id="player1-option-2" class="mdl-radio__button" name="options1" value="2">
           <span class="mdl-radio__label">Female</span>
         </label>
-      </div>
+      </div> 
     </div>
-    <div class="mdl-grid player player-data">
+    <div class="mdl-grid bg-color-purple-light">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
@@ -1069,8 +1088,8 @@
     <!-- END PLAYER -->
 
     <!-- PLAYER 2 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player2-connection">
           <span class="mdl-chip__contact mdl-color-text--white">2</span>
         </button>
@@ -1092,7 +1111,7 @@
           <option value=""></option>
         </select>
       </div>
-      <div class="mdl-cell mdl-cell--1-col">
+      <div class="mdl-cell mdl-cell--3-col">
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player2-option-1">
           <input type="radio" id="player2-option-1" class="mdl-radio__button" name="options2" value="1" checked>
           <span class="mdl-radio__label">Male</span>
@@ -1103,7 +1122,7 @@
         </label>
       </div>
     </div>
-    <div class="mdl-grid player player-data">
+    <div class="mdl-grid bg-color-purple-light">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
@@ -1118,8 +1137,8 @@
     <!-- END PLAYER -->
 
     <!-- PLAYER 3-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player3-connection">
           <span class="mdl-chip__contact mdl-color-text--white">3</span>
         </button>
@@ -1141,7 +1160,7 @@
           <option value=""></option>
         </select>
       </div>
-      <div class="mdl-cell mdl-cell--1-col">
+      <div class="mdl-cell mdl-cell--3-col">
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player3-option-1">
           <input type="radio" id="player3-option-1" class="mdl-radio__button" name="options3" value="1" checked>
           <span class="mdl-radio__label">Male</span>
@@ -1152,7 +1171,7 @@
         </label>
       </div>
     </div>
-    <div class="mdl-grid player player-data">
+    <div class="mdl-grid bg-color-purple-light">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
@@ -1167,8 +1186,8 @@
     <!-- END PLAYER -->
 
     <!-- PLAYER 4-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player4-connection">
           <span class="mdl-chip__contact mdl-color-text--white">4</span>
         </button>
@@ -1190,7 +1209,7 @@
           <option value=""></option>
         </select>
       </div>
-      <div class="mdl-cell mdl-cell--1-col">
+      <div class="mdl-cell mdl-cell--3-col">
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="player4-option-1">
           <input type="radio" id="player4-option-1" class="mdl-radio__button" name="options4" value="1" checked>
           <span class="mdl-radio__label">Male</span>
@@ -1201,7 +1220,7 @@
         </label>
       </div>
     </div>
-    <div class="mdl-grid player player-data">
+    <div class="mdl-grid bg-color-purple-light">
       <div class="mdl-cell mdl-cell--1-col">
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
@@ -1216,37 +1235,26 @@
     <!-- END PLAYER -->
 
     <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
           Submit
         </button>
       </div>
     </div>
 
-    <div class="mdl-grid player mdl-table">
-      <div class="mdl-cell mdl-cell--12-col mdl-table-row">
-        <div class="mdl-table-cell">
-          <h4>Ready</h4>
+    <div class="mdl-grid ready-switch-table">
+      <div class="mdl-cell mdl-cell--12-col">
+        <div class="ready-switch-table-cell">
+          <span class="text-large">Ready</span>
         </div>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-table-row mdl-switch-custom">
-        <div class="mdl-table-cell">
+      <div class="mdl-cell mdl-cell--12-col ready-switch-margin">
+        <div class="ready-switch-table-cell">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-ready">
             <input type="checkbox" id="switch-ready" class="mdl-switch__input" >
             <span class="mdl-switch__label"></span>
           </label>
         </div>
-      </div>
-    </div>
-
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <h4>
-          Game State
-        </h4>
-        <span class="mdl-chip" id="game-state">
-            <span class="mdl-chip__text"></span>
-        </span>
       </div>
     </div>
   </body>

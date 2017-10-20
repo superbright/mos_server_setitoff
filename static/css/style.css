@@ -1,69 +1,5 @@
-.player {
-  background-color: #fff;
-  align-items: center;
-}
-
-.scenebutton {
-  width: 400px;
-  height: 75px;
-  margin-bottom: 5px;
-  font-size: 30px;
-  text-transform: uppercase;
-}
-
-#timer {
-  font-size: 3em;
-}
-
 .header-title {
   font-size: 20px;
-}
-
-.mdl-center {
-  text-align: center;
-}
-
-.player-data {
-  background-color: #e8e8e8;
-  align-items: center;
-}
-
-.mdl-radio {
-  font-size: 14px;
-  padding-right: 15px;
-}
-
-.ready {
-  background: rgb(139,195,74);
-}
-
-.ready h4 {
-  color: rgb(66,66,66);
-}
-
-.mdl-table-cell {
-  display: table-cell;
-  text-align: center;
-}
-
-.mdl-table {
-  display: table;
-}
-
-.mdl-switch-custom {
-  margin-left: 25px;
-}
-
-.mdl-chip__text {
-  font-size: 20px;
-}
-
-.game-state-ready {
-  background-color: rgb(139,195,74);
-}
-
-.game-state-ingame {
-  background-color: rgb(255,82,82);
 }
 
 .reset-button {
@@ -75,17 +11,45 @@
   color: #fff;
 }
 
+/* Custom overrides */
 .mdl-chip__text {
   font-size: 17px;
 }
 
+.mdl-radio {
+  font-size: 14px;
+  padding-right: 15px;
+}
+
+/* Ready switch */
+.ready-switch-table-cell {
+  display: table-cell;
+  text-align: center;
+}
+
+.ready-switch-table {
+  display: table;
+}
+
+.ready-switch-margin {
+  margin-left: 25px;
+}
+
 /* Layout */
 .header {
-  background-color: #ff4081;
+  background-color: #635274;
   color: #fff;
 }
 
-/* Colors */
+#timer {
+  font-size: 3em;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+/* Backgrounds */
 .bg-color-red {
   background-color: rgb(255,82,82);
 }
@@ -94,7 +58,40 @@
   background-color: rgb(139,195,74);
 }
 
+.bg-color-gray {
+	background-color: #757575;
+}
+
+.bg-color-gray-light {
+  background-color: #e8e8e8;
+}
+
+.bg-color-purple {
+  background-color: #635274;
+}
+
+.bg-color-purple-light {
+  background-color: rgba(99, 82, 116, 0.25);
+}
+
 /* Buttons */
-.player-connection-disabled {
+.button-chip-disabled {
   background-color: #dedede;
+}
+
+.button-large {
+  width: 400px;
+  height: 75px;
+  margin-bottom: 5px;
+  font-size: 30px;
+  text-transform: uppercase;
+}
+
+/* Text */
+.text-align-center {
+  text-align: center;
+}
+
+.text-large {
+  font-size: 2em;
 }

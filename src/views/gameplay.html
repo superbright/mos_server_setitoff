@@ -277,7 +277,7 @@
       function setupState() {
         // update game state
         $('#game-state').children(0).text('Setup');
-        $('#game-state').removeClass('game-state-ingame game-state-ready');
+        $('#game-state').removeClass('bg-color-red bg-color-green');
 
         // disable buttons
         disableButtons();
@@ -289,7 +289,7 @@
 
         // update game state
         $('#game-state').children(0).text('Ready');
-        $('#game-state').addClass('game-state-ready').removeClass('game-state-ingame');
+        $('#game-state').addClass('bg-color-green').removeClass('bg-color-red');
 
         // game is ready; update player data
         updatePlayerData();
@@ -301,7 +301,7 @@
       function ingameState() {
         // update game state
         $('#game-state').children(0).text('In game');
-        $('#game-state').addClass('game-state-ingame').removeClass('game-state-ready');
+        $('#game-state').addClass('bg-color-red').removeClass('bg-color-green');
       }
 
       $(document).ready(function() {
@@ -392,7 +392,6 @@
             console.log("reset");
             $( "#timer" ).text(0);
             socket.emit('reset', { my: 'data' });
-            location.reload();
           }
         });
 
@@ -411,8 +410,11 @@
             ingameState();
             console.log('ingame');
           } else if(data == 3) {
-            location.reload();
             console.log('end');
+            location.reload();
+          } else if(data == 4) {
+            console.log('reset');
+            location.reload();
           } else {
             console.log('invalid currentState');
           }
@@ -433,8 +435,8 @@
     </dialog>
 
     <!-- PLAYER DATA -->
-    <div class="mdl-grid player-data">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid bg-color-gray-light">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         <b>Player #</b>
       </div>
       <div class="mdl-cell mdl-cell--1-col">
@@ -451,8 +453,8 @@
       </div>
     </div>
     <!-- PLAYER 1-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         1
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
@@ -466,8 +468,8 @@
     </div>
     <!-- END PLAYER 1-->
     <!-- PLAYER 2-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         2
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
@@ -481,8 +483,8 @@
     </div>
     <!-- END PLAYER 2-->
     <!-- PLAYER 3 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         3
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
@@ -496,8 +498,8 @@
     </div>
     <!-- END PLAYER 3 -->
     <!-- PLAYER 4 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col mdl-center">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
         4
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
@@ -513,76 +515,76 @@
     <!-- END PLAYER DATA -->
 
     <!-- VR EXPERIENCE -->
-    <div class="mdl-grid player-data">
+    <div class="mdl-grid bg-color-gray-light align-items-center">
       <div class="mdl-cell mdl-cell--1-col">
         <span class="mdl-chip" id="game-state">
             <span class="mdl-chip__text"></span>
         </span>
       </div>
-      <div class="mdl-cell mdl-cell--6-col mdl-center">
+      <div class="mdl-cell mdl-cell--6-col text-align-center">
         <span class="mdl-chip mdl-chip--contact">
           <span class="mdl-chip__contact mdl-color-text--white" id="player1tracking">1</span>
-          <span class="mdl-chip__text" id="player1tracking-text"></span>
+          <span class="mdl-chip__text" id="player1tracking-text">N/A</span>
         </span>
         <span class="mdl-chip mdl-chip--contact">
           <span class="mdl-chip__contact mdl-color-text--white" id="player2tracking">2</span>
-          <span class="mdl-chip__text" id="player2tracking-text"></span>
+          <span class="mdl-chip__text" id="player2tracking-text">N/A</span>
         </span>
         <span class="mdl-chip mdl-chip--contact">
           <span class="mdl-chip__contact mdl-color-text--white" id="player3tracking">3</span>
-          <span class="mdl-chip__text" id="player3tracking-text"></span>
+          <span class="mdl-chip__text" id="player3tracking-text">N/A</span>
         </span>
         <span class="mdl-chip mdl-chip--contact">
           <span class="mdl-chip__contact mdl-color-text--white" id="player4tracking">4</span>
-          <span class="mdl-chip__text" id="player4tracking-text"></span>
+          <span class="mdl-chip__text" id="player4tracking-text">N/A</span>
         </span>
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="timer">
       </div>
     </div>
-    <div class="mdl-grid mdl-center">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame scenebutton">
+    <div class="mdl-grid text-align-center">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="startgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored startgame button-large">
           Start game
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="rotate-in" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="rotate-in" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton button-large">
           Rotate
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="elevator" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="elevator" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
           Elevator
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
           Void
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="enablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="enablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
           Queen on
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="disablePerformer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
           Queen off
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="exitScene" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="exitScene" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
           Exit
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="rotate-out" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="rotate-out" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored rotatebutton button-large">
           Rotate
         </button>
       </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored endgame scenebutton">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="endgame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored endgame button-large">
           End game
         </button>
       </div>
@@ -591,9 +593,9 @@
 
     <!-- RESET -->
     <!-- NOTE TO SELF: ADD A PROMPT ASKING R U SURE -->
-    <div class="mdl-grid mdl-center reset-button">
-      <div class="mdl-cell mdl-cell--12-col mdl-center">
-        <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-button--reset scenebutton">
+    <div class="mdl-grid text-align-center reset-button">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-button--reset button-large">
           Reset
         </button>
       </div>
