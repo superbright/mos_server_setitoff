@@ -258,6 +258,9 @@
         // disable submit button
         $('#submit').prop('disabled', true);
 
+        // reset player connection state
+        resetPlayerConnectionState();
+
         // update player data view
         updatePlayerDataView();
       }
@@ -350,6 +353,13 @@
         $('.bg-color-gray').addClass('bg-color-purple').removeClass('bg-color-gray');
       }
 
+      function resetPlayerConnectionState() {
+        $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green');
+        $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green');
+        $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green');
+        $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green');
+      }
+
       /* Error dialog */
       socket.on('errormessage', function (data) {
         // prevent ready switch to toggle on
@@ -374,10 +384,8 @@
           console.log('ingame');
         } else if(data == 3) {
           console.log('end');
-          location.reload();
         } else if(data == 4) {
           console.log('reset');
-          location.reload();
         } else {
           console.log('invalid currentState');
         }
@@ -988,11 +996,11 @@
           socket.emit('sendHandshakeToPlayer', { my: 'data' });
         });
 
-        /* Update player connection on load */
-        socket.emit('sendHandshakeToPlayer', { my: 'data' });
-
         /* Update game state on load */
         socket.emit('getCurrentState', { my: 'data' });
+
+        /* Update player connection on load */
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
       });
     </script>
 
