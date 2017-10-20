@@ -1,0 +1,824 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+    <title>Control Panel - Museum of Sex - VR</title>
+
+    <link rel="stylesheet" href="./mdl/material.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dialog-polyfill.css">
+    <link rel="stylesheet" href="./css/icon.css?family=Material+Icons">
+
+    <script src="./mdl/material.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/dialog-polyfill.js"></script>
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      /* Connect to socket */
+      var socket = io('http://192.168.1.212:4000');
+      var ip = 'http://192.168.1.212:4000';
+      //var socket = io('localhost:4000');
+      //var ip = 'http://localhost:4000';
+      socket.on('hello', function (data) {
+        console.log(data);
+      });
+
+      var heightmap = [
+        {
+          key: "5’0” (152 cm)",
+          value: 152.40
+        },
+        {
+          key: "5’1” (156 cm)",
+          value: 154.94
+        },
+        {
+          key: "5’2” (157 cm)",
+          value:  157.48
+        },
+        {
+          key: "5’3” (160 cm)",
+          value:  160.02
+        },
+        {
+          key: "5’4” (162 cm)",
+          value:  162.56
+        },
+        {
+          key: "5’5” (165 cm)",
+          value:  165.10
+        },
+        {
+          key: "5’6” (168 cm)",
+          value: 167.74
+        },
+        {
+          key: "5’7” (170 cm)",
+          value:  170.18
+        },
+        {
+          key: "5’8” (173 cm)",
+          value:  172.72
+        },
+        {
+          key: "5’9” (175 cm)",
+          value: 175.26
+        },
+        {
+          key: "5’10” (178 cm)",
+          value: 177.80
+        },
+        {
+          key: "5’11” (180 cm)",
+          value: 180.34
+        },
+        {
+          key: "6’0” (183 cm)",
+          value: 182.88
+        },
+        {
+          key: "6’1” (185 cm)",
+          value: 185.45
+        },
+        {
+          key: "6’2” (188 cm)",
+          value: 187.96
+        },
+        {
+          key: "6’3” (190 cm)",
+          value: 190.50
+        },
+        {
+          key: "6’4” (193 cm)",
+          value: 193.04
+        },
+        {
+          key: "6’5” (195 cm)",
+          value: 195.58
+        },
+        {
+          key: "6’6” (198 cm)",
+          value: 198.12
+        },
+        {
+          key: "6’7” (200 cm)",
+          value: 200.66
+        },
+        {
+          key: "6’8” (203 cm)",
+          value:  203.20
+        },
+        {
+          key: "6’9” (206 cm)",
+          value:  205.74
+        },
+        {
+          key: "6’10” (208 cm)",
+          value: 208.28
+        }
+      ];
+
+      /* Players connecting to optitrack */
+      socket.on('connectionState', function(data) {
+        var dataarr = data.split(':');
+        console.log(dataarr);
+        var enabledColor = '#8ec252';
+        var disabledColor = '#ff0000';
+        if(dataarr[0] == 'player1') {
+          if(dataarr[1] == "True") {
+            $('#player1tracking').css('background',enabledColor)
+          } else {
+            $('#player1tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player2') {
+          if(dataarr[1] == "True") {
+            $('#player2tracking').css('background',enabledColor)
+          } else {
+            $('#player2 tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player3') {
+          if(dataarr[1] == "True") {
+            $('#player3tracking').css('background',enabledColor)
+          } else {
+            $('#player3tracking').css('background',disabledColor)
+          }
+        }
+        if(dataarr[0] == 'player4') {
+          if(dataarr[1] == "True") {
+            $('#player4tracking').css('background',enabledColor)
+          } else {
+            $('#player4tracking').css('background',disabledColor)
+          }
+        }
+      });
+
+      $(document).ready(function() {
+        /* OptiTrack connection */
+        $( "#player1tracking" ).click(function() {
+          socket.emit('recon', { data: 'player1' });
+        });
+
+        $( "#player2tracking" ).click(function() {
+          socket.emit('recon', { data: 'player2' });
+        });
+
+        $( "#player3tracking" ).click(function() {
+          socket.emit('recon', { data: 'player3' });
+        });
+
+        $( "#player4tracking" ).click(function() {
+          socket.emit('recon', { data: 'player4' });
+        });
+
+        /* Dildo controls */
+        // Player 1
+        $( "#player1-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player1vib' });
+        });
+
+        $( "#player1-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player1vib' });
+        });
+
+        $( "#player1-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player1vib' });
+        });
+
+        $( "#player1-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player1vib' });
+        });
+
+        $( "#player1-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player1vib' });
+        });
+
+        $( "#player1-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player1vib' });
+        });
+
+        $( "#player1-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player1vib' });
+        });
+
+        // Player 2
+        $( "#player2-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player2vib' });
+        });
+
+        $( "#player2-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player2vib' });
+        });
+
+        $( "#player2-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player2vib' });
+        });
+
+        $( "#player2-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player2vib' });
+        });
+
+        $( "#player2-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player2vib' });
+        });
+
+        $( "#player2-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player2vib' });
+        });
+
+        $( "#player2-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player2vib' });
+        });
+
+        // Player 3
+        $( "#player3-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player3vib' });
+        });
+
+        $( "#player3-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player3vib' });
+        });
+
+        $( "#player3-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player3vib' });
+        });
+
+        $( "#player3-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player3vib' });
+        });
+
+        $( "#player3-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player3vib' });
+        });
+
+        $( "#player3-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player3vib' });
+        });
+
+        $( "#player3-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player3vib' });
+        });
+
+        // Player 4
+        $( "#player4-dildon" ).click(function() {
+          socket.emit('dildon', { set: 'dildon', player: 'player4vib' });
+        });
+
+        $( "#player4-surf" ).click(function() {
+          socket.emit('dildon', { set: 'surf', player: 'player4vib' });
+        });
+
+        $( "#player4-pingpong" ).click(function() {
+          socket.emit('dildon', { set: 'pingpong', player: 'player4vib' });
+        });
+
+        $( "#player4-tide" ).click(function() {
+          socket.emit('dildon', { set: 'tide', player: 'player4vib' });
+        });
+
+        $( "#player4-wave" ).click(function() {
+          socket.emit('dildon', { set: 'wave', player: 'player4vib' });
+        });
+
+        $( "#player4-dildoff" ).click(function() {
+          socket.emit('dildoff', { set: 'dildoff', player: 'player4vib' });
+        });
+
+        $( "#player4-connectvib" ).click(function() {
+          socket.emit('connectvib', { set: 'connect', player: 'player4vib' });
+        });
+
+        /* Elevators */
+        $( "#rotate-all" ).click(function() {
+          console.log('rotate all');
+          socket.emit('rotateAll', { my: 'data' });
+        });
+
+        $( "#rotate-one" ).click(function() {
+          console.log('rotate one');
+          socket.emit('rotateOne', { my: 'data' });
+        });
+        
+        $( "#rotate-two" ).click(function() {
+          console.log('rotate two');
+          socket.emit('rotateTwo', { my: 'data' });
+        });
+        
+        $( "#rotate-three" ).click(function() {
+          console.log('rotate three');
+          socket.emit('rotateThree', { my: 'data' });
+        });
+        
+        $( "#rotate-four" ).click(function() {
+          console.log('rotate four');
+          socket.emit('rotateFour', { my: 'data' });
+        });
+        
+        $( "#rotate-stop" ).click(function() {
+          console.log('stop rotate');
+          socket.emit('rotateStop', { my: 'data' });
+        });
+        
+        $( "#rotate-start" ).click(function() {
+          console.log('start rotate');
+          socket.emit('rotateStart', { my: 'data' });
+        });
+
+        /* Other buttons */
+        $( "#fans-on" ).click(function() {
+          console.log('turning fans on');
+          socket.emit('fansOn', { my: 'data' });
+        });
+
+        $( "#fans-off" ).click(function() {
+          console.log('turning fans off');
+          socket.emit('fansOff', { my: 'data' });
+        });
+
+        $( "#test" ).click(function() {
+          console.log('testing');
+          socket.emit('test', { player: 1 });
+        });
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $( "#player3-state-get" ).click(function() {
+          console.log("player 3 state GET");
+          
+        });
+
+       $( "#player3-state-send" ).click(function() {
+          console.log("sendHandshakeToPlayer");
+          socket.emit('sendHandshakeToPlayer', { my: 'data' });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      });
+
+      $( document ).ready(function() {
+        $.getJSON( ip + "/config", function( data ) {
+          var playerData = data["PLAYERS"];
+
+          var player1h, player2h, player3h, player4h;
+
+          // get player heights
+          heightmap.forEach(function(item) {
+            if(item.value == playerData[0].height) {
+              player1h = item.key;
+            }
+            if(item.value == playerData[1].height) {
+              player2h = item.key;
+            }
+            if(item.value == playerData[2].height) {
+              player3h = item.key;
+            }
+            if(item.value == playerData[3].height) {
+              player4h = item.key;
+            }            
+          });
+
+          // display player height from JSON file
+          $( '#player1-height' ).append(player1h);
+          $( '#player2-height' ).append(player2h);
+          $( '#player3-height' ).append(player3h);
+          $( '#player4-height' ).append(player4h);
+
+          // display player names from JSON file
+          $( '#player1-name' ).append(playerData[0].name);
+          $( '#player2-name' ).append(playerData[1].name);
+          $( '#player3-name' ).append(playerData[2].name);
+          $( '#player4-name' ).append(playerData[3].name);
+
+          // display player ison from JSON file
+          if(playerData[0].ison == true) {
+            $( '#player1-ison' ).append("ON");
+          } else {
+            $( '#player1-ison' ).append("OFF");
+          }
+          if(playerData[1].ison == true) {
+            $( '#player2-ison' ).append("ON");
+          } else {
+            $( '#player2-ison' ).append("OFF");
+          }
+          if(playerData[2].ison == true) {
+            $( '#player3-ison' ).append("ON");
+          } else {
+            $( '#player3-ison' ).append("OFF");
+          }
+          if(playerData[3].ison == true) {
+            $( '#player4-ison' ).append("ON");
+          } else {
+            $( '#player4-ison' ).append("OFF");
+          }
+
+          // display player gender from JSON file
+          if(playerData[0].gender == 1) {
+            $( '#player1-gender' ).append("Male");        
+          } else {
+            $( '#player1-gender' ).append("Female");
+          }
+          if(playerData[1].gender == 1) {
+            $( '#player2-gender' ).append("Male");        
+          } else {
+            $( '#player2-gender' ).append("Female");
+          }
+          if(playerData[2].gender == 1) {
+            $( '#player3-gender' ).append("Male");        
+          } else {
+            $( '#player3-gender' ).append("Female");
+          }
+          if(playerData[3].gender == 1) {
+            $( '#player4-gender' ).append("Male");        
+          } else {
+            $( '#player4-gender' ).append("Female");
+          }
+        });
+      });
+    </script>
+
+    <!-- ELEVATORS -->
+    <div class="mdl-grid header header-title header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Elevators</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="rotate-all" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rotate all
+        </button>
+        <button id="rotate-one" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rotate one
+        </button>
+        <button id="rotate-two" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rotate two
+        </button>
+        <button id="rotate-three" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rotate three
+        </button>
+        <button id="rotate-four" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rotate four
+        </button>
+        <button id="rotate-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Stop
+        </button>
+        <button id="rotate-start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Start
+        </button>
+      </div>
+    </div>
+    <!-- END ELEVATORS -->
+
+    <!-- FANS -->
+    <div class="mdl-grid header header-title header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Fans</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="fans-on" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Fans on
+        </button>
+        <button id="fans-off" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Fans off
+        </button>
+      </div>
+    </div>
+    <!-- END FANS -->
+
+    <!-- GAME -->
+    <div class="mdl-grid header header-title header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Game</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="game-launch" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Launch game
+        </button>
+        <button id="game-close" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Close game
+        </button>
+      </div>
+    </div>
+    <!-- END GAME -->
+
+    <!-- VIBRATORS -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Vibrators</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 1
+      </div>
+      <!-- PLAYER 1 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player1-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDON
+        </button>
+
+        <button id="player1-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          WAVE
+        </button>
+
+        <button id="player1-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          SURF
+        </button>
+
+        <button id="player1-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          TIDE
+        </button>
+
+        <button id="player1-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          PING PONG
+        </button>
+
+        <button id="player1-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDOFF
+        </button>
+
+        <button id="player1-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          CONNECT
+        </button>
+      </div>
+      <!-- END PLAYER 1 -->
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 2
+      </div>
+      <!-- PLAYER 2 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player2-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDON
+        </button>
+
+        <button id="player2-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          WAVE
+        </button>
+
+        <button id="player2-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          SURF
+        </button>
+
+        <button id="player2-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          TIDE
+        </button>
+
+        <button id="player2-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          PING PONG
+        </button>
+
+        <button id="player2-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDOFF
+        </button>
+
+        <button id="player2-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          CONNECT
+        </button>
+      </div>
+      <!-- END PLAYER 2 -->
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 3
+      </div>
+      <!-- PLAYER 3 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player3-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDON
+        </button>
+
+        <button id="player3-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          WAVE
+        </button>
+
+        <button id="player3-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          SURF
+        </button>
+
+        <button id="player3-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          TIDE
+        </button>
+
+        <button id="player3-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          PING PONG
+        </button>
+
+        <button id="player3-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDOFF
+        </button>
+
+        <button id="player3-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          CONNECT
+        </button>
+      </div>
+      <!-- END PLAYER 3 -->
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        Player 4
+      </div>
+      <!-- PLAYER 4 -->
+      <div class="mdl-cell mdl-cell--12-col">
+        <button id="player4-dildon" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDON
+        </button>
+
+        <button id="player4-wave" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          WAVE
+        </button>
+
+        <button id="player4-surf" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          SURF
+        </button>
+
+        <button id="player4-tide" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          TIDE
+        </button>
+
+        <button id="player4-pingpong" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          PING PONG
+        </button>
+
+        <button id="player4-dildoff" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          DILDOFF
+        </button>
+
+        <button id="player4-connectvib" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          CONNECT
+        </button>
+      </div>
+      <!-- PLAYER 4 -->
+    </div>
+    <!-- END VIBRATORS -->
+
+    <!-- PLAYER DATA -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Data</b>
+      </div>
+    </div>
+    <div class="mdl-grid bg-color-gray">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>On/Off</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Name</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <b>Height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Gender</b>
+      </div>
+    </div>
+    <!-- PLAYER 1-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        1
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 1-->
+    <!-- PLAYER 2-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        2
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 2-->
+    <!-- PLAYER 3 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        3
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 3 -->
+    <!-- PLAYER 4 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        4
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 4 -->
+    <!-- END PLAYER DATA -->
+
+    <!-- PLAYER CONNECTION -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Connection</b>
+      </div>
+    </div>
+    <!-- END PLAYER CONNECTION -->
+
+    <!-- GAME STATE -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Game State</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <span class="mdl-chip">
+            <span class="mdl-chip__text">Setup</span>
+        </span>
+        <span class="mdl-chip game-state-ready">
+            <span class="mdl-chip__text">Ready</span>
+        </span>
+        <span class="mdl-chip game-state-ingame">
+            <span class="mdl-chip__text">In game</span>
+        </span>
+      </div>
+    </div>
+    <!-- END GAME STATE -->
+
+    <!--
+
+        <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          SEND STATE
+        </button>
+
+        <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          GET STATE
+        </button>
+
+        <button id="test" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
+          TEST
+        </button>
+  -->
+
+    <!-- END PLAYER -->
+  </body>
+</html>

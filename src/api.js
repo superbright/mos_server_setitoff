@@ -23,6 +23,14 @@ api.get('/qa',
   }
 );
 
+api.get('/cp',
+  async (ctx, next) => {
+    await ctx.render('cp', {
+      user: 'museum'
+    });
+  }
+);
+
 api.get('/guest',
   async (ctx, next) => {
     await ctx.render('guest', {
