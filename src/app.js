@@ -233,9 +233,15 @@ function stateSetup() {
     // reset playerConnectedStates (handshake)
     app.context.playerStates = [false, false, false, false];
 
+    // broadcast playerConnectedStates
+    io.broadcast('playerHandshake',data);
+
     // broadcast endgame
     io.broadcast('currentState', currentState);
   } else if(currentState == APPSTATE.RESET) {
+    // broadcast playerConnectedStates
+    io.broadcast('playerHandshake',data);
+    
     // broadcast RESET
     io.broadcast('currentState', currentState);
   }
