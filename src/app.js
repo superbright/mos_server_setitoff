@@ -529,6 +529,9 @@ io.on('sceneElevator', (ctx, data) => {
   io.broadcast('dildoff', { set: 'dildoff', player: 'player4vib' });
 
   io.broadcast('enterlobby', 'lobby');
+
+  // one last handshake to ensure game didn't crash
+  updatePlayerConnectedState();
 });
 
 io.on('sceneVoid', (ctx, data) => {
