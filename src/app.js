@@ -283,6 +283,9 @@ function stateReady() {
 
     // rebind player data
     io.broadcast('updatePlayerData', 'updatePlayerData');
+    
+    // broadcast updated playerConnectedStates
+    updatePlayerConnectedState();
   }
 }
 
@@ -584,7 +587,7 @@ io.on('reset', (ctx, data) => {
 
   // notify everyone this was a forced reset, not endgame
   io.broadcast('errormessage', {
-    data : "Game was reset during the middle of the experience."
+    data : "Game was reset during the middle of the experience. Please do not enter new data."
   });
 });
 

@@ -181,6 +181,43 @@
         }
       });
 
+        /* Listen for any game state changes */
+        socket.on('currentState', function(data) {
+          if(data == 0) {
+            setupState();
+            console.log('setup');
+          } else if(data == 1) {
+            readyState();
+            console.log('ready');
+          } else if(data == 2) {
+            ingameState();
+            console.log('ingame');
+          } else if(data == 3) {
+            console.log('end');
+            location.reload();
+          } else if(data == 4) {
+            console.log('reset');
+            location.reload();
+          } else {
+            console.log('invalid currentState');
+          }
+        });
+
+      /* Listen for player connection updates */  
+      socket.on('playerConnectedStateResponse', function(data) {
+        if(data[0] == true) $('#player1-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[1] == true) $('#player2-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[2] == true) $('#player3-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[3] == true) $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green')
+      });
+
       function updatePlayerData() {
         $.getJSON( ip + "/config", function( data ) {
           var playerData = data["PLAYERS"];
@@ -398,27 +435,8 @@
         /* Update game state on load */
         socket.emit('getCurrentState', { my: 'data' });
 
-        /* Listen for any game state changes */
-        socket.on('currentState', function(data) {
-          if(data == 0) {
-            setupState();
-            console.log('setup');
-          } else if(data == 1) {
-            readyState();
-            console.log('ready');
-          } else if(data == 2) {
-            ingameState();
-            console.log('ingame');
-          } else if(data == 3) {
-            console.log('end');
-            location.reload();
-          } else if(data == 4) {
-            console.log('reset');
-            location.reload();
-          } else {
-            console.log('invalid currentState');
-          }
-        });
+        /* Update player connection on load */
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
       });
     </script>
 
@@ -453,9 +471,11 @@
       </div>
     </div>
     <!-- PLAYER 1-->
-    <div class="mdl-grid">
+    <div class="mdl-grid align-items-center">
       <div class="mdl-cell mdl-cell--1-col text-align-center">
-        1
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player1-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">1</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
       </div>
@@ -468,9 +488,11 @@
     </div>
     <!-- END PLAYER 1-->
     <!-- PLAYER 2-->
-    <div class="mdl-grid">
+    <div class="mdl-grid align-items-center">
       <div class="mdl-cell mdl-cell--1-col text-align-center">
-        2
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player2-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">2</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
       </div>
@@ -483,9 +505,11 @@
     </div>
     <!-- END PLAYER 2-->
     <!-- PLAYER 3 -->
-    <div class="mdl-grid">
+    <div class="mdl-grid align-items-center">
       <div class="mdl-cell mdl-cell--1-col text-align-center">
-        3
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player3-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">3</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
       </div>
@@ -498,9 +522,11 @@
     </div>
     <!-- END PLAYER 3 -->
     <!-- PLAYER 4 -->
-    <div class="mdl-grid">
+    <div class="mdl-grid align-items-center">
       <div class="mdl-cell mdl-cell--1-col text-align-center">
-        4
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player4-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">4</span>
+        </button>
       </div>
       <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
       </div>
