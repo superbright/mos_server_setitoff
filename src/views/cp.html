@@ -330,7 +330,6 @@
         });
         
         $( "#elevator-ping" ).click(function() {
-          console.log('ping');
           socket.emit('elevatorHandshake', { my: 'data' });
         });
 

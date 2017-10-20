@@ -17,20 +17,6 @@
   padding-right: 15px;
 }
 
-/* Ready switch */
-.ready-switch-table-cell {
-  display: table-cell;
-  text-align: center;
-}
-
-.ready-switch-table {
-  display: table;
-}
-
-.ready-switch-margin {
-  margin-left: 25px;
-}
-
 /* Layout */
 .header {
   background-color: #ff4081;
@@ -98,6 +84,10 @@
 /* Text */
 .text-align-center {
   text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
 }
 
 .text-large {
