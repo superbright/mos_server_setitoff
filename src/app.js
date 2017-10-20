@@ -228,7 +228,7 @@ function updatePlayerConnectedState() {
   io.broadcast('playerConnectedStateResponse', app.context.playerStates);
   
   // broadcast updated playerConnectedStates
-  io.broadcast('playerHandshake',data);
+  io.broadcast('playerHandshake', { my: 'data' });
 }
 
 /* Game state functions */
