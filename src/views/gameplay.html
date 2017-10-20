@@ -380,6 +380,7 @@
 
         $( "#rotate-in" ).click(function() {
           socket.emit('rotateAll', { my: 'data' });
+          socket.emit('updatePlayerConnectedState', { my: 'data' });
           $('#rotate-in').prop('disabled', true);
         });
 

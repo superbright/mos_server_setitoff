@@ -283,7 +283,7 @@ function stateReady() {
 
     // rebind player data
     io.broadcast('updatePlayerData', 'updatePlayerData');
-    
+
     // broadcast updated playerConnectedStates
     updatePlayerConnectedState();
   }
@@ -306,6 +306,9 @@ function stateIngame() {
       data : "Game must be in READY state to proceed. It is currently in " + stateGame + " state."
     });
   } else {
+    // broadcast updated playerConnectedStates
+    updatePlayerConnectedState();
+
     currentState = APPSTATE.INGAME;
     io.broadcast('currentState', currentState);
   }
@@ -384,6 +387,11 @@ io.on('respondPlayerHandshake', ( ctx, data ) => {
   else if(data == 'player4') app.context.playerStates[3] = true
 
   io.broadcast('playerConnectedStateResponse', app.context.playerStates);
+});
+
+io.on('updatePlayerConnectedState', (ctx, data) => {
+  console.log('updated player connected state');
+  updatePlayerConnectedState();
 });
 
 /* Player tracking state */
