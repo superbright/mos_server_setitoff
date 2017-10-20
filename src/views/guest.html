@@ -258,9 +258,6 @@
         // disable submit button
         $('#submit').prop('disabled', true);
 
-        // reset player connection state
-        resetPlayerConnectionState();
-
         // update player data view
         updatePlayerDataView();
       }
@@ -358,6 +355,8 @@
         $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green');
         $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green');
         $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green');
+
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
       }
 
       /* Error dialog */
@@ -383,8 +382,10 @@
           ingameState();
           console.log('ingame');
         } else if(data == 3) {
+          resetPlayerConnectionState();
           console.log('end');
         } else if(data == 4) {
+          resetPlayerConnectionState();
           console.log('reset');
         } else {
           console.log('invalid currentState');
