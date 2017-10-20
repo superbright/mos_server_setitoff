@@ -434,6 +434,7 @@
 
         $( "#endgame" ).click(function() {
           socket.emit('gameRestart', { my: 'data' });
+          $('#endgame').prop('disabled', true);
         });
 
         $( "#reset" ).click(function() {
