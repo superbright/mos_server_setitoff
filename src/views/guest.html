@@ -242,6 +242,15 @@
 
         // update player data view
         updatePlayerDataView();
+
+        // update player connection
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
+
+        // reset ison for all players
+        $('.mdl-js-switch')[0].click();
+        $('.mdl-js-switch')[1].click();
+        $('.mdl-js-switch')[2].click();
+        $('.mdl-js-switch')[3].click();
       }
 
       function readyState() {
