@@ -220,6 +220,17 @@ function timerReset() {
   io.broadcast('time', { time: 0 });
 }
 
+function updatePlayerConnectedState() {
+  // default to false first
+  app.context.playerStates = [false, false, false, false];
+
+  // broadcast playerConnectedStates in the case all four computers are down
+  io.broadcast('playerConnectedStateResponse', app.context.playerStates);
+  
+  // broadcast updated playerConnectedStates
+  io.broadcast('playerHandshake',data);
+}
+
 /* Game state functions */
 // Sets game to SETUP state. Can be set from any state.
 function stateSetup() {
@@ -233,15 +244,15 @@ function stateSetup() {
     // reset playerConnectedStates (handshake)
     app.context.playerStates = [false, false, false, false];
 
-    // broadcast playerConnectedStates
-    io.broadcast('playerHandshake',data);
+    // broadcast playerConnectedStates (defaulted to false in endgame)
+    io.broadcast('playerConnectedStateResponse', app.context.playerStates);
 
     // broadcast endgame
     io.broadcast('currentState', currentState);
   } else if(currentState == APPSTATE.RESET) {
-    // broadcast playerConnectedStates
-    io.broadcast('playerHandshake',data);
-    
+    // broadcast updated playerConnectedStates
+    updatePlayerConnectedState();
+
     // broadcast RESET
     io.broadcast('currentState', currentState);
   }
