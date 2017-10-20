@@ -215,12 +215,16 @@
         if(data[3] == true) $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
         else $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green')
       });
+     
+      function populate(selector,key,value) {
+        $(selector).append('<option value="'+ value +'">'+ key + '</option>');
+      }
 
       function updatePlayerData() {
         $.getJSON( ip + "/config", function( data ) {
           var playerData = data["PLAYERS"];
 
-          var player1h, player2h, player3h, player4h;
+          var player1h, player2h, player3h, player4h, player5h;
 
           // get player heights
           heightmap.forEach(function(item) {
@@ -236,6 +240,9 @@
             if(item.value == playerData[3].height) {
               player4h = item.key;
             }
+            if(item.value == playerData[4].height) {
+              player5h = item.key;
+            }
           });
 
           // display player height from JSON file
@@ -243,6 +250,7 @@
           $( '#player2-height' ).text(player2h);
           $( '#player3-height' ).text(player3h);
           $( '#player4-height' ).text(player4h);
+          $( '#queen-height-data' ).text(player5h);
 
           // display player names from JSON file
           $( '#player1-name' ).text(playerData[0].name);
@@ -297,13 +305,13 @@
       }
 
       function disableButtons() {
-        for(i = 1; i <= 9; i++) {
+        for(i = 1; i <= 10; i++) {
           $('.mdl-button')[i].MaterialButton.disable();
         }
       }
 
       function enableButtons() {
-        for(i = 1; i <= 9; i++) {
+        for(i = 1; i <= 10; i++) {
           $('.mdl-button')[i].MaterialButton.enable();
         }
       }
@@ -331,12 +339,18 @@
 
         // enable buttons
         enableButtons();
+
+        // disable start game button until queen's height has been submitted
+        $('.mdl-button')[2].MaterialButton.disable();
       }
 
       function ingameState() {
         // update game state
         $('#game-state').children(0).text('In game');
         $('#game-state').addClass('bg-color-red').removeClass('bg-color-green');
+        
+        $('.mdl-button')[1].MaterialButton.disable();
+        $('.mdl-button')[2].MaterialButton.disable();
       }
 
       $(document).ready(function() {
@@ -368,9 +382,6 @@
         $( "#player4tracking" ).click(function() {
           socket.emit('reconnectTracking', { data: 'player4' });
         });
-
-        /* Update player data on load */
-        updatePlayerData();
 
         /* Gameplay */
         $( "#startgame" ).click(function() {
@@ -430,6 +441,60 @@
             socket.emit('reset', { my: 'data' });
           }
         });
+
+        $( "#queen-height-submit" ).click(function() {
+          console.log("submit");
+          socket.emit('updateData', { my: 'data' });
+
+          // enable start game and disable submit
+          $('.mdl-button')[2].MaterialButton.enable();
+          $('.mdl-button')[1].MaterialButton.disable();
+
+        });
+
+        /* Player heights */
+        heightmap.forEach(function(item) {
+          populate('#queen-height',item.key,item.value);
+        });
+
+        /* Update queen height */
+        $('#queen-height').on('change', function() {
+          var height = this.value;
+          $.ajax({
+            url: '/setheight',
+            type: 'POST',
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(
+              {
+                "player" : 4,
+                "height" : parseFloat(height)
+              }
+            ), // data as js object
+            success: function(result) {
+                console.log("ok " + result)
+            }
+          });
+
+          // update data view value
+          $.getJSON( ip + '/config' , function( data ) {
+            var playerData = data["PLAYERS"];
+            var player5h
+
+            // get player heights in feet and inches
+            heightmap.forEach(function(item) {
+              if(item.value == playerData[4].height) {
+                player5h = item.key;
+              }
+            });
+
+            // display player heights from JSON file
+            $( '#queen-height-data' ).text(player5h);
+          });
+        });
+
+        /* Update player data on load */
+        updatePlayerData();
 
         /* Update game state on load */
         socket.emit('getCurrentState', { my: 'data' });
@@ -537,6 +602,26 @@
       </div>
     </div>
     <!-- END PLAYER 4 -->
+
+    <!-- QUEEN -->
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--2-col text-align-center">
+        <b>Queen's height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <select class="mdl-selectfield__select" id="queen-height" name="player5">
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="queen-height-data">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <button id="queen-height-submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Submit
+        </button>
+      </div>
+    </div>
+    <!-- END QUEEN -->
     <!-- END PLAYER DATA -->
 
     <!-- VR EXPERIENCE -->

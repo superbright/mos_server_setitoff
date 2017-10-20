@@ -308,6 +308,9 @@ function stateIngame() {
     // broadcast updated playerConnectedStates
     updatePlayerConnectedState();
 
+    // rebind player data
+    io.broadcast('updatePlayerData', 'updatePlayerData');
+
     currentState = APPSTATE.INGAME;
     io.broadcast('currentState', currentState);
   }
