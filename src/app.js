@@ -43,17 +43,16 @@ var serialport = require('serialport'), // include the serialport library
       parser: serialport.parsers.readline('\n')
     };
 
-// open the serial port
-var myPort = new SerialPort(portName, portConfig);
-myPort.on('open', openPort); // called when the serial port opens
-
 function openPort() {
   console.log('port open');
   console.log('baud rate: ' + myPort.options.baudRate);
 }
 
+// open the serial port
+var myPort = new SerialPort(portName, portConfig);
+myPort.on('open', openPort); // called when the serial port opens
 myPort.on('data', function(data) {
-  console.log('data received: ' + data);
+  io.broadcast('elevatorHandshakeResponse', data);
 });
 
 /* Initialize variables */
@@ -499,6 +498,14 @@ io.on('rotateStart', (ctx, data) => {
   setTimeout(() => {
     console.log("start all elevator rotations");
     var input = "start\n";
+    myPort.write(input.toString());
+  }, 100);
+});
+
+io.on('elevatorHandshake', (ctx, data) => {
+  setTimeout(() => {
+    console.log("pinging elevator");
+    var input = "ping\n";
     myPort.write(input.toString());
   }, 100);
 });

@@ -328,6 +328,11 @@
           console.log('start rotate');
           socket.emit('rotateStart', { my: 'data' });
         });
+        
+        $( "#elevator-ping" ).click(function() {
+          console.log('ping');
+          socket.emit('elevatorHandshake', { my: 'data' });
+        });
 
         /* Other buttons */
         $( "#fans-on" ).click(function() {
