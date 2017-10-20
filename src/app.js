@@ -87,6 +87,7 @@ const APPSTATE = {
   READY: 1,
   INGAME: 2,
   END: 3,
+  RESET: 4,
 }
 
 var currentState = APPSTATE.SETUP;
@@ -233,6 +234,9 @@ function stateSetup() {
     app.context.playerStates = [false, false, false, false];
 
     // broadcast endgame
+    io.broadcast('currentState', currentState);
+  } else if(currentState == APPSTATE.RESET) {
+    // broadcast RESET
     io.broadcast('currentState', currentState);
   }
 
@@ -553,7 +557,7 @@ io.on('gameRestart', ( ctx, data ) => {
 });
 
 io.on('reset', (ctx, data) => {
-  console.log('reset');
+  currentState = APPSTATE.RESET ;
 
   timerReset();
   stateSetup();

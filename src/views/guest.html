@@ -353,7 +353,6 @@
       socket.on('currentState', function(data) {
         if(data == 0) {
           setupState();
-          location.reload();
           console.log('setup');
         } else if(data == 1) {
           readyState();
@@ -362,7 +361,11 @@
           ingameState();
           console.log('ingame');
         } else if(data == 3) {
+          location.reload();
           console.log('end');
+        } else if(data == 4) {
+          location.reload();
+          console.log('reset');
         } else {
           console.log('invalid currentState');
         }
