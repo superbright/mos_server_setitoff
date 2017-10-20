@@ -393,6 +393,10 @@
 
       });
 
+      socket.on('elevatorHandshakeResponse', function(data) {
+        console.log(data);
+      });
+
       $( document ).ready(function() {
         $.getJSON( ip + "/config", function( data ) {
           var playerData = data["PLAYERS"];
@@ -502,6 +506,9 @@
         </button>
         <button id="rotate-start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Start
+        </button>
+        <button id="elevator-ping" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Ping
         </button>
       </div>
     </div>
