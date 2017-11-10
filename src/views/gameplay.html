@@ -415,13 +415,13 @@
 
         $( "#enablePerformer" ).click(function() {
           console.log("enable performer");
-          socket.emit('enablePerformer', { my: 'data' });
+          socket.emit('performerEnable', { my: 'data' });
           $("#enablePerformer").prop('disabled', true);
         });
 
         $( "#disablePerformer" ).click(function() {
           console.log("disable performer");
-          socket.emit('disablePerformer', { my: 'data' });
+          socket.emit('performerDisable', { my: 'data' });
           $("#disablePerformer").prop('disabled', true);
         });
 

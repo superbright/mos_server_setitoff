@@ -558,12 +558,12 @@ io.on('sceneVoid', (ctx, data) => {
   }
 });
 
-io.on('enablePerformer', (ctx, data) => {
+io.on('performerEnable', (ctx, data) => {
   console.log("enablePerformer ", data);
   io.broadcast('enablePerformer',data);
 });
 
-io.on('disablePerformer', (ctx, data) => {
+io.on('performerDisable', (ctx, data) => {
   console.log("disablePerformer ", data);
   io.broadcast('disablePerformer',data);
 });
@@ -571,6 +571,16 @@ io.on('disablePerformer', (ctx, data) => {
 io.on('sceneExit', (ctx, data) => {
   console.log("exitScene ", data);
   io.broadcast('exitScene',data);
+});
+
+io.on( 'gameLaunch', ( ctx, data ) => {
+  console.log("call start game");
+  io.broadcast( 'startGame');
+});
+
+io.on( 'gameClose', ( ctx, data ) => {
+  console.log("call end game");
+  io.broadcast( 'endGame');
 });
 
 io.on('gameRestart', ( ctx, data ) => {

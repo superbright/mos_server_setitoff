@@ -122,6 +122,209 @@
         }
       ];
 
+      /* UI changes for game states */
+      function setupState() {
+        // update game state
+        $('#game-state').children(0).text('Setup');
+        $('#game-state').removeClass('bg-color-red bg-color-green');
+
+        // update player data
+        updatePlayerData();
+      }
+
+      function readyState() {
+        // update game state
+        $('#game-state').children(0).text('Ready');
+        $('#game-state').addClass('bg-color-green').removeClass('bg-color-red');
+
+        // update player data
+        updatePlayerData();
+      }
+
+      function ingameState() {
+        // update game state
+        $('#game-state').children(0).text('In game');
+        $('#game-state').addClass('bg-color-red').removeClass('bg-color-green');
+
+        // update player data
+        updatePlayerData();
+      }
+
+      /* Update and reflect player data in view */
+      function updatePlayerData() {
+        $.getJSON( ip + "/config", function( data ) {
+          var playerData = data["PLAYERS"];
+
+          var player1h, player2h, player3h, player4h, player5h;
+
+          // get player heights
+          heightmap.forEach(function(item) {
+            if(item.value == playerData[0].height) {
+              player1h = item.key;
+            }
+            if(item.value == playerData[1].height) {
+              player2h = item.key;
+            }
+            if(item.value == playerData[2].height) {
+              player3h = item.key;
+            }
+            if(item.value == playerData[3].height) {
+              player4h = item.key;
+            }
+            if(item.value == playerData[4].height) {
+              player5h = item.key;
+            }
+          });
+
+          // display player height from JSON file
+          $( '#player1-height' ).text(player1h);
+          $( '#player2-height' ).text(player2h);
+          $( '#player3-height' ).text(player3h);
+          $( '#player4-height' ).text(player4h);
+          $( '#queen-height-data' ).text(player5h);
+
+          // display player names from JSON file
+          $( '#player1-name' ).text(playerData[0].name);
+          $( '#player2-name' ).text(playerData[1].name);
+          $( '#player3-name' ).text(playerData[2].name);
+          $( '#player4-name' ).text(playerData[3].name);
+
+          // display player ison from JSON file
+          if(playerData[0].ison == true) {
+            $( '#player1-ison' ).text("ON");
+          } else {
+            $( '#player1-ison' ).text("OFF");
+          }
+          if(playerData[1].ison == true) {
+            $( '#player2-ison' ).text("ON");
+          } else {
+            $( '#player2-ison' ).text("OFF");
+          }
+          if(playerData[2].ison == true) {
+            $( '#player3-ison' ).text("ON");
+          } else {
+            $( '#player3-ison' ).text("OFF");
+          }
+          if(playerData[3].ison == true) {
+            $( '#player4-ison' ).text("ON");
+          } else {
+            $( '#player4-ison' ).text("OFF");
+          }
+
+          // display player gender from JSON file
+          if(playerData[0].gender == 1) {
+            $( '#player1-gender' ).text("Male");        
+          } else {
+            $( '#player1-gender' ).text("Female");
+          }
+          if(playerData[1].gender == 1) {
+            $( '#player2-gender' ).text("Male");        
+          } else {
+            $( '#player2-gender' ).text("Female");
+          }
+          if(playerData[2].gender == 1) {
+            $( '#player3-gender' ).text("Male");        
+          } else {
+            $( '#player3-gender' ).text("Female");
+          }
+          if(playerData[3].gender == 1) {
+            $( '#player4-gender' ).text("Male");        
+          } else {
+            $( '#player4-gender' ).text("Female");
+          }
+        });
+      }
+
+      /* Error dialog */
+      socket.on('errormessage', function (data) {
+        console.log(data["data"]);
+        var dialog = document.querySelector('dialog');
+        dialog.showModal();
+          $( "#errormessage" ).text(data["data"]);
+      });
+
+      /* Players connecting to optitrack */
+      socket.on('connectionState', function(data) {
+        var dataarr = data.split(':');
+        console.log(dataarr);
+
+        var enabledColor = '#8bc34a';
+        var disabledColor = '#ff5252';
+
+        if(dataarr[0] == 'player1') {
+          if(dataarr[1] == "True") {
+            $('#player1tracking').css('background',enabledColor);
+            $('#player1tracking-text').text('Tracking');
+          } else {
+            $('#player1tracking').css('background',disabledColor);
+            $('#player1tracking-text').text('Reconnect');
+          }
+        }
+        if(dataarr[0] == 'player2') {
+          if(dataarr[1] == "True") {
+            $('#player2tracking').css('background',enabledColor);
+            $('#player2tracking-text').text('Tracking');
+          } else {
+            $('#player2tracking').css('background',disabledColor);
+            $('#player2tracking-text').text('Reconnect');
+          }
+        }
+        if(dataarr[0] == 'player3') {
+          if(dataarr[1] == "True") {
+            $('#player3tracking').css('background',enabledColor);
+            $('#player3tracking-text').text('Tracking');
+          } else {
+            $('#player3tracking').css('background',disabledColor);
+            $('#player3tracking-text').text('Reconnect');
+          }
+        }
+        if(dataarr[0] == 'player4') {
+          if(dataarr[1] == "True") {
+            $('#player4tracking').css('background',enabledColor);
+            $('#player4tracking-text').text('Tracking');
+          } else {
+            $('#player4tracking').css('background',disabledColor);
+            $('#player4tracking-text').text('Reconnect');
+          }
+        }
+      });
+
+      /* Listen for player connection updates */  
+      socket.on('playerConnectedStateResponse', function(data) {
+        if(data[0] == true) $('#player1-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[1] == true) $('#player2-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player2-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[2] == true) $('#player3-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player3-connection').addClass('bg-color-red').removeClass('bg-color-green')
+
+        if(data[3] == true) $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
+        else $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green')
+      });
+
+      /* Listen for any game state changes */
+      socket.on('currentState', function(data) {
+        if(data == 0) {
+          setupState();
+          console.log('setup');
+        } else if(data == 1) {
+          readyState();
+          console.log('ready');
+        } else if(data == 2) {
+          ingameState();
+          console.log('ingame');
+        } else if(data == 3) {
+          console.log('end');
+          location.reload();
+        } else if(data == 4) {
+          console.log('reset');
+        } else {
+          console.log('invalid currentState');
+        }
+      });
+
       /* Players connecting to optitrack */
       socket.on('connectionState', function(data) {
         var dataarr = data.split(':');
@@ -139,7 +342,7 @@
           if(dataarr[1] == "True") {
             $('#player2tracking').css('background',enabledColor)
           } else {
-            $('#player2 tracking').css('background',disabledColor)
+            $('#player2tracking').css('background',disabledColor)
           }
         }
         if(dataarr[0] == 'player3') {
@@ -159,6 +362,147 @@
       });
 
       $(document).ready(function() {
+        // warning message dialog
+        var dialog = document.querySelector('dialog');
+
+        if (! dialog.showModal) {
+          dialogPolyfill.registerDialog(dialog);
+        }
+
+        dialog.querySelector('.close').addEventListener('click', function() {
+          dialog.close();
+        });
+        // end warning message dialogue
+        
+        /* Tracking reconnect */
+        $( "#player1tracking" ).click(function() {
+          socket.emit('reconnectTracking', { data: 'player1' });
+        });
+        $( "#player2tracking" ).click(function() {
+          socket.emit('reconnectTracking', { data: 'player2' });
+        });
+        $( "#player3tracking" ).click(function() {
+          socket.emit('reconnectTracking', { data: 'player3' });
+        });
+        $( "#player4tracking" ).click(function() {
+          socket.emit('reconnectTracking', { data: 'player4' });
+        });
+
+        /* States */
+        $( "#state-setup" ).click(function() {
+          console.log('setup state');
+          socket.emit('stateSetup', { my: 'data' });
+        });
+
+        $( "#state-ready" ).click(function() {
+          console.log('ready state');
+          socket.emit('stateReady', { my: 'data' });
+        });
+
+        $( "#state-ingame" ).click(function() {
+          console.log('ingame state');
+          socket.emit('stateIngame', { my: 'data' });
+        });
+
+        $( "#state-end" ).click(function() {
+          console.log('end state');
+          socket.emit('gameRestart', { my: 'data' });
+        });
+
+        $( "#state-reset" ).click(function() {
+          if(confirm("Are you sure you want to reset?")) {
+            console.log('reset state');
+            socket.emit('reset', { my: 'data' });
+          }
+        });
+
+        /* Elevators */
+        $( "#elevator-all" ).click(function() {
+          console.log('rotate all');
+          socket.emit('rotateAll', { my: 'data' });
+        });
+
+        $( "#elevator-one" ).click(function() {
+          console.log('rotate one');
+          socket.emit('rotateOne', { my: 'data' });
+        });
+        
+        $( "#elevator-two" ).click(function() {
+          console.log('rotate two');
+          socket.emit('rotateTwo', { my: 'data' });
+        });
+        
+        $( "#elevator-three" ).click(function() {
+          console.log('rotate three');
+          socket.emit('rotateThree', { my: 'data' });
+        });
+        
+        $( "#elevator-four" ).click(function() {
+          console.log('rotate four');
+          socket.emit('rotateFour', { my: 'data' });
+        });
+        
+        $( "#elevator-stop" ).click(function() {
+          console.log('stop rotate');
+          socket.emit('rotateStop', { my: 'data' });
+        });
+        
+        $( "#elevator-start" ).click(function() {
+          console.log('start rotate');
+          socket.emit('rotateStart', { my: 'data' });
+        });
+        
+        $( "#elevator-ping" ).click(function() {
+          socket.emit('elevatorHandshake', { my: 'data' });
+        });
+
+        /* Fans */
+        $( "#fans-on" ).click(function() {
+          console.log('turning fans on');
+          socket.emit('fansOn', { my: 'data' });
+        });
+
+        $( "#fans-off" ).click(function() {
+          console.log('turning fans off');
+          socket.emit('fansOff', { my: 'data' });
+        });
+
+        /* Game */
+        $( "#game-launch" ).click(function() {
+          console.log('launching game');
+          socket.emit('gameLaunch', { my: 'data' });
+        });
+
+        $( "#game-close" ).click(function() {
+          console.log('closing game');
+          socket.emit('gameClose', { my: 'data' });
+        });
+
+        $( "#game-elevator" ).click(function() {
+          console.log('elevator scene');
+          socket.emit('sceneElevator', { my: 'data' });
+        });
+
+        $( "#game-void" ).click(function() {
+          console.log('void scene');
+          socket.emit('sceneVoid', { my: 'data' });
+        });
+
+        $( "#game-exit" ).click(function() {
+          console.log('exit scene');
+          socket.emit('sceneExit', { my: 'data' });
+        });
+
+        $( "#game-performer-enable" ).click(function() {
+          console.log('enable performer');
+          socket.emit('performerEnable', { my: 'data' });
+        });
+
+        $( "#game-performer-disable" ).click(function() {
+          console.log('disable performer');
+          socket.emit('performerDisable', { my: 'data' });
+        });
+
         /* OptiTrack connection */
         $( "#player1tracking" ).click(function() {
           socket.emit('recon', { data: 'player1' });
@@ -174,6 +518,11 @@
 
         $( "#player4tracking" ).click(function() {
           socket.emit('recon', { data: 'player4' });
+        });
+
+        /* Rebind player data */
+        $( "#player-data-rebind" ).click(function() {
+          socket.emit('updateData', { my: 'data' });
         });
 
         /* Dildo controls */
@@ -293,189 +642,202 @@
           socket.emit('connectvib', { set: 'connect', player: 'player4vib' });
         });
 
-        /* Elevators */
-        $( "#rotate-all" ).click(function() {
-          console.log('rotate all');
-          socket.emit('rotateAll', { my: 'data' });
-        });
+        /* Update game state on load */
+        socket.emit('getCurrentState', { my: 'data' });
 
-        $( "#rotate-one" ).click(function() {
-          console.log('rotate one');
-          socket.emit('rotateOne', { my: 'data' });
-        });
-        
-        $( "#rotate-two" ).click(function() {
-          console.log('rotate two');
-          socket.emit('rotateTwo', { my: 'data' });
-        });
-        
-        $( "#rotate-three" ).click(function() {
-          console.log('rotate three');
-          socket.emit('rotateThree', { my: 'data' });
-        });
-        
-        $( "#rotate-four" ).click(function() {
-          console.log('rotate four');
-          socket.emit('rotateFour', { my: 'data' });
-        });
-        
-        $( "#rotate-stop" ).click(function() {
-          console.log('stop rotate');
-          socket.emit('rotateStop', { my: 'data' });
-        });
-        
-        $( "#rotate-start" ).click(function() {
-          console.log('start rotate');
-          socket.emit('rotateStart', { my: 'data' });
-        });
-        
-        $( "#elevator-ping" ).click(function() {
-          socket.emit('elevatorHandshake', { my: 'data' });
-        });
-
-        /* Other buttons */
-        $( "#fans-on" ).click(function() {
-          console.log('turning fans on');
-          socket.emit('fansOn', { my: 'data' });
-        });
-
-        $( "#fans-off" ).click(function() {
-          console.log('turning fans off');
-          socket.emit('fansOff', { my: 'data' });
-        });
-
-        $( "#test" ).click(function() {
-          console.log('testing');
-          socket.emit('test', { player: 1 });
-        });
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $( "#player3-state-get" ).click(function() {
-          console.log("player 3 state GET");
-          
-        });
-
-       $( "#player3-state-send" ).click(function() {
-          console.log("sendHandshakeToPlayer");
-          socket.emit('sendHandshakeToPlayer', { my: 'data' });
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /* Update player connection on load */
+        socket.emit('sendHandshakeToPlayer', { my: 'data' });
       });
 
       socket.on('elevatorHandshakeResponse', function(data) {
         console.log(data);
       });
-
-      $( document ).ready(function() {
-        $.getJSON( ip + "/config", function( data ) {
-          var playerData = data["PLAYERS"];
-
-          var player1h, player2h, player3h, player4h;
-
-          // get player heights
-          heightmap.forEach(function(item) {
-            if(item.value == playerData[0].height) {
-              player1h = item.key;
-            }
-            if(item.value == playerData[1].height) {
-              player2h = item.key;
-            }
-            if(item.value == playerData[2].height) {
-              player3h = item.key;
-            }
-            if(item.value == playerData[3].height) {
-              player4h = item.key;
-            }            
-          });
-
-          // display player height from JSON file
-          $( '#player1-height' ).append(player1h);
-          $( '#player2-height' ).append(player2h);
-          $( '#player3-height' ).append(player3h);
-          $( '#player4-height' ).append(player4h);
-
-          // display player names from JSON file
-          $( '#player1-name' ).append(playerData[0].name);
-          $( '#player2-name' ).append(playerData[1].name);
-          $( '#player3-name' ).append(playerData[2].name);
-          $( '#player4-name' ).append(playerData[3].name);
-
-          // display player ison from JSON file
-          if(playerData[0].ison == true) {
-            $( '#player1-ison' ).append("ON");
-          } else {
-            $( '#player1-ison' ).append("OFF");
-          }
-          if(playerData[1].ison == true) {
-            $( '#player2-ison' ).append("ON");
-          } else {
-            $( '#player2-ison' ).append("OFF");
-          }
-          if(playerData[2].ison == true) {
-            $( '#player3-ison' ).append("ON");
-          } else {
-            $( '#player3-ison' ).append("OFF");
-          }
-          if(playerData[3].ison == true) {
-            $( '#player4-ison' ).append("ON");
-          } else {
-            $( '#player4-ison' ).append("OFF");
-          }
-
-          // display player gender from JSON file
-          if(playerData[0].gender == 1) {
-            $( '#player1-gender' ).append("Male");        
-          } else {
-            $( '#player1-gender' ).append("Female");
-          }
-          if(playerData[1].gender == 1) {
-            $( '#player2-gender' ).append("Male");        
-          } else {
-            $( '#player2-gender' ).append("Female");
-          }
-          if(playerData[2].gender == 1) {
-            $( '#player3-gender' ).append("Male");        
-          } else {
-            $( '#player3-gender' ).append("Female");
-          }
-          if(playerData[3].gender == 1) {
-            $( '#player4-gender' ).append("Male");        
-          } else {
-            $( '#player4-gender' ).append("Female");
-          }
-        });
-      });
     </script>
+
+    <!-- ERROR DIALOG -->
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title">Warning</h4>
+      <div class="mdl-dialog__content">
+        <span id="errormessage">
+          Warning Message
+        </span>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close">OK</button>
+      </div>
+    </dialog>
+    <!-- END ERROR DIALOG -->
+
+    <!-- GAME STATE -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Game State</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--2-col">
+        <span class="mdl-chip" id="game-state">
+            <span class="mdl-chip__text"></span>
+        </span>
+      </div>
+      <div class="mdl-cell mdl-cell--10-col">
+        <button id="state-setup" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          State: Setup
+        </button>
+        <button id="state-ready" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          State: Ready
+        </button>
+        <button id="state-ingame" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          State: Ingame
+        </button>
+        <button id="state-end" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          State: End
+        </button>
+        <button id="state-reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          State: Reset
+        </button>
+      </div>
+    </div>
+    <!-- END GAME STATE -->
+
+    <!-- PLAYER CONNECTION -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Connection</b>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player1tracking">1</span>
+          <span class="mdl-chip__text" id="player1tracking-text">N/A</span>
+        </span>
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player2tracking">2</span>
+          <span class="mdl-chip__text" id="player2tracking-text">N/A</span>
+        </span>
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player3tracking">3</span>
+          <span class="mdl-chip__text" id="player3tracking-text">N/A</span>
+        </span>
+        <span class="mdl-chip mdl-chip--contact">
+          <span class="mdl-chip__contact mdl-color-text--white" id="player4tracking">4</span>
+          <span class="mdl-chip__text" id="player4tracking-text">N/A</span>
+        </span>
+      </div>
+    </div>
+    <!-- END PLAYER CONNECTION -->
+
+    <!-- PLAYER DATA -->
+    <div class="mdl-grid header header-title">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Data</b>
+      </div>
+    </div>
+    <div class="mdl-grid bg-color-gray">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>On/Off</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Name</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <b>Height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Gender</b>
+      </div>
+    </div>
+    <!-- PLAYER 1-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player1-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">1</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 1-->
+    <!-- PLAYER 2-->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player2-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">2</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 2-->
+    <!-- PLAYER 3 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player3-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">3</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 3 -->
+    <!-- PLAYER 4 -->
+    <div class="mdl-grid player">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player4-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">4</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 4 -->
+
+    <!-- QUEEN -->
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--2-col text-align-center">
+        <b>Queen's height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="queen-height-data">
+      </div>
+    </div>
+    <!-- END QUEEN -->
+
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="player-data-rebind" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rebind player data
+        </button>
+      </div>
+    </div>
+    <!-- END PLAYER DATA -->
 
     <!-- ELEVATORS -->
     <div class="mdl-grid header header-title header-title">
@@ -485,25 +847,25 @@
     </div>
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col">
-        <button id="rotate-all" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-all" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate all
         </button>
-        <button id="rotate-one" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-one" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate one
         </button>
-        <button id="rotate-two" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-two" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate two
         </button>
-        <button id="rotate-three" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-three" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate three
         </button>
-        <button id="rotate-four" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-four" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Rotate four
         </button>
-        <button id="rotate-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Stop
         </button>
-        <button id="rotate-start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+        <button id="elevator-start" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Start
         </button>
         <button id="elevator-ping" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
@@ -544,6 +906,21 @@
         </button>
         <button id="game-close" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
           Close game
+        </button>
+        <button id="game-elevator" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Scene: Elevator
+        </button>
+        <button id="game-void" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Scene: Void
+        </button>
+        <button id="game-exit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Scene: Exit
+        </button>
+        <button id="game-performer-enable" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Enable performer
+        </button>
+        <button id="game-performer-disable" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Disable performer
         </button>
       </div>
     </div>
@@ -700,136 +1077,5 @@
       <!-- PLAYER 4 -->
     </div>
     <!-- END VIBRATORS -->
-
-    <!-- PLAYER DATA -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>Player Data</b>
-      </div>
-    </div>
-    <div class="mdl-grid bg-color-gray">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        <b>Player #</b>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <b>On/Off</b>
-      </div>
-      <div class="mdl-cell mdl-cell--3-col">
-        <b>Name</b>
-      </div>
-      <div class="mdl-cell mdl-cell--2-col">
-        <b>Height</b>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <b>Gender</b>
-      </div>
-    </div>
-    <!-- PLAYER 1-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        1
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 1-->
-    <!-- PLAYER 2-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        2
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 2-->
-    <!-- PLAYER 3 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        3
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 3 -->
-    <!-- PLAYER 4 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        4
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 4 -->
-    <!-- END PLAYER DATA -->
-
-    <!-- PLAYER CONNECTION -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>Player Connection</b>
-      </div>
-    </div>
-    <!-- END PLAYER CONNECTION -->
-
-    <!-- GAME STATE -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>Game State</b>
-      </div>
-    </div>
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col">
-        <span class="mdl-chip">
-            <span class="mdl-chip__text">Setup</span>
-        </span>
-        <span class="mdl-chip game-state-ready">
-            <span class="mdl-chip__text">Ready</span>
-        </span>
-        <span class="mdl-chip game-state-ingame">
-            <span class="mdl-chip__text">In game</span>
-        </span>
-      </div>
-    </div>
-    <!-- END GAME STATE -->
-
-    <!--
-
-        <button id="player3-state-send" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-          SEND STATE
-        </button>
-
-        <button id="player3-state-get" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-          GET STATE
-        </button>
-
-        <button id="test" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-large">
-          TEST
-        </button>
-  -->
-
-    <!-- END PLAYER -->
   </body>
 </html>
