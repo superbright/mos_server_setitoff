@@ -669,12 +669,12 @@
     <!-- END ERROR DIALOG -->
 
     <!-- GAME STATE -->
-    <div class="mdl-grid header header-title">
+    <div class="mdl-grid bg-color-purple mdl-color-text--white">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Game State</b>
       </div>
     </div>
-    <div class="mdl-grid">
+    <div class="mdl-grid align-items-center">
       <div class="mdl-cell mdl-cell--2-col">
         <span class="mdl-chip" id="game-state">
             <span class="mdl-chip__text"></span>
@@ -698,10 +698,142 @@
         </button>
       </div>
     </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li>The chip indicates the current game state. It will be one of the three states: Setup (gray), Ready (green), Ingame (red)</li>
+          <li>You can change game states with the buttons that follow.</li>
+          <li><b>State: End</b> does the same thing as <b>End Game</b> button on the <b>Gameplay</b> page.</li>
+          <li><b>State: Reset</b> does the same thing as <b>Reset</b> button on the <b>Gameplay</b> page.</li>
+        </ul>
+      </div>
+    </div>
     <!-- END GAME STATE -->
 
+    <!-- PLAYER DATA -->
+    <div class="mdl-grid bg-color-purple mdl-color-text--white">
+      <div class="mdl-cell mdl-cell--12-col">
+        <b>Player Data</b>
+      </div>
+    </div>
+    <div class="mdl-grid bg-color-gray-light">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <b>Player #</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>On/Off</b>
+      </div>
+      <div class="mdl-cell mdl-cell--3-col">
+        <b>Name</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col">
+        <b>Height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col">
+        <b>Gender</b>
+      </div>
+    </div>
+    <!-- PLAYER 1-->
+    <div class="mdl-grid player align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player1-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">1</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 1-->
+    <!-- PLAYER 2-->
+    <div class="mdl-grid player align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player2-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">2</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 2-->
+    <!-- PLAYER 3 -->
+    <div class="mdl-grid player align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player3-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">3</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 3 -->
+    <!-- PLAYER 4 -->
+    <div class="mdl-grid player align-items-center">
+      <div class="mdl-cell mdl-cell--1-col text-align-center">
+        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player4-connection">
+          <span class="mdl-chip__contact mdl-color-text--white">4</span>
+        </button>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
+      </div>
+      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
+      </div>
+      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
+      </div>
+    </div>
+    <!-- END PLAYER 4 -->
+    <!-- QUEEN -->
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--2-col text-align-center">
+        <b>Queen's height</b>
+      </div>
+      <div class="mdl-cell mdl-cell--2-col" id="queen-height-data">
+      </div>
+    </div>
+    <!-- END QUEEN -->
+
+    <div class="mdl-grid align-items-center">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <button id="player-data-rebind" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+          Rebind player data
+        </button>
+      </div>
+    </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li>The above displays the data of all players for the current session, including the queen's height.</li>
+          <li>The chips indicate whether or not a computer is connected to the server. It will be one of the two states: red (not connected), green (connected)</li>
+          <li>Simply click on the chip for a particular player to send out a handshake.</li>
+          <li><b>Rebind player data</b> sends and updates the player data for all computers running the game.</li>
+        </ul>
+      </div>
+    </div>
+    <!-- END PLAYER DATA -->
+
     <!-- PLAYER CONNECTION -->
-    <div class="mdl-grid header header-title">
+    <div class="mdl-grid bg-color-purple mdl-color-text--white">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Player Connection</b>
       </div>
@@ -726,121 +858,19 @@
         </span>
       </div>
     </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li>Each chip indicates the tracking status for subsequent players. It will be one of three states: N/A (gray), Tracking (green), Reconnect (red).</li>
+          <li>If any of the players have a red chip, click on it reconnect.</li>
+        </ul>
+      </div>
+    </div>
     <!-- END PLAYER CONNECTION -->
 
-    <!-- PLAYER DATA -->
-    <div class="mdl-grid header header-title">
-      <div class="mdl-cell mdl-cell--12-col">
-        <b>Player Data</b>
-      </div>
-    </div>
-    <div class="mdl-grid bg-color-gray">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        <b>Player #</b>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <b>On/Off</b>
-      </div>
-      <div class="mdl-cell mdl-cell--3-col">
-        <b>Name</b>
-      </div>
-      <div class="mdl-cell mdl-cell--2-col">
-        <b>Height</b>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <b>Gender</b>
-      </div>
-    </div>
-    <!-- PLAYER 1-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player1-connection">
-          <span class="mdl-chip__contact mdl-color-text--white">1</span>
-        </button>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player1-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player1-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player1-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player1-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 1-->
-    <!-- PLAYER 2-->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player2-connection">
-          <span class="mdl-chip__contact mdl-color-text--white">2</span>
-        </button>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player2-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player2-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player2-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player2-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 2-->
-    <!-- PLAYER 3 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player3-connection">
-          <span class="mdl-chip__contact mdl-color-text--white">3</span>
-        </button>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player3-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player3-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player3-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player3-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 3 -->
-    <!-- PLAYER 4 -->
-    <div class="mdl-grid player">
-      <div class="mdl-cell mdl-cell--1-col text-align-center">
-        <button type="button" class="mdl-chip mdl-chip--contact bg-color-red" id="player4-connection">
-          <span class="mdl-chip__contact mdl-color-text--white">4</span>
-        </button>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player4-ison">
-      </div>
-      <div class="mdl-cell mdl-cell--3-col" id="player4-name">
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="player4-height">
-      </div>
-      <div class="mdl-cell mdl-cell--1-col" id="player4-gender">
-      </div>
-    </div>
-    <!-- END PLAYER 4 -->
-
-    <!-- QUEEN -->
-    <div class="mdl-grid align-items-center">
-      <div class="mdl-cell mdl-cell--2-col text-align-center">
-        <b>Queen's height</b>
-      </div>
-      <div class="mdl-cell mdl-cell--2-col" id="queen-height-data">
-      </div>
-    </div>
-    <!-- END QUEEN -->
-
-    <div class="mdl-grid align-items-center">
-      <div class="mdl-cell mdl-cell--12-col text-align-center">
-        <button id="player-data-rebind" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-          Rebind player data
-        </button>
-      </div>
-    </div>
-    <!-- END PLAYER DATA -->
-
     <!-- ELEVATORS -->
-    <div class="mdl-grid header header-title header-title">
+    <div class="mdl-grid bg-color-purple mdl-color-text--white">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Elevators</b>
       </div>
@@ -873,10 +903,22 @@
         </button>
       </div>
     </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li><b>Rotate all</b> rotates all elevators.</li>
+          <li>Each subsequent buttons rotates individual elevators to the respective portals.</li>
+          <li><b>Stop</b> halts all elevator rotations. This overrides all other elevator commands. <b>Start</b> must be pressed after to resume rotating.</li>
+          <li><b>Start</b> resumes normal elevator activites.</li>
+          <li><b>Ping</b> sends a handshake to the Arduino. "PONG" will be sent back (developer's console) if the server is still connected to the Arduino.</li>
+        </ul>
+      </div>
+    </div>
     <!-- END ELEVATORS -->
 
     <!-- FANS -->
-    <div class="mdl-grid header header-title header-title">
+    <div class="mdl-grid bg-color-purple mdl-color-text--white">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Fans</b>
       </div>
@@ -891,10 +933,18 @@
         </button>
       </div>
     </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li>Turns fans on and off respectively.</li>
+        </ul>
+      </div>
+    </div>
     <!-- END FANS -->
 
     <!-- GAME -->
-    <div class="mdl-grid header header-title header-title">
+    <div class="mdl-grid bg-color-purple mdl-color-text--white">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Game</b>
       </div>
@@ -917,17 +967,27 @@
           Scene: Exit
         </button>
         <button id="game-performer-enable" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-          Enable performer
+          Queen on
         </button>
         <button id="game-performer-disable" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-          Disable performer
+          Queen off
         </button>
+      </div>
+    </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li><b>Launch game</b> and <b>Close game</b> launches and closes the Unity game for all computers respectively.</li>
+          <li>Each <b>Scene</b> buttons goes to its respective scene in the game. They must be played in order. The elevator scene must end before starting the void scene.</li>
+          <li><b>Queen on</b> and <b>Queen off</b> turns the queen on and off respectively in the game. This can be done any number of times in an experience.</li>
+        </ul>
       </div>
     </div>
     <!-- END GAME -->
 
     <!-- VIBRATORS -->
-    <div class="mdl-grid header header-title">
+    <div class="mdl-grid bg-color-purple mdl-color-text--white header-title">
       <div class="mdl-cell mdl-cell--12-col">
         <b>Vibrators</b>
       </div>
@@ -1075,6 +1135,16 @@
         </button>
       </div>
       <!-- PLAYER 4 -->
+    </div>
+
+    <div class="mdl-grid bg-color-purple-light info">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ul>
+          <li><b>Dilon</b> turns the vibrator on for the respective player.</li>
+          <li><b>Diloff</b> turns the vibrator off for the respective player.</li>
+          <li>All other buttons are different vibration settings for the respective player.</li>
+        </ul>
+      </div>
     </div>
     <!-- END VIBRATORS -->
   </body>
