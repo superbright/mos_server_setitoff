@@ -203,7 +203,7 @@
         }
       });
 
-      /* Listen for player connection updates */  
+      /* Listen for player connection updates */
       socket.on('playerConnectedStateResponse', function(data) {
         if(data[0] == true) $('#player1-connection').addClass('bg-color-green').removeClass('bg-color-red')
         else $('#player1-connection').addClass('bg-color-red').removeClass('bg-color-green')
@@ -217,7 +217,7 @@
         if(data[3] == true) $('#player4-connection').addClass('bg-color-green').removeClass('bg-color-red')
         else $('#player4-connection').addClass('bg-color-red').removeClass('bg-color-green')
       });
-     
+
       function populate(selector,key,value) {
         $(selector).append('<option value="'+ value +'">'+ key + '</option>');
       }
@@ -284,22 +284,22 @@
 
           // display player gender from JSON file
           if(playerData[0].gender == 1) {
-            $( '#player1-gender' ).text("Male");        
+            $( '#player1-gender' ).text("Male");
           } else {
             $( '#player1-gender' ).text("Female");
           }
           if(playerData[1].gender == 1) {
-            $( '#player2-gender' ).text("Male");        
+            $( '#player2-gender' ).text("Male");
           } else {
             $( '#player2-gender' ).text("Female");
           }
           if(playerData[2].gender == 1) {
-            $( '#player3-gender' ).text("Male");        
+            $( '#player3-gender' ).text("Male");
           } else {
             $( '#player3-gender' ).text("Female");
           }
           if(playerData[3].gender == 1) {
-            $( '#player4-gender' ).text("Male");        
+            $( '#player4-gender' ).text("Male");
           } else {
             $( '#player4-gender' ).text("Female");
           }
@@ -308,13 +308,17 @@
 
       function disableButtons() {
         for(i = 1; i <= 10; i++) {
-          $('.mdl-button')[i].MaterialButton.disable();
+          if($('.mdl-button')[i].MaterialButton) {
+            $('.mdl-button')[i].MaterialButton.disable();
+          }
         }
       }
 
       function enableButtons() {
         for(i = 1; i <= 10; i++) {
-          $('.mdl-button')[i].MaterialButton.enable();
+          if($('.mdl-button')[i].MaterialButton) {
+            $('.mdl-button')[i].MaterialButton.enable();
+          }
         }
       }
 
@@ -350,7 +354,7 @@
         // update game state
         $('#game-state').children(0).text('In game');
         $('#game-state').addClass('bg-color-red').removeClass('bg-color-green');
-        
+
         $('.mdl-button')[1].MaterialButton.disable();
         $('.mdl-button')[2].MaterialButton.disable();
       }
@@ -370,7 +374,7 @@
           dialog.close();
         });
         // end warning message dialogue
-        
+
         /* Tracking reconnect */
         $( "#player1tracking" ).click(function() {
           socket.emit('reconnectTracking', { data: 'player1' });
@@ -716,7 +720,7 @@
     <!-- END RESET -->
 
     <!-- AUDIO -->
-    <audio id="notification" preload="none"> 
+    <audio id="notification" preload="none">
       <source src="audio/notification.mp3" type="audio/mp3">
     </audio>
     <!-- END AUDIO -->
