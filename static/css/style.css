@@ -27,6 +27,10 @@
   color: #fff;
 }
 
+.info {
+  margin: 10px;
+}
+
 #timer {
   font-size: 3em;
 }

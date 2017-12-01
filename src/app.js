@@ -32,29 +32,6 @@ app.use(bodyParser());
 app.use(api.routes());
 app.use(api.allowedMethods());
 
-/* Serial port */
-// serial port initialization
-var serialport = require('serialport'), // include the serialport library
-    SerialPort = serialport.SerialPort, // make a local instance of serial
-    portName = "/dev/tty.usbmodem1471",
-    portConfig = {
-      baudRate: 9600,
-      // call myPort.on('data') when a newline is received:
-      parser: serialport.parsers.readline('\n')
-    };
-
-function openPort() {
-  console.log('port open');
-  console.log('baud rate: ' + myPort.options.baudRate);
-}
-
-// open the serial port
-var myPort = new SerialPort(portName, portConfig);
-myPort.on('open', openPort); // called when the serial port opens
-myPort.on('data', function(data) {
-  io.broadcast('elevatorHandshakeResponse', data);
-});
-
 /* Initialize variables */
 var configReset = JSON.parse(JSON.stringify(config));
 var player = require('play-sound')({ player: "afplay" });
@@ -628,18 +605,3 @@ io.on('reset', (ctx, data) => {
 
 io.attach( app )
 export default app;
-
-// var SerialPort = require('serialport', {
-//    baudRate: 115200
-// });
-// var port = new SerialPort('/dev/cu.usbmodem1431');
-//
-//
-// port.on('open', function() {
-//
-// });
-//
-// port.on('data', function (data) {
-//   //console.log(data.toString());
-//   io.broadcast( 'door', data.toString());
-// });
